@@ -1,0 +1,25 @@
+<div class="table-responsive">
+  <h3>{{ title }}</h3>
+  <table class="table table-bordered table-hover">
+    <thead class="table-dark">
+      <tr>
+        <th>Cuota</th>
+        <th>Capital Pendiente</th>
+        <th>Capital Pagado</th>
+        <th>Intereses Pagados</th>
+        <th>Pago Total</th>
+        <th>Balance Restante</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of data">
+        <td>{{ item.installmentNumber }}</td>
+        <td>{{ item.principalOwed | customCurrency }}</td>
+        <td>{{ item.principalPaid | customCurrency }}</td>
+        <td>{{ item.interestPaid | customCurrency }}</td>
+        <td>{{ item.totalPayment | customCurrency }}</td>
+        <td>{{ item.remainingBalance | customCurrency }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

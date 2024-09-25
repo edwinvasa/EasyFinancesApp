@@ -1,0 +1,84 @@
+<div class="container mt-3">
+  <h5>Análisis de Capacidad de Pago</h5>
+  <hr>
+
+  <form (ngSubmit)="analyzeEconomicCapacity()">
+    <div class="d-flex justify-content-center">
+      <div class="w-auto p-3">
+
+        <div class="row mb-3">
+          <div class="col">
+            <label for="monthlyIncome" class="form-label">Ingresos Mensuales</label>
+            <input type="text" id="monthlyIncome" [(ngModel)]="monthlyIncome" name="monthlyIncome" class="form-control" currencyMask placeholder="Ej: 5.000.000">
+          </div>
+          <div class="col">
+            <label for="additionalIncome" class="form-label">Otros Ingresos</label>
+            <input type="text" id="additionalIncome" [(ngModel)]="additionalIncome" name="additionalIncome" class="form-control" currencyMask placeholder="Ej: 500.000">
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col">
+            <label class="form-label">Prima de Navidad</label>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" [(ngModel)]="receivesChristmasBonus" name="receivesChristmasBonus" id="christmasBonus">
+              <label class="form-check-label" for="christmasBonus">Recibo Prima de Navidad</label>
+            </div>
+            <input *ngIf="receivesChristmasBonus" type="text" [(ngModel)]="christmasBonusAmount" name="christmasBonusAmount" class="form-control mt-2" currencyMask placeholder="Cantidad Prima de Navidad">
+          </div>
+          <div class="col">
+            <label class="form-label">Prima de Junio</label>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" [(ngModel)]="receivesMidYearBonus" name="receivesMidYearBonus" id="midYearBonus">
+              <label class="form-check-label" for="midYearBonus">Recibo Prima de Junio</label>
+            </div>
+            <input *ngIf="receivesMidYearBonus" type="text" [(ngModel)]="midYearBonusAmount" name="midYearBonusAmount" class="form-control mt-2" currencyMask placeholder="Cantidad Prima de Junio">
+          </div>
+        </div>
+
+        <app-add-expenses (onExpenseAdded)="addExpense($event)"></app-add-expenses>
+
+    <table class="table table-bordered mt-3">
+      <thead>
+        <tr>
+          <th>Tipo de Gasto</th>
+          <th>Monto</th>
+          <th>Acción</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let expense of expenses; let i = index">
+          <td>{{ expense.expenseTypeNameAndCategory }}</td>
+          <td>{{ expense.amount | customCurrency }} <!-- Usa el pipe number -->
+          </td>
+          <td><button type="button" class="btn btn-danger" (click)="removeExpense(i)">Eliminar</button></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="text-center">
+      <button type="submit" class="btn btn-primary">Analizar Capacidad de Pago</button>
+    </div>
+
+    </div>
+  </div>
+  </form>
+
+  <!-- Resultado del análisis -->
+  <div *ngIf="analysisResult" class="mt-4">
+    <h4>Resultado del Análisis</h4>
+    <p><strong>Ingresos Mensuales:</strong> {{ analysisResult.monthlyIncome | customCurrency }}</p>
+    <p><strong>Ingresos Adicionales:</strong> {{ analysisResult.additionalIncome | customCurrency }}</p>
+    <p><strong>Gastos Totales:</strong> {{ analysisResult.totalExpenses | customCurrency }}</p>
+
+    <ng-container *ngIf="analysisResult.suggestedPaymentAmount >= 0; else negativeAmountMessage">
+      <p><strong>Monto Sugerido para Pago:</strong> {{ analysisResult.suggestedPaymentAmount | customCurrency }}</p>
+    </ng-container>
+
+    <ng-template #negativeAmountMessage>
+      <div class="alert alert-warning mt-3">
+        <strong>Atención:</strong> No es posible generar un monto sugerido para pago, ya que tus gastos actuales superan significativamente tus ingresos.
+      </div>
+    </ng-template>
+  </div>
+</div>

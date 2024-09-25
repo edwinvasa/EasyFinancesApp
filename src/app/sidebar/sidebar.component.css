@@ -1,0 +1,27 @@
+/* Estilo base para el menú */
+.nav-pills {
+  padding-left: 0;
+  margin-bottom: 0;
+}
+
+.nav-link {
+  white-space: nowrap;
+}
+
+/* Estilos para pantallas pequeñas (vertical) */
+@media (max-width: 767px) {
+  .nav-pills {
+    flex-direction: column;
+  }
+}
+
+/* Estilos para pantallas medianas y grandes (horizontal) */
+@media (min-width: 768px) {
+  .nav-pills {
+    flex-direction: column; /* En el offcanvas se mantendrán en columna */
+  }
+
+  .nav-item {
+    margin-bottom: 10px; /* Espaciado entre los elementos del menú */
+  }
+}

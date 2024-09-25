@@ -1,0 +1,16 @@
+<div class="container mt-3">
+  <h5>Bienvenido a la Gestión de Crédito</h5>
+  <hr>
+  <!-- <router-outlet></router-outlet> Aquí se cargarán los componentes anidados del módulo GestionCredito -->
+   <!-- Componente de ingreso de información de crédito -->
+  <app-info-credito-actual (onSubmitCreditInfo)="handleCreditSubmission($event)"></app-info-credito-actual>
+
+  <!-- Componente de análisis de crédito, mostrado condicionalmente -->
+  <app-analisis-credito
+  *ngIf="loanAnalysisResponse"
+  [loanAnalysisResponse]="loanAnalysisResponse"
+  [analysis]="loanAnalysisResponse.analysis"
+  [suggestion]="loanAnalysisResponse.suggestion"
+  ></app-analisis-credito>
+
+</div>

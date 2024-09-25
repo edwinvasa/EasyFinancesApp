@@ -1,0 +1,12 @@
+<!-- tabla-amortizacion.component.html -->
+<div class="container mt-3">
+  <app-shared-table
+    [data]="loanAnalysisResponse.withoutCapitalRepayment"
+    title="Amortización sin Abonos a Capital">
+  </app-shared-table>
+
+  <app-shared-table *ngIf="loanAnalysisResponse.withCapitalRepayment"
+    [data]="loanAnalysisResponse.withCapitalRepayment" title="Amortización con Abonos a Capital">
+  </app-shared-table>
+
+  </div>

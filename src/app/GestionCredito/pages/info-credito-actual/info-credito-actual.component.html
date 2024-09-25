@@ -1,0 +1,92 @@
+<div class="d-flex justify-content-center">
+  <div class="w-auto p-3">
+
+    <div class="container mt-3">
+      <h2>Información del Crédito Actual</h2>
+      <form (ngSubmit)="submitCreditInfo()">
+        <div class="mb-3">
+          <label for="monto" class="form-label">Monto:</label>
+          <input type="text" class="form-control" id="monto" [(ngModel)]="creditInfo.monto" currencyMask name="monto" required
+                placeholder="Ejemplo: 10.000.000">
+        </div>
+
+        <div class="mb-3">
+          <label for="tipoTasa" class="form-label">Tipo de Tasa</label>
+          <select class="form-select" id="tipoTasa" [(ngModel)]="creditInfo.tipoTasa" name="tipoTasa" required>
+            <option value="TEA">Tasa Efectiva Anual</option>
+            <option value="TNM">Tasa Nominal Mensual</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label for="tasa" class="form-label">% Tasa:</label>
+          <input type="number" class="form-control" id="tasa" [(ngModel)]="creditInfo.tasa" name="tasa" required
+                placeholder="Ejemplo: 12.5%">
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="plazo" class="form-label">Plazo:</label>
+            <input type="number" class="form-control" id="plazo" [(ngModel)]="creditInfo.plazo" name="plazo" required
+                  placeholder="Ejemplo: 72">
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="tipoPlazo" class="form-label">Tipo de Plazo</label>
+            <select class="form-select" id="tipoPlazo" [(ngModel)]="creditInfo.tipoPlazo" name="tipoPlazo" required>
+              <option value="Meses">Meses</option>
+              <option value="Años">Años</option>
+            </select>
+          </div>
+        </div>
+
+        <hr>
+
+        <div class="mb-3 text-center">
+          <label>¿Desea realizar abonos a capital?</label>
+          <div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="abonosCapital" id="siAbonos" value="si" [(ngModel)]="creditInfo.abonosCapital" required>
+              <label class="form-check-label" for="siAbonos">Sí</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="abonosCapital" id="noAbonos" value="no" [(ngModel)]="creditInfo.abonosCapital" required>
+              <label class="form-check-label" for="noAbonos">No</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mostrar si selecciona "Sí" para abonos a capital -->
+        <div *ngIf="creditInfo.abonosCapital === 'si'">
+          <div class="mb-3">
+            <label for="valorAbono" class="form-label">Valor del abono:</label>
+            <input type="text" class="form-control" id="valorAbono" [(ngModel)]="creditInfo.valorAbono" currencyMask name="valorAbono" required
+                  placeholder="Ejemplo: 100.000">
+          </div>
+
+          <!-- Mostrar solo cuando el valor del abono esté completo -->
+          <div class="mb-3" *ngIf="creditInfo.valorAbono">
+            <label for="frecuenciaAbono" class="form-label">Frecuencia de abonos a capital:</label>
+            <select class="form-select" id="frecuenciaAbono" [(ngModel)]="creditInfo.frecuenciaAbono" name="frecuenciaAbono" required>
+              <option value="" disabled selected>Selecciona la frecuencia de pagos</option>
+              <option value="monthly">Mensual</option>
+              <option value="biannual">Semestral</option>
+              <option value="annual">Anual</option>
+              <option value="one-time">Pago único</option>
+            </select>
+          </div>
+
+          <!-- Mostrar solo cuando la frecuencia de abonos esté seleccionada -->
+          <div class="mb-3" *ngIf="creditInfo.frecuenciaAbono">
+            <label for="cuotaInicio" class="form-label">¿A partir de cuál cuota desea comenzar a aplicar los abonos a capital?</label>
+            <input type="number" class="form-control" id="cuotaInicio" [(ngModel)]="creditInfo.cuotaInicio" name="cuotaInicio" required
+                  placeholder="Ejemplo: 1">
+          </div>
+        </div>
+        <div class="text-center">
+          <button type="submit" class="btn btn-primary">Confirmar</button>
+        </div>
+      </form>
+    </div>
+
+  </div>
+</div>

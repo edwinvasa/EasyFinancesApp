@@ -1,0 +1,15 @@
+<div class="mb-3">
+  <label for="expenseType" class="form-label">Tipo de Gasto</label>
+  <select class="form-select" id="expenseType" [(ngModel)]="selectedExpenseTypeId" name="expenseType">
+    <option *ngFor="let type of expenseTypes" [value]="type.id">{{ type.name }} - {{ type.category }}</option>
+  </select>
+</div>
+
+<div class="mb-3">
+  <label for="amount" class="form-label">Monto del Gasto</label>
+  <input type="text" class="form-control" id="amount" [(ngModel)]="amount" currencyMask placeholder="Ingrese el monto del gasto">
+</div>
+
+<div class="text-center">
+  <button type="button" class="btn btn-primary" (click)="addExpense()">Agregar Gasto</button>
+</div>

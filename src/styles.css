@@ -1,1 +1,29 @@
-/* You can add global styles to this file, and also import other style files */
+html, body {
+  height: 100%;  /* Asegura que html y body ocupen toda la altura de la ventana */
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;  /* Flex 1 en el body para que tome todo el espacio vertical disponible */
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 120px);  /* 120px es el total aproximado del header y el footer juntos */
+}
+
+.footer {
+  width: 100%;
+  background-color: #f8f9fa;
+  padding: 10px 0;
+  text-align: center;
+  flex-shrink: 0;  /* Asegura que el footer no se encoja */
+  height: 9vh;
+}

@@ -1,0 +1,14 @@
+<div class="d-flex justify-content-center">
+  <div class="w-auto p-3">
+    <div class="container mt-4">
+      <h5>¿Te gustaría recibir una notificación cuando las tasas bajen?</h5>
+      <div class="input-group mb-3">
+        <input type="email" class="form-control" placeholder="Ingresa tu correo electrónico" [(ngModel)]="email" required>
+        <button class="btn btn-primary" type="button" (click)="subscribe()" [disabled]="!email">Suscribirse</button>
+      </div>
+      <div *ngIf="showMessage" class="alert alert-info" role="alert">
+        {{ subscriptionMessage }}
+      </div>
+    </div>
+  </div>
+</div>
