@@ -7,9 +7,9 @@ import { BankRate } from '../interfaces/bank-rate.interface';
   providedIn: 'root'
 })
 export class BankRatesService {
-  private apiUrl = 'http://localhost:8080/api/bank-interest-rates';
-  private subscribeUrl = 'http://localhost:8080/api/notifications/subscribe';
-   private unsubscribeUrl = 'http://localhost:8080/api/notifications/unsubscribe';
+  private apiUrl = 'https://easy-finances-app-63cef07822fc.herokuapp.com/api/bank-interest-rates';
+  private subscribeUrl = 'https://easy-finances-app-63cef07822fc.herokuapp.com/api/notifications/subscribe';
+   private unsubscribeUrl = 'https://easy-finances-app-63cef07822fc.herokuapp.com/api/notifications/unsubscribe';
 
   constructor(private http: HttpClient) { }
 

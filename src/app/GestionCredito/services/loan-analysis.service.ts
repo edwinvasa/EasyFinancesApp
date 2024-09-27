@@ -8,7 +8,7 @@ import { LoanAnalysisResponse } from '../interfaces/loan-analysis.interface';
   providedIn: 'root'
 })
 export class LoanAnalysisService {
-  private apiUrl = 'http://localhost:8080/api/loan-analysis';
+  private apiUrl = 'https://easy-finances-app-63cef07822fc.herokuapp.com/api/loan-analysis';
 
   constructor(private http: HttpClient) { }
 

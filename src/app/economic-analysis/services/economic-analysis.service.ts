@@ -9,7 +9,7 @@ import { EconomicAnalysisRequest, EconomicAnalysisResponse } from '../interfaces
   providedIn: 'root'
 })
 export class EconomicAnalysisService {
-  private apiUrl = 'http://localhost:8080/api/economic-analysis';
+  private apiUrl = 'https://easy-finances-app-63cef07822fc.herokuapp.com/api/economic-analysis';
 
   constructor(private http: HttpClient) {}
 

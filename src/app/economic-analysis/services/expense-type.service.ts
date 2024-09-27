@@ -7,7 +7,7 @@ import { ExpenseType } from '../interfaces/expense-type.interface';
   providedIn: 'root'
 })
 export class ExpenseTypeService {
-  private apiUrl = 'http://localhost:8080/api/expense-types';
+  private apiUrl = 'https://easy-finances-app-63cef07822fc.herokuapp.com/api/expense-types';
 
   constructor(private http: HttpClient) {}
 
