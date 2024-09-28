@@ -5,11 +5,25 @@
   <form (ngSubmit)="analyzeEconomicCapacity()">
     <div class="d-flex justify-content-center">
       <div class="w-auto p-3">
-
+        <h6>Ingresos</h6>
+        <hr>
         <div class="row mb-3">
           <div class="col">
             <label for="monthlyIncome" class="form-label">Ingresos Mensuales</label>
-            <input type="text" id="monthlyIncome" [(ngModel)]="monthlyIncome" name="monthlyIncome" class="form-control" currencyMask placeholder="Ej: 5.000.000">
+            <input
+              type="text"
+              id="monthlyIncome"
+              [(ngModel)]="monthlyIncome"
+              name="monthlyIncome"
+              class="form-control"
+              currencyMask
+              placeholder="Ej: 5.000.000"
+              required
+              #monthlyIncomeModel="ngModel"
+            />
+            <div *ngIf="monthlyIncomeModel.invalid && (monthlyIncomeModel.dirty || monthlyIncomeModel.touched)" class="text-danger">
+              Ingresos mensuales son obligatorios.
+            </div>
           </div>
           <div class="col">
             <label for="additionalIncome" class="form-label">Otros Ingresos</label>
@@ -35,6 +49,9 @@
             <input *ngIf="receivesMidYearBonus" type="text" [(ngModel)]="midYearBonusAmount" name="midYearBonusAmount" class="form-control mt-2" currencyMask placeholder="Cantidad Prima de Junio">
           </div>
         </div>
+
+        <h6>Gastos</h6>
+        <hr>
 
         <app-add-expenses (onExpenseAdded)="addExpense($event)"></app-add-expenses>
 

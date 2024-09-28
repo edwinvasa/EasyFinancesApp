@@ -16,6 +16,10 @@ const routes: Routes = [
       { path: 'analisis-credito', component: AnalisisCreditoComponent },
       { path: 'amortizacion', component: TablaAmortizacionComponent }
     ]
+  },
+  {
+    path: '**',
+    redirectTo: 'info'
   }
 ];
 

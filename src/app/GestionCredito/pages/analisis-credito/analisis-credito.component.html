@@ -7,7 +7,13 @@
 
   <div class="row">
     <!-- Primera columna para la parte izquierda -->
-    <div class="col-md-6 d-flex align-items-stretch">
+    <div
+      class="d-flex align-items-stretch"
+      [ngClass]="{
+        'col-md-6': loanAnalysisResponse.withCapitalRepayment!.length > 0,
+        'col-md-8 mx-auto': loanAnalysisResponse.withCapitalRepayment!.length === 0
+      }"
+    >
       <div class="card w-100">
         <div class="card-header">Sin Abonos a Capital</div>
         <div class="card-body">
@@ -17,7 +23,7 @@
       </div>
     </div>
     <!-- Segunda columna para la parte derecha -->
-    <div class="col-md-6 d-flex align-items-stretch">
+    <div class="col-md-6 d-flex align-items-stretch" *ngIf="loanAnalysisResponse.withCapitalRepayment!.length > 0">
       <div class="card w-100">
         <div class="card-header">Con Abonos a Capital</div>
         <div class="card-body">

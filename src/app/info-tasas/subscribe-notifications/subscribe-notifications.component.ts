@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { v4 as uuidv4 } from 'uuid';
 import { BankRatesService } from '../services/bank-rates.service';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-subscribe-notifications',
@@ -14,14 +15,13 @@ export class SubscribeNotificationsComponent {
 
   constructor(private bankRatesService: BankRatesService) { }
 
-  subscribe(): void {
-    const userId = uuidv4(); // Generar un userId aleatorio
+  subscribe(subscribeForm: NgForm): void {
+    const userId = uuidv4();
     this.bankRatesService.subscribeToNotifications(userId, this.email).subscribe({
       next: () => {
         this.subscriptionMessage = 'Te has suscrito correctamente a las notificaciones de tasas.';
         this.showMessage = true;
-        this.email = ''; // Limpiar el campo de email
-        // Ocultar el mensaje después de unos segundos
+        subscribeForm.resetForm();
         setTimeout(() => this.showMessage = false, 3000);
       },
       error: (err) => {
