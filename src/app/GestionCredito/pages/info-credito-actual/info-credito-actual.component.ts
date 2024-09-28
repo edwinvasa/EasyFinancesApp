@@ -39,7 +39,7 @@ export class InfoCreditoActualComponent {
     if (this.creditInfo.abonosCapital === 'si') {
       return basicValidation &&
         this.creditInfo.valorAbono !== null &&
-        Number(this.creditInfo.valorAbono) > 10000 &&
+        Number(this.creditInfo.valorAbono) > 1000 &&
         this.creditInfo.frecuenciaAbono !== '' &&
         this.creditInfo.cuotaInicio !== null;
     } else {
