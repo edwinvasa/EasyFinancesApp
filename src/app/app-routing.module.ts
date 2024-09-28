@@ -32,7 +32,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: 'credit-management' // Redirige cualquier ruta desconocida al módulo de gestión de crédito
+    redirectTo: 'credit-management'
   }
 ];
 

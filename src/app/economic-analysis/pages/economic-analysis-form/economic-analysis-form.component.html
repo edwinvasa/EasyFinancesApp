@@ -2,7 +2,7 @@
   <h5>Análisis de Capacidad de Pago</h5>
   <hr>
 
-  <form (ngSubmit)="analyzeEconomicCapacity()">
+  <form (ngSubmit)="analyzeEconomicCapacity()" autocomplete="off">
     <div class="d-flex justify-content-center">
       <div class="w-auto p-3">
         <h6>Ingresos</h6>
@@ -19,6 +19,7 @@
               currencyMask
               placeholder="Ej: 5.000.000"
               required
+              autocomplete="off"
               #monthlyIncomeModel="ngModel"
             />
             <div *ngIf="monthlyIncomeModel.invalid && (monthlyIncomeModel.dirty || monthlyIncomeModel.touched)" class="text-danger">
@@ -35,7 +36,7 @@
           <div class="col">
             <label class="form-label">Prima de Navidad</label>
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" [(ngModel)]="receivesChristmasBonus" name="receivesChristmasBonus" id="christmasBonus">
+              <input class="form-check-input" type="checkbox" [(ngModel)]="receivesChristmasBonus" name="receivesChristmasBonus" id="christmasBonus" autocomplete="off">
               <label class="form-check-label" for="christmasBonus">Recibo Prima de Navidad</label>
             </div>
             <input *ngIf="receivesChristmasBonus" type="text" [(ngModel)]="christmasBonusAmount" name="christmasBonusAmount" class="form-control mt-2" currencyMask placeholder="Cantidad Prima de Navidad">
@@ -43,7 +44,7 @@
           <div class="col">
             <label class="form-label">Prima de Junio</label>
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" [(ngModel)]="receivesMidYearBonus" name="receivesMidYearBonus" id="midYearBonus">
+              <input class="form-check-input" type="checkbox" [(ngModel)]="receivesMidYearBonus" name="receivesMidYearBonus" id="midYearBonus" autocomplete="off">
               <label class="form-check-label" for="midYearBonus">Recibo Prima de Junio</label>
             </div>
             <input *ngIf="receivesMidYearBonus" type="text" [(ngModel)]="midYearBonusAmount" name="midYearBonusAmount" class="form-control mt-2" currencyMask placeholder="Cantidad Prima de Junio">

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { BankRatesService } from '../services/bank-rates.service';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-unsubscribe-notifications',
@@ -13,13 +14,13 @@ export class UnsubscribeNotificationsComponent {
 
   constructor(private bankRatesService: BankRatesService) { }
 
-  unsubscribe(): void {
+  unsubscribe(unsubscribeForm: NgForm): void {
     this.bankRatesService.unsubscribeFromNotifications(this.email).subscribe({
       next: () => {
         this.unsubscribeMessage = 'Has cancelado tu suscripción a las notificaciones.';
         this.showMessage = true;
-        this.email = ''; // Limpiar el campo de email
-        setTimeout(() => this.showMessage = false, 3000); // Ocultar el mensaje después de 3 segundos
+        unsubscribeForm.resetForm();
+        setTimeout(() => this.showMessage = false, 3000);
       },
       error: (err) => {
         console.error('Error al cancelar la suscripción:', err);

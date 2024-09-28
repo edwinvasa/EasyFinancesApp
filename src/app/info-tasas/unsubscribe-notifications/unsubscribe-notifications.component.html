@@ -2,11 +2,42 @@
   <div class="w-auto p-3">
     <div class="container mt-4">
       <h5>¿Ya no deseas recibir notificaciones?</h5>
-      <div class="input-group mb-3">
-        <input type="email" class="form-control" placeholder="Ingresa tu correo electrónico" [(ngModel)]="email" required>
-        <button class="btn btn-danger" type="button" (click)="unsubscribe()" [disabled]="!email">cancelar suscripción</button>
-      </div>
-      <div *ngIf="showMessage" class="alert alert-info" role="alert">
+      <form #unsubscribeForm="ngForm" novalidate autocomplete="off">
+        <div class="input-group mb-3">
+          <input
+            type="email"
+            class="form-control"
+            placeholder="Ingresa tu correo electrónico"
+            [(ngModel)]="email"
+            name="email"
+            required
+            email
+            autocomplete="off"
+            #emailModel="ngModel"
+          >
+          <button
+            class="btn btn-danger"
+            type="button"
+            (click)="unsubscribe(unsubscribeForm)"
+            [disabled]="!unsubscribeForm.valid"
+          >
+            Cancelar suscripción
+          </button>
+        </div>
+
+        <!-- Mensaje de error si el campo no es válido -->
+        <div *ngIf="emailModel.invalid && (emailModel.dirty || emailModel.touched)" class="text-danger">
+          <div *ngIf="emailModel.errors?.['required']">
+            El correo electrónico es obligatorio.
+          </div>
+          <div *ngIf="emailModel.errors?.['email']">
+            Ingresa un correo electrónico válido.
+          </div>
+        </div>
+
+      </form>
+
+      <div *ngIf="showMessage" class="alert alert-info mt-3" role="alert">
         {{ unsubscribeMessage }}
       </div>
     </div>

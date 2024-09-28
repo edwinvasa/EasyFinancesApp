@@ -19,7 +19,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: 'info'
+    redirectTo: 'credit-management'
   }
 ];
 

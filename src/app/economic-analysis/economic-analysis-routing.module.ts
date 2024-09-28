@@ -6,6 +6,10 @@ const routes: Routes = [
   {
     path: '',
     component: EconomicAnalysisFormComponent
+  },
+  {
+    path: '**',
+    redirectTo: 'economic-analysis'
   }
 ];
 

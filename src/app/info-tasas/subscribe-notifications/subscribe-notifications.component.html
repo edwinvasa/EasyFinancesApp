@@ -2,7 +2,7 @@
   <div class="w-auto p-3">
     <div class="container mt-4">
       <h5>¿Te gustaría recibir una notificación cuando las tasas bajen?</h5>
-      <form #subscribeForm="ngForm" novalidate>
+      <form #subscribeForm="ngForm" novalidate autocomplete="off">
         <div class="input-group mb-3">
           <input
             type="email"
@@ -12,6 +12,7 @@
             name="email"
             required
             email
+            autocomplete="off"
             #emailModel="ngModel"
           >
           <button
