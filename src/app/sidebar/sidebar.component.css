@@ -1,27 +1,46 @@
-/* Estilo base para el menú */
-.nav-pills {
-  padding-left: 0;
-  margin-bottom: 0;
+/* Sidebar Styles */
+.sidebar {
+  background-color: #F5F5F5 !important; /* Fondo del Sidebar */
+  padding: 20px;
+  height: 100vh !important; /* Ocupa toda la altura de la ventana */
 }
 
-.nav-link {
-  white-space: nowrap;
+.sidebar .nav-pills {
+  padding-left: 0 !important;
+  margin-bottom: 0 !important;
 }
 
-/* Estilos para pantallas pequeñas (vertical) */
+.sidebar .nav-link {
+  color: #37474F !important; /* Color más oscuro para los enlaces inactivos */
+  font-weight: 500 !important;
+  white-space: nowrap !important;
+  transition: all 0.3s ease !important;
+}
+
+.sidebar .nav-link:hover {
+  color: #FF7043 !important; /* Naranja al pasar el cursor */
+  background-color: #E0E0E0 !important; /* Fondo gris claro en hover */
+}
+
+.sidebar .nav-link.active {
+  color: #FFFFFF !important; /* Texto en blanco para buen contraste */
+  background-color: #1E3A8A !important; /* Azul Marino Oscuro para el enlace activo */
+  font-weight: bold !important;
+  border-radius: 5px !important; /* Bordes redondeados para el activo */
+}
+
 @media (max-width: 767px) {
-  .nav-pills {
-    flex-direction: column;
+  .sidebar .nav-pills {
+    flex-direction: column !important;
   }
 }
 
-/* Estilos para pantallas medianas y grandes (horizontal) */
 @media (min-width: 768px) {
-  .nav-pills {
-    flex-direction: column; /* En el offcanvas se mantendrán en columna */
+  .sidebar .nav-pills {
+    flex-direction: column !important;
   }
 
-  .nav-item {
-    margin-bottom: 10px; /* Espaciado entre los elementos del menú */
+  .sidebar .nav-item {
+    margin-bottom: 10px !important;
   }
 }

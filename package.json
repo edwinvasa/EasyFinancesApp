@@ -9,7 +9,7 @@
     "build:github": "npm run delete:docs && npm run build:href && npm run copy:dist:browser",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "delete:docs": "del docs",
+    "delete:docs": "rm -rf docs",
     "copy:dist:browser": "copyfiles dist/easy-finances/browser/* ./docs -f"
   },
   "private": true,
