@@ -25,6 +25,7 @@
           "options": {
             "outputPath": "dist/easy-finances",
             "index": "src/index.html",
+            "baseHref": "/EasyFinancesApp/",
             "browser": "src/main.ts",
             "polyfills": [
               "zone.js"

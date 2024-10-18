@@ -75,3 +75,42 @@
     color: #6c757d;
     margin-top: 10px;
 }
+
+#novedades-consejos .card {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+/* Para pantallas grandes */
+@media (min-width: 768px) {
+  #novedades-consejos {
+      padding: 2rem !important;
+  }
+}
+
+/* Para pantallas pequeñas (menos padding) */
+@media (max-width: 768px) {
+  #novedades-consejos {
+      padding: 1.5rem !important; 
+  }
+
+  #novedades-consejos .card {
+      margin-bottom: 20px;
+  }
+
+  #novedades-consejos h2 {
+      font-size: 1.5rem; 
+  }
+
+  #novedades-consejos .card-title {
+      font-size: 1.2rem;
+  }
+
+  #novedades-consejos .card-text {
+      font-size: 1rem;
+  }
+
+  #novedades-consejos .btn {
+      font-size: 0.9rem;
+  }
+}
