@@ -3,11 +3,12 @@ import { RouterModule, Routes } from '@angular/router';
 import { BankInterestRatesComponent } from './info-tasas/pages/bank-interest-rates/bank-interest-rates.component';
 import { SubscribeNotificationsComponent } from './info-tasas/subscribe-notifications/subscribe-notifications.component';
 import { UnsubscribeNotificationsComponent } from './info-tasas/unsubscribe-notifications/unsubscribe-notifications.component';
+import { HomeComponent } from './pages/home/home.component';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/credit-management',
+    component: HomeComponent,
     pathMatch: 'full'
   },
   {
@@ -32,7 +33,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: 'credit-management'
+    redirectTo: ''
   }
 ];
 

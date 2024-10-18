@@ -16,6 +16,7 @@ import { SubscribeNotificationsComponent } from './info-tasas/subscribe-notifica
 import { UnsubscribeNotificationsComponent } from './info-tasas/unsubscribe-notifications/unsubscribe-notifications.component';
 import { EconomicAnalysisModule } from './economic-analysis/economic-analysis.module';
 import { SidebarComponent } from './sidebar/sidebar.component';
+import { HomeComponent } from './pages/home/home.component';
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
   align: "right",
@@ -37,6 +38,7 @@ registerLocaleData(localeEsCO);
     SubscribeNotificationsComponent,
     UnsubscribeNotificationsComponent,
     SidebarComponent,
+    HomeComponent,
   ],
   imports: [
     BrowserModule,
