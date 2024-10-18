@@ -1,8 +1,7 @@
-/* Sidebar Styles */
 .sidebar {
-  background-color: #F5F5F5 !important; /* Fondo del Sidebar */
+  background-color: #F5F5F5 !important; 
   padding: 20px;
-  height: 100vh !important; /* Ocupa toda la altura de la ventana */
+  height: 100vh !important;
 }
 
 .sidebar .nav-pills {
@@ -11,22 +10,22 @@
 }
 
 .sidebar .nav-link {
-  color: #37474F !important; /* Color más oscuro para los enlaces inactivos */
+  color: #37474F !important; 
   font-weight: 500 !important;
   white-space: nowrap !important;
   transition: all 0.3s ease !important;
 }
 
 .sidebar .nav-link:hover {
-  color: #FF7043 !important; /* Naranja al pasar el cursor */
-  background-color: #E0E0E0 !important; /* Fondo gris claro en hover */
+  color: #FF7043 !important;
+  background-color: #E0E0E0 !important;
 }
 
 .sidebar .nav-link.active {
-  color: #FFFFFF !important; /* Texto en blanco para buen contraste */
-  background-color: #1E3A8A !important; /* Azul Marino Oscuro para el enlace activo */
+  color: #FFFFFF !important;
+  background-color: #1E3A8A !important;
   font-weight: bold !important;
-  border-radius: 5px !important; /* Bordes redondeados para el activo */
+  border-radius: 5px !important;
 }
 
 @media (max-width: 767px) {

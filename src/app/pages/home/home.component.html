@@ -1,28 +1,85 @@
-<div class="container mt-5">
+<div class="container mt-2 mb-5">
     <div class="text-center mb-5">
-      <h1 class="display-4">Bienvenido a EasyFinances</h1>
-      <p class="lead">Explora las diferentes opciones que te ofrecemos para gestionar tus finanzas</p>
+        <h3 class="display-4">Bienvenido a EasyFinances</h3>
+
+        <section id="benefits-carousel" class="p-5 text-center">
+            <div id="benefitsCarouselIndicators" class="carousel slide" data-bs-ride="carousel">
+              <div class="carousel-indicators">
+                <button type="button" data-bs-target="#benefitsCarouselIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Benefit 1"></button>
+                <button type="button" data-bs-target="#benefitsCarouselIndicators" data-bs-slide-to="1" aria-label="Benefit 2"></button>
+                <button type="button" data-bs-target="#benefitsCarouselIndicators" data-bs-slide-to="2" aria-label="Benefit 3"></button>
+                <button type="button" data-bs-target="#benefitsCarouselIndicators" data-bs-slide-to="3" aria-label="Benefit 4"></button>
+              </div>
+              <div class="carousel-inner bg-gradient">
+                <div class="carousel-item active">
+                  <i class="bi bi-stopwatch-fill benefit-icon"></i>
+                  <h4>Gestión de Crédito Simplificada</h4>
+                  <p>Optimiza tu tiempo y dinero con EasyFinances.</p>
+                </div>
+                <div class="carousel-item">
+                  <i class="bi bi-wallet2 benefit-icon"></i>
+                  <h4>Mejora tu Capacidad de Pago</h4>
+                  <p>Controla tus finanzas y optimiza tu presupuesto conociendo tu capacidad de pago.</p>
+                </div>
+                <div class="carousel-item">
+                  <i class="bi bi-arrow-repeat benefit-icon"></i>
+                  <h4>Tasas de Interés Actualizadas</h4>
+                  <p>Conoce las mejores opciones para refinanciar tu crédito.</p>
+                </div>
+                <div class="carousel-item">
+                  <i class="bi bi-envelope-fill benefit-icon"></i>
+                  <h4>Notificaciones de Tasas Bajas</h4>
+                  <p>Suscríbete y te avisaremos cuando las tasas de interés disminuyan.</p>
+                </div>
+              </div>
+              <button class="carousel-control-prev" type="button" data-bs-target="#benefitsCarouselIndicators" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+              </button>
+              <button class="carousel-control-next" type="button" data-bs-target="#benefitsCarouselIndicators" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+              </button>
+            </div>
+          </section>                                        
+
+        <br>
+        <p class="lead">Explora las diferentes opciones que te ofrecemos para gestionar tus finanzas</p>
     </div>
-  
-    <!-- Sección 1: Consejos sobre Abonos a Capital -->
-    <section id="abonos-capital" class="mb-5">
-      <h2 class="text-primary">Consejos sobre Abonos a Capital</h2>
-      <p>Los abonos a capital te permiten reducir el tiempo y los intereses que pagas por tu crédito...</p>
-      <a routerLink="/credit-management" class="btn btn-primary">Ir a Gestión de Crédito</a>
-    </section>
-  
-    <!-- Sección 2: Control de Gastos -->
-    <section id="control-gastos" class="mb-5">
-      <h2 class="text-primary">Control de Gastos</h2>
-      <p>Controlar tus gastos te permite ahorrar más y optimizar tu presupuesto...</p>
-      <a routerLink="/economic-analysis" class="btn btn-primary">Ir al Análisis Económico</a>
-    </section>
-  
-    <!-- Sección 3: Tasas de Interés -->
-    <section id="tasas-interes" class="mb-5">
-      <h2 class="text-primary">Tasas de Interés</h2>
-      <p>Mantente informado sobre las tasas de interés de los bancos y aprovecha para refinanciar tu crédito...</p>
-      <a routerLink="/info-tasas/bank-interest-rates" class="btn btn-primary">Ver Tasas de Interés</a>
-    </section>
-  </div>
+
+    
+    <section id="novedades-consejos" class="p-5 text-center">
+        <h2 class="text-primary">Novedades y Consejos Rápidos</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Aprovecha las Bajas Tasas de Interés</h5>
+                        <p class="card-text">Consulta las mejores opciones para refinanciar y ahorrar más en intereses.</p>
+                        <a routerLink="/info-tasas/bank-interest-rates" class="btn btn-primary">Ver Tasas</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Haz Abonos a Capital Inteligentes</h5>
+                        <p class="card-text">Reduce el tiempo de tu crédito haciendo abonos a capital en los momentos adecuados.</p>
+                        <a routerLink="/credit-management" class="btn btn-primary">Gestiona tu Crédito</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Analiza tu Capacidad de Pago</h5>
+                        <p class="card-text">Controlar tus gastos te permite ahorrar más y optimizar tu presupuesto.
+                        </p>
+                        <a routerLink="/economic-analysis" class="btn btn-primary">Ver Análisis</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section> 
+</div>
   

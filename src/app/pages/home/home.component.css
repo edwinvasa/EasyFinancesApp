@@ -1,5 +1,5 @@
 .container {
-    max-width: 1200px;
+    max-width: 88%;
     margin: 0 auto;
   }
   
@@ -31,4 +31,47 @@
   .btn-primary:hover {
     background-color: #E64A19;
   }
+  #benefits-carousel {
+    background: linear-gradient(135deg, #1e3a8a, #ff7043);
+    padding: 6px !important;
+    border-radius: 10px;
+    color: white;
+  }
   
+  .benefit-icon {
+    font-size: 3rem;
+    color: #fff;
+  }
+  
+  .carousel-item {
+    text-align: center;
+    padding: 30px;
+  }
+  
+  .carousel-item h4 {
+    margin-top: 20px;
+    font-size: 24px;
+    color: #fff;
+  }
+  
+  .carousel-item p {
+    font-size: 18px;
+    color: #f0f0f0;
+  }  
+  
+
+.benefit-icon:hover {
+    color: #FF7043;
+}
+
+#benefits h4 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+#benefits p {
+    font-size: 1.1rem;
+    color: #6c757d;
+    margin-top: 10px;
+}
