@@ -1,16 +1,23 @@
 <div class="container mt-3">
   <h5>Gestión de Crédito</h5>
   <hr>
-  <!-- <router-outlet></router-outlet> Aquí se cargarán los componentes anidados del módulo GestionCredito -->
-   <!-- Componente de ingreso de información de crédito -->
+
+  <div class="intro-section bg-light text-center p-4 rounded shadow-sm mb-4">
+    <h2 class="text-primary mb-3">Mejora tu Crédito con Abonos a Capital</h2>
+    <p class="lead text-muted">
+      Realizar abonos a capital es una excelente manera de ahorrar en intereses y reducir el tiempo de pago de tu crédito.
+      A continuación, te mostramos cómo afectarán positivamente tu situación financiera.
+    </p>
+  </div>
+
+  <!-- Componente de ingreso de información de crédito -->
   <app-info-credito-actual (onSubmitCreditInfo)="handleCreditSubmission($event)"></app-info-credito-actual>
 
   <!-- Componente de análisis de crédito, mostrado condicionalmente -->
   <app-analisis-credito
-  *ngIf="loanAnalysisResponse"
-  [loanAnalysisResponse]="loanAnalysisResponse"
-  [analysis]="loanAnalysisResponse.analysis"
-  [suggestion]="loanAnalysisResponse.suggestion"
+    *ngIf="loanAnalysisResponse"
+    [loanAnalysisResponse]="loanAnalysisResponse"
+    [analysis]="loanAnalysisResponse.analysis"
+    [suggestion]="loanAnalysisResponse.suggestion"
   ></app-analisis-credito>
-
 </div>

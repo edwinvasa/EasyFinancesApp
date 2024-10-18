@@ -1,0 +1,14 @@
+/* tabla-amortizacion.component.css */
+
+/* Asegurar que las tablas tienen suficiente margen */
+.container {
+    margin-top: 2rem;
+    padding: 0 15px;
+}
+
+/* Responsividad para móviles */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+}

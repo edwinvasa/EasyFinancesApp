@@ -1,0 +1,230 @@
+/* General Styling */
+.container {
+    margin-top: 2rem;
+    padding: 0 15px;
+}
+
+/* Styling for the Introductory Section */
+.intro-section {
+    background-color: #f0f4fa; /* Light background for contrast */
+    border-left: 5px solid #1e3a8a;
+    color: #555;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.intro-section h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1e3a8a; /* Primary color for emphasis */
+}
+
+.intro-section p {
+    font-size: 1.2rem;
+    color: #6c757d; /* Muted text for explanatory content */
+}
+
+@media (max-width: 576px) {
+    .intro-section {
+        font-size: 1rem;
+        padding: 20px;
+    }
+    .intro-section h2 {
+        font-size: 1.5rem;
+    }
+}
+
+/* Styling for the Additional Introductory Section */
+.additional-intro-section {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.additional-intro-section h3 {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #1e3a8a;
+    margin-top: 10px;
+}
+
+.additional-intro-section p {
+    margin-top: 15px;
+    font-size: 1.1rem;
+    color: #37474f;
+}
+
+.additional-intro-section .bi {
+    font-size: 2rem;
+    color: #FF7043;
+}
+
+@media (max-width: 576px) {
+    .additional-intro-section h3 {
+        font-size: 1.5rem;
+    }
+
+    .additional-intro-section p {
+        font-size: 1rem;
+    }
+}
+
+/* Section for the Credit Analysis Comparison */
+.analysis-section {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+.analysis-section h3 {
+    color: #1e3a8a;
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+/* Styling for the Cards in the Analysis Section */
+.card {
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-header {
+    background-color: #1e3a8a;
+    color: #fff;
+    font-weight: 600;
+    text-align: center;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.card-body p {
+    font-size: 1.1rem;
+    color: #37474f;
+}
+
+.card-body strong {
+    font-weight: bold;
+}
+
+/* Hover effect for cards */
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Button Styling */
+.btn-primary {
+    background-color: #ff7043;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #e64a19;
+    transform: translateY(-3px);
+}
+
+/* Alert box for suggestion */
+.alert {
+    font-size: 1.1rem;
+}
+
+.alert-info {
+    background-color: #d1ecf1;
+    color: #0c5460;
+}
+
+.alert-info a {
+    color: #0c5460;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.alert-info a:hover {
+    text-decoration: none;
+}
+
+/* Table styles for the amortization tables */
+.table-responsive {
+    margin-top: 30px;
+}
+
+table {
+    width: 100%;
+    margin-bottom: 1rem;
+    color: #212529;
+}
+
+.table th,
+.table td {
+    padding: 0.75rem;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
+}
+
+.table th {
+    background-color: #1e3a8a;
+    color: #fff;
+}
+
+.table-bordered {
+    border: 1px solid #dee2e6;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.075);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .intro-section h2 {
+        font-size: 1.5rem;
+    }
+
+    .intro-section p {
+        font-size: 1rem;
+    }
+
+    .additional-intro-section h3 {
+        font-size: 1.5rem;
+    }
+
+    .additional-intro-section p {
+        font-size: 1rem;
+    }
+
+    .analysis-section h3 {
+        font-size: 1.5rem;
+    }
+
+    .card-body p {
+        font-size: 1rem;
+    }
+
+    .btn-primary {
+        font-size: 14px;
+        padding: 8px 16px;
+    }
+}
+
+@media (max-width: 576px) {
+    .analysis-section {
+        padding: 15px;
+    }
+}

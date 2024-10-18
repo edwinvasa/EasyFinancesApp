@@ -1,0 +1,23 @@
+.container {
+    max-width: 80%; /* Slightly reduced for better readability */
+    margin: 0 auto;
+    padding: 20px;
+}
+
+form {
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+button[type="submit"] {
+    width: 100%; /* Full-width for the submit button */
+    padding: 10px;
+    font-size: 1.2rem;
+    transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: #e64a19;
+}

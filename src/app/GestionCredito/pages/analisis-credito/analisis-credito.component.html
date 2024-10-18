@@ -1,49 +1,64 @@
 <div class="container mt-3">
-  <div class="row">
-    <div class="col-12">
-      <h2 class="text-center mb-4">Análisis Detallado del Crédito</h2>
-    </div>
+  <!-- Sección Introductoria Adicional para guiar al usuario -->
+  <div class="additional-intro-section bg-light text-center p-4 rounded shadow-sm mb-4" *ngIf="loanAnalysisResponse.withCapitalRepayment!.length > 0">
+    <i class="bi bi-bar-chart-line-fill" style="font-size: 2rem; color: #FF7043;"></i>
+    <h3 class="text-primary mt-2">Optimiza tu Crédito con Abonos a Capital</h3>
+    <p class="lead">
+      Realizar abonos a capital te permite reducir el tiempo y los intereses que pagas por tu crédito. 
+      Con cada abono, pagarás menos intereses y podrás terminar de pagar tu crédito mucho antes.
+      <br> Usa nuestra herramienta para comparar entre hacer o no abonos a capital, ¡y descubre cuánto puedes ahorrar!
+    </p>
   </div>
 
-  <div class="row">
-    <!-- Primera columna para la parte izquierda -->
-    <div
-      class="d-flex align-items-stretch"
-      [ngClass]="{
-        'col-md-6': loanAnalysisResponse.withCapitalRepayment!.length > 0,
-        'col-md-8 mx-auto': loanAnalysisResponse.withCapitalRepayment!.length === 0
-      }"
-    >
-      <div class="card h-100 w-100">
-        <div class="card-header">Sin Abonos a Capital</div>
-        <div class="card-body">
-          <p class="card-text">Intereses totales sin abonos a capital: <strong>{{ analysis.totalInterestWithoutRepayment | customCurrency }}</strong></p>
-          <p class="card-text">Pagarías el crédito en: <strong>{{ analysis.monthsWithoutRepayment }} Meses</strong></p>
+  <!-- Sección de Comparación de Crédito -->
+  <section class="analysis-section bg-light p-4 rounded shadow-sm mt-4">
+    <h3 class="text-center text-primary mb-4">Análisis Detallado del Crédito</h3>
+
+    <div class="row">
+      <!-- Columna para 'Sin Abonos a Capital' -->
+      <div class="d-flex align-items-stretch"
+           [ngClass]="{
+            'col-md-6': loanAnalysisResponse.withCapitalRepayment!.length > 0,
+            'col-md-8 mx-auto': loanAnalysisResponse.withCapitalRepayment!.length === 0
+           }">
+        <div class="card h-100 w-100">
+          <div class="card-header">Sin Abonos a Capital</div>
+          <div class="card-body">
+            <p class="card-text">Intereses totales sin abonos a capital: <strong>{{ analysis.totalInterestWithoutRepayment | customCurrency }}</strong></p>
+            <p class="card-text">Pagarías el crédito en: <strong>{{ analysis.monthsWithoutRepayment }} Meses</strong></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Columna para 'Con Abonos a Capital' (si está disponible) -->
+      <div class="col-md-6 d-flex align-items-stretch" *ngIf="loanAnalysisResponse.withCapitalRepayment!.length > 0">
+        <div class="card h-100 w-100">
+          <div class="card-header">Con Abonos a Capital</div>
+          <div class="card-body">
+            <p class="card-text">Intereses totales realizando abonos a capital: <strong>{{ analysis.totalInterestWithRepayment | customCurrency }}</strong></p>
+            <p class="card-text">Esto te estaría ahorrando: <strong>{{ analysis.interestSaved | customCurrency }}</strong></p>
+            <p class="card-text">Pagarías el crédito en: <strong>{{ analysis.monthsWithRepayment }} Meses</strong></p>
+            <p class="card-text">Disminuyendo <strong>{{ analysis.monthsSaved }} cuotas</strong></p>
+          </div>
         </div>
       </div>
     </div>
-    <!-- Segunda columna para la parte derecha -->
-    <div class="col-md-6 d-flex align-items-stretch" *ngIf="loanAnalysisResponse.withCapitalRepayment!.length > 0">
-      <div class="card h-100 w-100">
-        <div class="card-header">Con Abonos a Capital</div>
-        <div class="card-body">
-          <p class="card-text">Intereses totales realizando abonos a capital: <strong>{{ analysis.totalInterestWithRepayment | customCurrency }}</strong></p>
-          <p class="card-text">Esto te estaría ahorrando: <strong>{{ analysis.interestSaved | customCurrency }}</strong></p>
-          <p class="card-text">Pagarías el crédito en: <strong>{{ analysis.monthsWithRepayment }} Meses</strong></p>
-          <p class="card-text">Disminuyendo <strong>{{ analysis.monthsSaved }} cuotas</strong></p>
-        </div>
+
+    <!-- Sección para Sugerencias de Refinanciamiento -->
+    <div class="card-footer text-center">
+      <div *ngIf="suggestion" class="alert alert-info mt-2">
+        Considera contactar a {{ suggestion!.bankName }} para refinanciar tu préstamo a una tasa más baja de {{ suggestion!.suggestedBankRate }}%, 
+        comparada con tu tasa actual de {{ suggestion!.currentRate }}%.
+        <a routerLink="/info-tasas/bank-interest-rates" class="btn btn-link">Ver más tasas de intereses de otros bancos</a>
       </div>
+
+      <!-- Botón para mostrar/ocultar Tablas de Amortización -->
+      <button type="button" class="btn btn-primary mb-6" (click)="toggleAmortizationTables()">
+        {{ showAmortizationTables ? 'Ocultar Tablas de Amortización' : 'Ver Tablas de Amortización' }}
+      </button>
     </div>
-  </div>
-  <div class="card-footer text-center">
-    <div *ngIf="suggestion" class="alert alert-info mt-2">
-      Considera contactar a {{ suggestion!.bankName }} para refinanciar tu préstamo a una tasa más baja de {{ suggestion!.suggestedBankRate }}%, comparada con tu tasa actual de {{ suggestion!.currentRate }}%.
-      <a routerLink="/info-tasas/bank-interest-rates" class="btn btn-link">Ver más tasas de intereses de otros bancos</a>
-    </div>
-    <button type="button" class="btn btn-primary mb-6" (click)="toggleAmortizationTables()">
-      {{ showAmortizationTables ? 'Ocultar Tablas de Amortización' : 'Ver Tablas de Amortización' }}
-    </button>
-  </div>
-  <!-- Condicionado a la variable de control -->
+  </section>
+
+  <!-- Tablas de Amortización (si se solicita) -->
   <app-tabla-amortizacion *ngIf="showAmortizationTables" [loanAnalysisResponse]="loanAnalysisResponse"></app-tabla-amortizacion>
 </div>

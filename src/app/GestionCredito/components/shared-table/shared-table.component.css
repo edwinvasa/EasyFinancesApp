@@ -1,0 +1,60 @@
+/* shared-table.component.css */
+
+/* Estilo para el título de la tabla */
+.table-title {
+    font-size: 1.5rem;
+    color: #1e3a8a;
+    margin-bottom: 15px;
+    text-align: center;
+    font-weight: bold;
+}
+
+/* Estilos generales para la tabla */
+.table {
+    width: 100%;
+    margin-bottom: 1rem;
+    color: #212529;
+}
+
+.table th,
+.table td {
+    padding: 0.75rem;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
+}
+
+.table th {
+    background-color: #1e3a8a;
+    color: #fff;
+}
+
+.table-bordered {
+    border: 1px solid #dee2e6;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.075);
+}
+
+/* Responsividad para móviles */
+@media (max-width: 768px) {
+    .table-title {
+        font-size: 1.2rem;
+    }
+
+    .table th,
+    .table td {
+        padding: 0.5rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .table-title {
+        font-size: 1rem;
+    }
+
+    .table th,
+    .table td {
+        padding: 0.4rem;
+    }
+}

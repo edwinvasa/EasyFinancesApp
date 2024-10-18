@@ -1,0 +1,29 @@
+.intro-section {
+    background-color: #f0f4fa;
+    border-left: 5px solid #1e3a8a;
+    color: #555;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.intro-section h2 {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.intro-section p {
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+}
+
+@media (max-width: 576px) {
+    .intro-section {
+        font-size: 1rem;
+        padding: 20px;
+    }
+    .intro-section h2 {
+        font-size: 1.5rem;
+    }
+}
