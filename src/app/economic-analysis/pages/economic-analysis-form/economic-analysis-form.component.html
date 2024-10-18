@@ -2,6 +2,14 @@
   <h5>Análisis de Capacidad de Pago</h5>
   <hr>
 
+  <!-- Sección introductoria -->
+  <div class="intro-section bg-light text-center p-4 rounded shadow-sm mb-4">
+    <h2 class="text-primary mb-3">Analiza tu Capacidad de Pago</h2>
+    <p class="lead text-muted">
+      Conocer tu capacidad de pago es clave para gestionar tus finanzas. Introduce tus ingresos, gastos y descubre cuánto puedes destinar para el pago de tu crédito.
+    </p>
+  </div>
+
   <form (ngSubmit)="analyzeEconomicCapacity()" autocomplete="off">
     <div class="d-flex justify-content-center">
       <div class="w-auto p-3">
@@ -56,47 +64,55 @@
 
         <app-add-expenses (onExpenseAdded)="addExpense($event)"></app-add-expenses>
 
-    <table class="table table-bordered mt-3">
-      <thead>
-        <tr>
-          <th>Tipo de Gasto</th>
-          <th>Monto</th>
-          <th>Acción</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let expense of expenses; let i = index">
-          <td>{{ expense.expenseTypeNameAndCategory }}</td>
-          <td>{{ expense.amount | customCurrency }} <!-- Usa el pipe number -->
-          </td>
-          <td><button type="button" class="btn btn-danger" (click)="removeExpense(i)">Eliminar</button></td>
-        </tr>
-      </tbody>
-    </table>
+        <table class="table table-bordered mt-3">
+          <thead>
+            <tr>
+              <th>Tipo de Gasto</th>
+              <th>Monto</th>
+              <th>Acción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let expense of expenses; let i = index">
+              <td>{{ expense.expenseTypeNameAndCategory }}</td>
+              <td>{{ expense.amount | customCurrency }} <!-- Usa el pipe number -->
+              </td>
+              <td><button type="button" class="btn btn-danger" (click)="removeExpense(i)">Eliminar</button></td>
+            </tr>
+          </tbody>
+        </table>
 
-    <div class="text-center">
-      <button type="submit" class="btn btn-primary">Analizar Capacidad de Pago</button>
-    </div>
+        <div class="text-center">
+          <button type="submit" class="btn btn-primary">Analizar Capacidad de Pago</button>
+        </div>
 
+      </div>
     </div>
-  </div>
   </form>
 
   <!-- Resultado del análisis -->
-  <div *ngIf="analysisResult" class="mt-4">
-    <h4>Resultado del Análisis</h4>
-    <p><strong>Ingresos Mensuales:</strong> {{ analysisResult.monthlyIncome | customCurrency }}</p>
-    <p><strong>Ingresos Adicionales:</strong> {{ analysisResult.additionalIncome | customCurrency }}</p>
-    <p><strong>Gastos Totales:</strong> {{ analysisResult.totalExpenses | customCurrency }}</p>
+  <div *ngIf="analysisResult" class="analysis-result mt-5">
+    <h4 class="text-center">Resultado del Análisis</h4>
+    
+    <div class="bg-light p-4 rounded shadow-sm mb-4">
+      <p><strong>Ingresos Mensuales:</strong> {{ analysisResult.monthlyIncome | customCurrency }}</p>
+      <p><strong>Ingresos Adicionales:</strong> {{ analysisResult.additionalIncome | customCurrency }}</p>
+      <p><strong>Gastos Totales:</strong> {{ analysisResult.totalExpenses | customCurrency }}</p>
+      
+      <!-- Sugerencia de pago -->
+      <ng-container *ngIf="analysisResult.suggestedPaymentAmount >= 0; else negativeAmountMessage">
+        <p><strong>Monto Sugerido para Pago:</strong> {{ analysisResult.suggestedPaymentAmount | customCurrency }}</p>
+        <p class="text-success">
+          Aunque el monto sugerido puede parecer bajo, realizar pequeños abonos a capital, incluso de $20.000 pesos, impactará significativamente en la reducción del tiempo y de los intereses de tu crédito.
+        </p>
+      </ng-container>
 
-    <ng-container *ngIf="analysisResult.suggestedPaymentAmount >= 0; else negativeAmountMessage">
-      <p><strong>Monto Sugerido para Pago:</strong> {{ analysisResult.suggestedPaymentAmount | customCurrency }}</p>
-    </ng-container>
-
-    <ng-template #negativeAmountMessage>
-      <div class="alert alert-warning mt-3">
-        <strong>Atención:</strong> No es posible generar un monto sugerido para pago, ya que tus gastos actuales superan significativamente tus ingresos.
-      </div>
-    </ng-template>
+      <!-- Mensaje en caso negativo -->
+      <ng-template #negativeAmountMessage>
+        <div class="alert alert-warning mt-3">
+          <strong>Atención:</strong> Tus gastos actuales superan tus ingresos, lo que hace difícil generar un monto sugerido para pago. Considera reducir gastos para mejorar tu capacidad de pago.
+        </div>
+      </ng-template>
+    </div>
   </div>
 </div>

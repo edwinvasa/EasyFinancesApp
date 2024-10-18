@@ -1,0 +1,19 @@
+/* Estilos generales para la sección de información */
+.info-section {
+    background-color: #f8f9fa;
+    border-left: 5px solid #1e3a8a;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+}
+
+.info-section p {
+    font-size: 1.1rem;
+    color: #555;
+}
+
+@media (max-width: 576px) {
+    .info-section {
+        font-size: 1rem;
+    }
+}
