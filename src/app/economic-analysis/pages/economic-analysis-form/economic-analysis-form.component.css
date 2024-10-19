@@ -31,6 +31,21 @@ hr {
     color: #6c757d;
 }
 
+/* Estilos para la sección de guía de gastos */
+.expenses-guide-section {
+    background-color: #17a2b8;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.expenses-guide-section p {
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+/* Botón de análisis */
 button[type="submit"] {
     width: 100%;
     padding: 10px;
@@ -45,6 +60,7 @@ button[type="submit"]:hover {
 .table {
     margin-top: 15px;
 }
+
 /* Sección de resultado del análisis */
 .analysis-result {
     margin-top: 2rem;

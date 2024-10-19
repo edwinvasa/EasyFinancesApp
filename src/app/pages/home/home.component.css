@@ -81,6 +81,45 @@
   border-radius: 10px;
 }
 
+/* Estilos para la sección de propósito */
+.purpose-section {
+  background-color: #f8f9fa;
+  border-left: 5px solid #1e3a8a;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+}
+
+.purpose-section h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1e3a8a;
+}
+
+.purpose-section ul {
+  font-size: 1.1rem;
+  color: #555;
+}
+
+.purpose-section p {
+  font-size: 1rem;
+  color: #6c757d;
+}
+
+@media (max-width: 576px) {
+  .purpose-section h2 {
+      font-size: 1.5rem;
+  }
+
+  .purpose-section ul {
+      font-size: 1rem;
+  }
+
+  .purpose-section p {
+      font-size: 0.9rem;
+  }
+}
+
 /* Para pantallas grandes */
 @media (min-width: 768px) {
   #novedades-consejos {
