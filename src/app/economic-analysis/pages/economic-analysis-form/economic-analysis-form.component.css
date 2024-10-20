@@ -1,109 +1,105 @@
 .container {
     max-width: 80%;
     margin: 0 auto;
-}
-
-h5 {
+  }
+  
+  
+  h5 {
     font-weight: bold;
     margin-bottom: 20px;
-}
-
-hr {
+  }
+  
+  hr {
     border-top: 2px solid #dee2e6;
-}
-
-.intro-section {
+  }
+  
+  .intro-section {
     background-color: #f0f4fa;
     border-left: 5px solid #1e3a8a;
     color: #555;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.intro-section h2 {
-    font-size: 2rem;
-    font-weight: bold;
-}
-
-.intro-section p {
-    font-size: 1.2rem;
-    color: #6c757d;
-}
-
-/* Estilos para la sección de guía de gastos */
-.expenses-guide-section {
+  }
+  
+  .expenses-guide-section {
     background-color: #17a2b8;
     padding: 15px;
     border-radius: 8px;
     margin-bottom: 20px;
-}
-
-.expenses-guide-section p {
-    font-size: 1.1rem;
-    font-weight: bold;
-    margin: 0;
-}
-
-/* Botón de análisis */
-button[type="submit"] {
+  }
+  
+  button[type="submit"] {
     width: 100%;
     padding: 10px;
     font-size: 1.2rem;
     transition: background-color 0.3s ease;
-}
-
-button[type="submit"]:hover {
+  }
+  
+  button[type="submit"]:hover {
     background-color: #e64a19;
-}
-
-.table {
+  }
+  
+  .table {
     margin-top: 15px;
-}
+  }
+  
+  .edit-icon {
+    color: #007bff; /* Cambiado a azul */
+  }
 
-/* Sección de resultado del análisis */
-.analysis-result {
-    margin-top: 2rem;
+  .delete-icon {
+    color: #dc3545; /* Rojo para eliminar */
+   }
+  
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1050;
+  }
+  
+  .amount-input-section {
+    background-color: #fff;
     padding: 20px;
-    background-color: #f9fafb;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1060;
+  }
+  
+  .btn-link {
+    border: none;
+    background: none;
+    padding: 0;
+    cursor: pointer;
+  }
+  
+  .btn-link i {
+    font-size: 1.2rem;
+  }
+  
+  .modal-content {
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+  
+  .modal-header {
+    background-color: #1e3a8a;
+    color: #fff;
+  }
+  
+  #editExpenseModal .modal-header {
+    background-color: #ffc107; /* Amarillo para distinguir */
+    color: #212529; /* Texto negro para mejor contraste */
+  }
 
-.analysis-result h4 {
-    font-size: 1.8rem;
-    color: #1e3a8a;
-    font-weight: bold;
-    margin-bottom: 1.5rem;
-}
-
-.analysis-result p {
-    font-size: 1.1rem;
-    color: #37474f;
-}
-
-.text-success {
-    color: #28a745;
-    font-weight: bold;
-}
-
-.alert-warning {
-    font-size: 1.1rem;
-    background-color: #fff3cd;
-    color: #856404;
-    border: 1px solid #ffeeba;
-}
-
-@media (max-width: 768px) {
-    .analysis-result {
-        padding: 15px;
-    }
-
-    .analysis-result h4 {
-        font-size: 1.5rem;
-    }
-
-    .analysis-result p {
-        font-size: 1rem;
-    }
-}
+  .category-title {
+    margin-top: 1em;
+  }
+  
