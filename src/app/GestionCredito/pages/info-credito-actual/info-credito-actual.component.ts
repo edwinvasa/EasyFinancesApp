@@ -15,7 +15,7 @@ export class InfoCreditoActualComponent {
     tasa: null,
     plazo: null,
     tipoPlazo: 'Meses',
-    abonosCapital: 'no', // Cambiado de string a boolean
+    abonosCapital: 'no', 
     valorAbono: null,
     frecuenciaAbono: '',
     cuotaInicio: null

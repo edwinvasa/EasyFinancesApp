@@ -8,10 +8,10 @@ import { LoanAnalysis, LoanAnalysisResponse, Suggestion } from '../../interfaces
 })
 export class AnalisisCreditoComponent {
   @Input()
-  loanAnalysisResponse!: LoanAnalysisResponse;
+  loanAnalysisResponse?: LoanAnalysisResponse;
 
   @Input()
-  analysis!: LoanAnalysis;
+  analysis?: LoanAnalysis;
 
   @Input()
   suggestion: Suggestion | null = null;
