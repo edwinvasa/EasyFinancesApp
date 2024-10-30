@@ -3,7 +3,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { BankRatesService } from './bank-rates.service';
 import { BankRate } from '../interfaces/bank-rate.interface';
 
-fdescribe('BankRatesService', () => {
+describe('BankRatesService', () => {
   let service: BankRatesService;
   let httpMock: HttpTestingController;
 

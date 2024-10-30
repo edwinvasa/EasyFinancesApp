@@ -4,7 +4,7 @@ import { Installment } from '../../interfaces/loan-analysis.interface';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CustomCurrencyPipe } from '../../../utils/pipes/custom-currency.pipe';
 
-fdescribe('SharedTableComponent', () => {
+describe('SharedTableComponent', () => {
   let component: SharedTableComponent;
   let fixture: ComponentFixture<SharedTableComponent>;
 

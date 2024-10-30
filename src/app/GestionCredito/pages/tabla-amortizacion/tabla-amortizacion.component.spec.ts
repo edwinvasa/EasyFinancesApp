@@ -4,7 +4,7 @@ import { LoanAnalysisResponse } from '../../interfaces/loan-analysis.interface';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
-fdescribe('TablaAmortizacionComponent', () => {
+describe('TablaAmortizacionComponent', () => {
   let component: TablaAmortizacionComponent;
   let fixture: ComponentFixture<TablaAmortizacionComponent>;
 

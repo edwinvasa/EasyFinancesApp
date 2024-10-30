@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { LoanAnalysis, LoanAnalysisResponse, Suggestion } from '../../interfaces/loan-analysis.interface';
+import type { LoanAnalysis, LoanAnalysisResponse, Suggestion } from '../../interfaces/loan-analysis.interface';
 
 @Component({
   selector: 'app-analisis-credito',

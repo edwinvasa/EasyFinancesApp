@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { SharedExpenseService } from './shared-expense.service';
 
-fdescribe('SharedExpenseService', () => {
+describe('SharedExpenseService', () => {
   let service: SharedExpenseService;
 
   beforeEach(() => {

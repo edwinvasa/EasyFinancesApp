@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { LoanAnalysisResponse } from '../../interfaces/loan-analysis.interface';
+import type { LoanAnalysisResponse } from '../../interfaces/loan-analysis.interface';
 
 @Component({
   selector: 'app-tabla-amortizacion',

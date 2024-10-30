@@ -7,9 +7,9 @@ import { ExpenseType } from '../interfaces/expense-type.interface';
   providedIn: 'root'
 })
 export class ExpenseTypeService {
-  private apiUrl = 'https://easy-finances-app-63cef07822fc.herokuapp.com/api/expense-types';
+  private readonly apiUrl = 'https://easy-finances-app-63cef07822fc.herokuapp.com/api/expense-types';
 
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {}
 
   getExpenseTypes(): Observable<ExpenseType[]> {
     return this.http.get<ExpenseType[]>(this.apiUrl);

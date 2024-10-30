@@ -34,9 +34,9 @@ export class EconomicAnalysisFormComponent implements OnInit {
   errorMessage: string = '';
 
   constructor(
-    private economicAnalysisService: EconomicAnalysisService,
-    private expenseTypeService: ExpenseTypeService,
-    private sharedExpenseService: SharedExpenseService
+    private readonly economicAnalysisService: EconomicAnalysisService,
+    private readonly expenseTypeService: ExpenseTypeService,
+    private readonly sharedExpenseService: SharedExpenseService
   ) {}
 
   ngOnInit() {
@@ -51,9 +51,6 @@ export class EconomicAnalysisFormComponent implements OnInit {
         this.expenseTypes = types;
         this.groupExpenseTypes();
         this.filterExpenses();
-      },
-      error: (err) => {
-        console.error('Error al cargar tipos de gastos:', err);
       }
     });
   }
@@ -227,9 +224,6 @@ export class EconomicAnalysisFormComponent implements OnInit {
     this.economicAnalysisService.analyzeEconomicCapacity(analysisRequest).subscribe({
       next: (response) => {
         this.analysisResult = response;
-      },
-      error: (err) => {
-        console.error('Error al analizar la capacidad económica:', err);
       }
     });
   }

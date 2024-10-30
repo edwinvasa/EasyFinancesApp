@@ -6,7 +6,7 @@ import { LoanAnalysisResponse } from '../../interfaces/loan-analysis.interface';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
-fdescribe('GestionCreditoMainComponent', () => {
+describe('GestionCreditoMainComponent', () => {
   let component: GestionCreditoMainComponent;
   let fixture: ComponentFixture<GestionCreditoMainComponent>;
   let loanAnalysisService: jasmine.SpyObj<LoanAnalysisService>;

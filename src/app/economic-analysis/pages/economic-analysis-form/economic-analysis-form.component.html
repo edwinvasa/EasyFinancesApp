@@ -103,7 +103,9 @@
                       <div 
                         *ngFor="let type of category.value" 
                         class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
-                        (click)="selectExpense(type)">
+                        (click)="selectExpense(type)"
+                        (keydown.enter)="selectExpense(type)"
+                      >
                         <span>{{ type.name }}</span>
                         <i class="bi bi-plus-circle text-primary"></i>
                       </div>
@@ -190,9 +192,7 @@
             class="form-control"
           />
           <div class="d-flex justify-content-between mt-2">
-            <!-- Botón de cancelar con type="button" -->
             <button type="button" class="btn btn-secondary" (click)="cancelEdit()">Cancelar</button>
-            <!-- Botón de confirmar con type="button" -->
             <button type="button" class="btn btn-success" (click)="confirmEditAmount()">Confirmar</button>
           </div>
           <div *ngIf="errorMessage" class="text-danger mt-2">{{ errorMessage }}</div>

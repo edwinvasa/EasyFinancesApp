@@ -7,8 +7,9 @@
     "build": "ng build",
     "build:href": "ng build --base-href /EasyFinancesApp/",
     "build:github": "npm run delete:docs && npm run build:href && npm run copy:dist:browser",
+    "coverage": "nyc ng test --watch=false",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test",
+    "test": "ng test --code-coverage --coverageReporters=lcov",
     "delete:docs": "rm -rf docs",
     "copy:dist:browser": "copyfiles dist/easy-finances/browser/* ./docs -f"
   },
@@ -29,19 +30,22 @@
     "zone.js": "~0.14.10"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^18.2.9",
+    "@angular-builders/jest": "^18.0.0",
+    "@angular-devkit/build-angular": "^18.2.10",
     "@angular/cli": "^18.2.3",
     "@angular/compiler-cli": "^18.2.0",
     "@types/bootstrap": "^5.2.10",
     "@types/jasmine": "~5.1.0",
     "@types/uuid": "^10.0.0",
     "copyfiles": "^2.4.1",
-    "jasmine-core": "^5.1.0",
-    "karma": "^6.4.2",
-    "karma-chrome-launcher": "^3.1.1",
+    "jasmine-core": "^4.6.1",
+    "karma": "^6.4.4",
+    "karma-chrome-launcher": "^3.2.0",
     "karma-coverage": "~2.2.0",
+    "karma-coverage-istanbul-reporter": "^3.0.3",
     "karma-jasmine": "^5.0.0",
     "karma-jasmine-html-reporter": "^2.0.0",
+    "nyc": "^17.1.0",
     "typescript": "~5.5.2"
   }
 }

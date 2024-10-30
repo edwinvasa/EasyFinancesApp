@@ -8,9 +8,9 @@ import { LoanAnalysisResponse } from '../interfaces/loan-analysis.interface';
   providedIn: 'root'
 })
 export class LoanAnalysisService {
-  private apiUrl = 'https://easy-finances-app-63cef07822fc.herokuapp.com/api/loan-analysis';
+  private readonly apiUrl = 'https://easy-finances-app-63cef07822fc.herokuapp.com/api/loan-analysis';
 
-  constructor(private http: HttpClient) { }
+  constructor(private readonly http: HttpClient) { }
 
   // Método para mapear los datos del formulario y hacer el request al backend
   public analyzeLoan(formValues: any): Observable<LoanAnalysisResponse> {

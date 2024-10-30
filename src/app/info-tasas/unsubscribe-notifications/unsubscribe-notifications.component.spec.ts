@@ -4,7 +4,7 @@ import { BankRatesService } from '../services/bank-rates.service';
 import { of, throwError } from 'rxjs';
 import { FormsModule, NgForm } from '@angular/forms';
 
-fdescribe('UnsubscribeNotificationsComponent', () => {
+describe('UnsubscribeNotificationsComponent', () => {
   let component: UnsubscribeNotificationsComponent;
   let fixture: ComponentFixture<UnsubscribeNotificationsComponent>;
   let bankRatesServiceSpy: jasmine.SpyObj<BankRatesService>;

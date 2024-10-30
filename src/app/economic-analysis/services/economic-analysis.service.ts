@@ -9,9 +9,9 @@ import { EconomicAnalysisRequest, EconomicAnalysisResponse } from '../interfaces
   providedIn: 'root'
 })
 export class EconomicAnalysisService {
-  private apiUrl = 'https://easy-finances-app-63cef07822fc.herokuapp.com/api/economic-analysis';
+  private readonly apiUrl = 'https://easy-finances-app-63cef07822fc.herokuapp.com/api/economic-analysis';
 
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {}
 
   analyzeEconomicCapacity(data: EconomicAnalysisRequest): Observable<EconomicAnalysisResponse> {
     return this.http.post<EconomicAnalysisResponse>(this.apiUrl, data);

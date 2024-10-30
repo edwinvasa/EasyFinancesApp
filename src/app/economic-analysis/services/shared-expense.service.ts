@@ -5,7 +5,7 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root',
 })
 export class SharedExpenseService {
-  private expensesSubject = new BehaviorSubject<{ expenseTypeId: number, expenseTypeNameAndCategory: string, amount: number }[]>([]);
+  private readonly expensesSubject = new BehaviorSubject<{ expenseTypeId: number, expenseTypeNameAndCategory: string, amount: number }[]>([]);
   expenses$ = this.expensesSubject.asObservable();
 
   // Obtener la lista actual de gastos

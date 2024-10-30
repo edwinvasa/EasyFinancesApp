@@ -5,15 +5,14 @@ import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-subscribe-notifications',
-  templateUrl: './subscribe-notifications.component.html',
-  styleUrls: ['./subscribe-notifications.component.css']
+  templateUrl: './subscribe-notifications.component.html'
 })
 export class SubscribeNotificationsComponent {
   email: string = '';
   subscriptionMessage: string = '';
   showMessage: boolean = false;
 
-  constructor(private bankRatesService: BankRatesService) { }
+  constructor(private readonly bankRatesService: BankRatesService) { }
 
   subscribe(subscribeForm: NgForm): void {
     const userId = uuidv4();

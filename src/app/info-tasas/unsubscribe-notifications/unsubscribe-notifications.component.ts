@@ -4,15 +4,14 @@ import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-unsubscribe-notifications',
-  templateUrl: './unsubscribe-notifications.component.html',
-  styleUrls: ['./unsubscribe-notifications.component.css']
+  templateUrl: './unsubscribe-notifications.component.html'
 })
 export class UnsubscribeNotificationsComponent {
   email: string = '';
   unsubscribeMessage: string = '';
   showMessage: boolean = false;
 
-  constructor(private bankRatesService: BankRatesService) { }
+  constructor(private readonly bankRatesService: BankRatesService) { }
 
   unsubscribe(unsubscribeForm: NgForm): void {
     this.bankRatesService.unsubscribeFromNotifications(this.email).subscribe({

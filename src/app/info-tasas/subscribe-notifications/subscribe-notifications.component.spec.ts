@@ -4,7 +4,7 @@ import { of, throwError } from 'rxjs';
 import { SubscribeNotificationsComponent } from './subscribe-notifications.component';
 import { BankRatesService } from '../services/bank-rates.service';
 
-fdescribe('SubscribeNotificationsComponent', () => {
+describe('SubscribeNotificationsComponent', () => {
   let component: SubscribeNotificationsComponent;
   let fixture: ComponentFixture<SubscribeNotificationsComponent>;
   let bankRatesService: jasmine.SpyObj<BankRatesService>;

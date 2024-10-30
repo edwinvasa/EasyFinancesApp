@@ -7,11 +7,11 @@ import { BankRate } from '../interfaces/bank-rate.interface';
   providedIn: 'root'
 })
 export class BankRatesService {
-  private apiUrl = 'https://easy-finances-app-63cef07822fc.herokuapp.com/api/bank-interest-rates';
-  private subscribeUrl = 'https://easy-finances-app-63cef07822fc.herokuapp.com/api/notifications/subscribe';
-   private unsubscribeUrl = 'https://easy-finances-app-63cef07822fc.herokuapp.com/api/notifications/unsubscribe';
+  private readonly apiUrl = 'https://easy-finances-app-63cef07822fc.herokuapp.com/api/bank-interest-rates';
+  private readonly subscribeUrl = 'https://easy-finances-app-63cef07822fc.herokuapp.com/api/notifications/subscribe';
+   private readonly unsubscribeUrl = 'https://easy-finances-app-63cef07822fc.herokuapp.com/api/notifications/unsubscribe';
 
-  constructor(private http: HttpClient) { }
+  constructor(private readonly http: HttpClient) { }
 
   // Obtener las tasas de interés
   public getBankRates(): Observable<BankRate[]> {

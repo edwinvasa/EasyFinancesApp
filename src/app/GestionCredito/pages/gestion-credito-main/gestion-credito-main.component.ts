@@ -9,7 +9,7 @@ import { LoanAnalysisResponse } from '../../interfaces/loan-analysis.interface';
 export class GestionCreditoMainComponent {
   loanAnalysisResponse?: LoanAnalysisResponse;
 
-  constructor(private loanAnalysisService: LoanAnalysisService) {}
+  constructor(private readonly loanAnalysisService: LoanAnalysisService) {}
 
   handleCreditSubmission(formValues: any) {
     this.loanAnalysisService.analyzeLoan(formValues).subscribe({

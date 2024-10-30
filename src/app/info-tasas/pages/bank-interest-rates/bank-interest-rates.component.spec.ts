@@ -5,7 +5,7 @@ import { BankRatesService } from '../../services/bank-rates.service';
 import { BankRate } from '../../interfaces/bank-rate.interface';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
-fdescribe('BankInterestRatesComponent', () => {
+describe('BankInterestRatesComponent', () => {
   let component: BankInterestRatesComponent;
   let fixture: ComponentFixture<BankInterestRatesComponent>;
   let bankRatesService: jasmine.SpyObj<BankRatesService>;

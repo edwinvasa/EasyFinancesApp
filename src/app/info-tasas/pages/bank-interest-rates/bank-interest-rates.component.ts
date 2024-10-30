@@ -10,12 +10,12 @@ import { BankRate } from '../../interfaces/bank-rate.interface';
 export class BankInterestRatesComponent implements OnInit {
   bankRates: BankRate[] = [];
 
-  constructor(private bankRatesService: BankRatesService) { }
+  constructor(private readonly bankRatesService: BankRatesService) { }
 
   ngOnInit(): void {
     this.bankRatesService.getBankRates().subscribe({
       next: (rates) => {
-        this.bankRates = rates.sort((a, b) => a.interestRate - b.interestRate);
+        this.bankRates = rates.slice().sort((a, b) => a.interestRate - b.interestRate);
       },
       error: (err) => console.error('Error fetching bank rates:', err)
     });

@@ -5,7 +5,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CreditInfo } from '../../interfaces/credit-info.interface';
 import { By } from '@angular/platform-browser';
 
-fdescribe('InfoCreditoActualComponent', () => {
+describe('InfoCreditoActualComponent', () => {
   let component: InfoCreditoActualComponent;
   let fixture: ComponentFixture<InfoCreditoActualComponent>;
 

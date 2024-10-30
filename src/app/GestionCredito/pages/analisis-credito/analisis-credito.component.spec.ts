@@ -5,7 +5,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { CustomCurrencyPipe } from '../../../utils/pipes/custom-currency.pipe';
 
-fdescribe('AnalisisCreditoComponent', () => {
+describe('AnalisisCreditoComponent', () => {
   let component: AnalisisCreditoComponent;
   let fixture: ComponentFixture<AnalisisCreditoComponent>;
 

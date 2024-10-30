@@ -3,7 +3,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { ExpenseTypeService } from './expense-type.service';
 import { ExpenseType } from '../interfaces/expense-type.interface';
 
-fdescribe('ExpenseTypeService', () => {
+describe('ExpenseTypeService', () => {
   let service: ExpenseTypeService;
   let httpMock: HttpTestingController;
 
