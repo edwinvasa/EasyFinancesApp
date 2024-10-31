@@ -12,9 +12,7 @@ export class LoanAnalysisService {
 
   constructor(private readonly http: HttpClient) { }
 
-  // Método para mapear los datos del formulario y hacer el request al backend
   public analyzeLoan(formValues: any): Observable<LoanAnalysisResponse> {
-    // Generar el UUID para userId
     const userId = uuidv4();
 
     // Convertir el monto y el valor del abono (si existe) a formato numérico
@@ -36,7 +34,6 @@ export class LoanAnalysisService {
       startCapitalRepaymentInstallment: formValues.cuotaInicio || null
     };
 
-    // Hacer el request POST con el payload mapeado
     return this.http.post<any>(this.apiUrl, payload);
   }
 }

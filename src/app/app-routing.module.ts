@@ -13,7 +13,7 @@ const routes: Routes = [
   },
   {
     path: 'credit-management',
-    loadChildren: () => import('./GestionCredito/gestion-credito.module').then(m => m.GestionCreditoModule)
+    loadChildren: () => import('./gestion-credito/gestion-credito.module').then(m => m.GestionCreditoModule)
   },
   {
     path: 'economic-analysis',

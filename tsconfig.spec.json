@@ -2,16 +2,16 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./out-tsc/spec",
-    "types": ["jasmine", "node"], // Incluye tipos para Jasmine y Node.js
+    "types": ["jasmine", "node"],
     "emitDecoratorMetadata": true,
     "esModuleInterop": true,
-    "moduleResolution": "node" // Asegura la resolución de módulos compatible con Node.js
+    "moduleResolution": "node" 
   },
   "files": [
-    "src/polyfills.ts" // Incluye polyfills
+    "src/polyfills.ts"
   ],
   "include": [
-    "src/**/*.spec.ts", // Incluir archivos de pruebas
+    "src/**/*.spec.ts", 
     "src/**/*.d.ts"
   ]
 }

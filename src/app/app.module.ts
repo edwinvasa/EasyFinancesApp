@@ -7,10 +7,10 @@ import localeEsCO from '@angular/common/locales/es-CO';
 import { CURRENCY_MASK_CONFIG, CurrencyMaskConfig } from 'ng2-currency-mask';
 
 import { AppRoutingModule } from './app-routing.module';
-import { GestionCreditoModule } from './GestionCredito/gestion-credito.module';
+import { GestionCreditoModule } from './gestion-credito/gestion-credito.module';
 
 import { AppComponent } from './app.component';
-import { GestionCreditoMainComponent } from './GestionCredito/pages/gestion-credito-main/gestion-credito-main.component';
+import { GestionCreditoMainComponent } from './gestion-credito/pages/gestion-credito-main/gestion-credito-main.component';
 import { BankInterestRatesComponent } from './info-tasas/pages/bank-interest-rates/bank-interest-rates.component';
 import { SubscribeNotificationsComponent } from './info-tasas/subscribe-notifications/subscribe-notifications.component';
 import { UnsubscribeNotificationsComponent } from './info-tasas/unsubscribe-notifications/unsubscribe-notifications.component';
