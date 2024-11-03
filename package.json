@@ -7,10 +7,12 @@
     "build": "ng build",
     "build:href": "ng build --base-href /EasyFinancesApp/",
     "build:github": "npm run delete:docs && npm run build:href && npm run copy:dist:browser",
+    "build:github:win": "npm run delete:docs:win && npm run build:href && npm run copy:dist:browser",
     "coverage": "nyc ng test --watch=false",
     "watch": "ng build --watch --configuration development",
     "test": "ng test --code-coverage --coverageReporters=lcov",
     "delete:docs": "rm -rf docs",
+    "delete:docs:win": "del docs",
     "copy:dist:browser": "copyfiles dist/easy-finances/browser/* ./docs -f"
   },
   "private": true,
