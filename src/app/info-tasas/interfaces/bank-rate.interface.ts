@@ -4,4 +4,5 @@ export interface BankRate {
   interestRate: number;
   maxInterestRate: number;
   effectiveDate: string;
+  source: string;
 }

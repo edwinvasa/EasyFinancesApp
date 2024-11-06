@@ -5,8 +5,8 @@
   <!-- Texto explicativo sobre la importancia de conocer las tasas de interés -->
   <div class="info-section bg-light p-4 rounded shadow-sm mb-4">
     <p class="lead text-muted">
-      Mantenerse informado sobre las tasas de interés que ofrecen los bancos es clave para optimizar tu crédito. 
-      Si encuentras una tasa más baja que la que actualmente estás pagando, podrías renegociar tu préstamo y 
+      Mantenerse informado sobre las tasas de interés que ofrecen los bancos es clave para optimizar tu crédito.
+      Si encuentras una tasa más baja que la que actualmente estás pagando, podrías renegociar tu préstamo y
       ahorrar dinero en intereses.
     </p>
     <!-- Nota adicional -->
@@ -26,6 +26,7 @@
         <th>Tasa de Interés E.A.</th>
         <th>Tasa Máxima E.A.</th>
         <th class="d-none d-md-table-cell">Fecha de Actualización</th>
+        <th class="d-none d-md-table-cell">Fuente</th>
       </tr>
     </thead>
     <tbody>
@@ -34,6 +35,11 @@
         <td>{{ rate.interestRate | number:'1.2-2' }}%</td>
         <td>{{ rate.maxInterestRate | number:'1.2-2' }}%</td>
         <td class="d-none d-md-table-cell">{{ rate.effectiveDate | date:'medium' }}</td>
+        <td>
+          <a [href]="rate.source ? rate.source : 'https://comparabien.com'" target="_blank" aria-label="Abrir enlace">
+              <i class="bi bi-box-arrow-up-right"></i>
+          </a>
+        </td>
       </tr>
     </tbody>
   </table>
