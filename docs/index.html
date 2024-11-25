@@ -13,5 +13,35 @@
 <body>
   <app-root></app-root>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-<link rel="modulepreload" href="chunk-LXV2GNKU.js"><link rel="modulepreload" href="chunk-CTX7P77C.js"><link rel="modulepreload" href="chunk-4JTA2BE5.js"><script src="polyfills-FFHMD2TL.js" type="module"></script><script src="scripts-EEEIPNC3.js" defer></script><script src="main-WSYL3ZUR.js" type="module"></script></body>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const offcanvas = document.getElementById('offcanvasNavbar');
+      const toggleButton = document.querySelector('[data-bs-toggle="offcanvas"]');
+
+      // Manejar clics en el documento
+      document.addEventListener('click', (event) => {
+        const overlay = document.querySelector('.offcanvas-backdrop');
+
+        // Ignorar clics dentro del menú o en el botón de apertura
+        const clickedInsideMenu = offcanvas.contains(event.target);
+        const clickedToggleButton = toggleButton.contains(event.target);
+
+        if (overlay && !clickedInsideMenu && !clickedToggleButton) {
+          const bootstrapOffcanvas = bootstrap.Offcanvas.getInstance(offcanvas);
+          if (bootstrapOffcanvas) {
+            bootstrapOffcanvas.hide(); // Cierra el menú offcanvas
+          }
+        }
+      });
+
+      // Manejar cierre del menú para limpiar el overlay
+      offcanvas.addEventListener('hidden.bs.offcanvas', () => {
+        const overlay = document.querySelector('.offcanvas-backdrop');
+        if (overlay) {
+          overlay.remove();
+        }
+      });
+    });
+  </script>
+<link rel="modulepreload" href="chunk-LXV2GNKU.js"><link rel="modulepreload" href="chunk-3EPOSSYI.js"><link rel="modulepreload" href="chunk-4JTA2BE5.js"><script src="polyfills-FFHMD2TL.js" type="module"></script><script src="scripts-EEEIPNC3.js" defer></script><script src="main-ONJMKNON.js" type="module"></script></body>
 </html>

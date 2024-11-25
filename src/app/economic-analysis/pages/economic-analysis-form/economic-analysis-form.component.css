@@ -2,17 +2,17 @@
     max-width: 80%;
     margin: 0 auto;
   }
-  
-  
+
+
   h5 {
     font-weight: bold;
     margin-bottom: 20px;
   }
-  
+
   hr {
     border-top: 2px solid #dee2e6;
   }
-  
+
   .intro-section {
     background-color: #f0f4fa;
     border-left: 5px solid #1e3a8a;
@@ -21,29 +21,29 @@
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
-  
+
   .expenses-guide-section {
-    background-color: #17a2b8;
+    background-color: #1a5384;
     padding: 15px;
     border-radius: 8px;
     margin-bottom: 20px;
   }
-  
+
   button[type="submit"] {
     width: 100%;
     padding: 10px;
     font-size: 1.2rem;
     transition: background-color 0.3s ease;
   }
-  
+
   button[type="submit"]:hover {
     background-color: #e64a19;
   }
-  
+
   .table {
     margin-top: 15px;
   }
-  
+
   .edit-icon {
     color: #007bff; /* Cambiado a azul */
   }
@@ -51,7 +51,7 @@
   .delete-icon {
     color: #dc3545; /* Rojo para eliminar */
    }
-  
+
   .overlay {
     position: fixed;
     top: 0;
@@ -64,7 +64,7 @@
     align-items: center;
     z-index: 1050;
   }
-  
+
   .amount-input-section {
     background-color: #fff;
     padding: 20px;
@@ -72,28 +72,28 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     z-index: 1060;
   }
-  
+
   .btn-link {
     border: none;
     background: none;
     padding: 0;
     cursor: pointer;
   }
-  
+
   .btn-link i {
     font-size: 1.2rem;
   }
-  
+
   .modal-content {
     background: rgba(255, 255, 255, 0.9);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   }
-  
+
   .modal-header {
     background-color: #1e3a8a;
     color: #fff;
   }
-  
+
   #editExpenseModal .modal-header {
     background-color: #ffc107; /* Amarillo para distinguir */
     color: #212529; /* Texto negro para mejor contraste */
@@ -102,4 +102,3 @@
   .category-title {
     margin-top: 1em;
   }
-  
