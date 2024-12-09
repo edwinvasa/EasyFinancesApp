@@ -87,3 +87,27 @@ input:focus, select:focus {
   background-color: #1E3A8A !important;
   border-color: #1E3A8A !important;
 }
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro translúcido */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050; /* Asegúrate de que esté sobre otros elementos */
+}
+
+.overlay .spinner-border {
+  width: 3rem;
+  height: 3rem;
+}
+
+.blur {
+  filter: blur(2px); /* Difumina el contenido */
+  pointer-events: none; /* Evita interacciones mientras se carga */
+}
+

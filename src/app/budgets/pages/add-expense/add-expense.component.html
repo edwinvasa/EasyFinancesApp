@@ -1,0 +1,47 @@
+<div class="container mt-4">
+  <h2>Agregar Gasto</h2>
+  <form (ngSubmit)="addExpense()" #expenseForm="ngForm">
+    <div class="mb-3">
+      <label for="customName" class="form-label">Nombre del Gasto</label>
+      <input
+        type="text"
+        id="customName"
+        class="form-control"
+        [(ngModel)]="expenseData.customName"
+        name="customName"
+        required
+      />
+    </div>
+
+    <div class="mb-3">
+      <label for="expenseTypeId" class="form-label">Tipo de Gasto</label>
+      <select
+        id="expenseTypeId"
+        class="form-control"
+        [(ngModel)]="expenseData.expenseTypeId"
+        name="expenseTypeId"
+        required
+      >
+        <option *ngFor="let type of expenseTypes" [value]="type.id">
+          {{ type.name }} ({{ type.category }})
+        </option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="budgetedAmount" class="form-label">Monto Presupuestado</label>
+      <input
+        type="number"
+        id="budgetedAmount"
+        class="form-control"
+        [(ngModel)]="expenseData.budgetedAmount"
+        name="budgetedAmount"
+        required
+      />
+    </div>
+
+    <button type="submit" class="btn btn-primary" [disabled]="!expenseForm.valid">
+      Agregar Gasto
+    </button>
+  </form>
+</div>

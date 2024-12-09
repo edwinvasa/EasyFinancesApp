@@ -1,0 +1,48 @@
+<div class="container mt-4">
+  <h2>Gastos Diarios</h2>
+  <div class="d-flex justify-content-end mb-3">
+    <button class="btn btn-success" [routerLink]="['/budgets/daily-expenses/add', budgetId]">
+      + Agregar Gasto Diario
+    </button>
+  </div>
+
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Fecha de Pago</th>
+        <th>Nombre</th>
+        <th>Tipo</th>
+        <th>Categoria</th>
+        <th>Valor</th>
+        <th>Método de Pago</th>
+        <th>Detalle</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let expense of dailyExpenses">
+        <td>{{ expense.paymentDate }}</td>
+        <td>{{ expense.customName }}</td>
+        <td>{{ expense.expenseTypeName }}</td>
+        <td>{{ expense.expenseTypeCategory }}</td>
+        <td>{{ expense.amount | customCurrency }}</td>
+        <td>{{ expense.paymentMethodName }}</td>
+        <td>{{ expense.detail }}</td>
+        <td>
+          <button
+            class="btn btn-warning btn-sm"
+            (click)="editExpense(expense)"
+          >
+            Editar
+          </button>
+          <button
+            class="btn btn-danger btn-sm"
+            (click)="deleteExpense(expense)"
+          >
+            Eliminar
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

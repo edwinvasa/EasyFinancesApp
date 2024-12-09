@@ -1,0 +1,46 @@
+<div class="container mt-4">
+  <h2>Gastos del Presupuesto</h2>
+  <div class="d-flex justify-content-end mb-3">
+    <button class="btn btn-success" [routerLink]="['/budgets/expenses/add', budgetId]">
+      + Agregar Gasto
+    </button>
+  </div>
+
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Tipo</th>
+        <th>Categoría</th>
+        <th>Presupuestado</th>
+        <th>Pagado</th>
+        <th>Pendiente</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let expense of expenses">
+        <td>{{ expense.customName }}</td>
+        <td>{{ expense.expenseTypeName }}</td>
+        <td>{{ expense.expenseTypeCategory }}</td>
+        <td>{{ expense.budgetedAmount | customCurrency }}</td>
+        <td>{{ expense.amountPaid | customCurrency }}</td>
+        <td>{{ expense.pendingPayment | customCurrency }}</td>
+        <td>
+          <button
+            class="btn btn-warning btn-sm"
+            [routerLink]="['/budgets/expenses/update', budgetId, expense.expenseBudgetDetailId]"
+          >
+            Editar
+          </button>
+          <button
+            class="btn btn-danger btn-sm"
+            (click)="confirmDelete(expense.expenseBudgetDetailId)"
+          >
+            Eliminar
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

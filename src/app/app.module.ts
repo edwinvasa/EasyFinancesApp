@@ -1,5 +1,7 @@
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
 import { provideHttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { registerLocaleData } from '@angular/common';
@@ -45,7 +47,13 @@ registerLocaleData(localeEsCO);
     AppRoutingModule,
     FormsModule,
     GestionCreditoModule,
-    EconomicAnalysisModule
+    EconomicAnalysisModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot({
+      positionClass: 'toast-top-right', // Cambiar a 'toast-bottom-right' si prefieres
+      preventDuplicates: true,
+      timeOut: 3000 // Duración del mensaje en milisegundos
+    }),
   ],
   providers: [
     provideHttpClient(),

@@ -1,0 +1,32 @@
+<div class="container mt-4">
+  <h2>Agregar Ingreso</h2>
+  <form (ngSubmit)="addIncome()" #incomeForm="ngForm">
+    <div class="mb-3">
+      <label for="name" class="form-label">Nombre del Ingreso</label>
+      <input
+        type="text"
+        id="name"
+        class="form-control"
+        [(ngModel)]="incomeData.name"
+        name="name"
+        required
+      />
+    </div>
+
+    <div class="mb-3">
+      <label for="amount" class="form-label">Monto</label>
+      <input
+        type="number"
+        id="amount"
+        class="form-control"
+        [(ngModel)]="incomeData.amount"
+        name="amount"
+        required
+      />
+    </div>
+
+    <button type="submit" class="btn btn-primary" [disabled]="!incomeForm.valid">
+      Agregar Ingreso
+    </button>
+  </form>
+</div>

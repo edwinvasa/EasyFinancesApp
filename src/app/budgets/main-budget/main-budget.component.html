@@ -1,0 +1,395 @@
+<div class="container mt-4">
+  <h2>Gestión de Presupuestos</h2>
+
+  <!-- Overlay con el loader -->
+  <div *ngIf="isLoading" class="overlay">
+    <div class="spinner-border text-light" role="status">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+  </div>
+
+  <!-- Contenido restante -->
+  <div [class.blur]="isLoading">
+    <div class="d-flex justify-content-between mb-4">
+      <button class="btn btn-primary" routerLink="/budgets/create">
+        <i class="fas fa-plus"></i> Crear Presupuesto
+      </button>
+      <button class="btn btn-secondary" routerLink="/budgets/list">
+        <i class="fas fa-list"></i> Ver Otros Presupuestos
+      </button>
+    </div>
+
+    <div *ngIf="recentBudget" class="card mb-4">
+      <div class="card-body">
+        <h5 class="card-title">{{ recentBudget.description }}</h5>
+        <p class="card-text">
+          <strong>Mes:</strong> {{ recentBudget.month }}<br />
+          <strong>Año:</strong> {{ recentBudget.year }}<br />
+          <strong>Ingresos:</strong> {{ recentBudget.totalIncome | customCurrency }}<br />
+          <strong>Gastos:</strong> {{ recentBudget.totalExpenses | customCurrency }}<br />
+          <strong>Realizado:</strong> {{ recentBudget.executed | customCurrency }}<br />
+          <strong>No Presupuestado:</strong> {{ recentBudget.nonBudgetedExpenses | customCurrency }}<br />
+          <strong>Pendiente:</strong> {{ recentBudget.pendingPayment | customCurrency }}<br />
+          <strong>Debería Tener:</strong> {{ recentBudget.shouldHave | customCurrency }}
+        </p>
+        <button class="btn btn-warning" [routerLink]="['/budgets/update', recentBudget.budgetId]">
+          <i class="fas fa-pencil-alt"></i> Editar Presupuesto
+        </button>
+      </div>
+    </div>
+
+    <!-- Sección de Ingresos -->
+    <div class="mb-3">
+      <button class="btn btn-info" (click)="toggleSection('incomes')">
+        <i class="fas fa-wallet"></i> {{ showIncomes ? 'Ocultar Ingresos' : 'Ver Ingresos' }}
+      </button>
+      <button class="btn btn-success ms-2" (click)="startAddingIncome()">
+        <i class="fas fa-plus"></i> Agregar Ingreso
+      </button>
+      <div *ngIf="isAddingIncome" class="mt-3">
+        <h4>Agregar Ingreso</h4>
+        <form (ngSubmit)="saveNewIncome()" #incomeForm="ngForm">
+          <div class="mb-3">
+            <label for="incomeName" class="form-label">Nombre del Ingreso</label>
+            <input
+              id="incomeName"
+              type="text"
+              class="form-control"
+              [(ngModel)]="newIncome.name"
+              name="incomeName"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="incomeAmount" class="form-label">Monto</label>
+            <input
+              id="incomeAmount"
+              type="number"
+              class="form-control"
+              [(ngModel)]="newIncome.amount"
+              name="incomeAmount"
+              required
+            />
+          </div>
+          <button type="submit" class="btn btn-primary" [disabled]="!incomeForm.valid">Guardar</button>
+          <button type="button" class="btn btn-secondary" (click)="cancelAddingIncome()">Cancelar</button>
+        </form>
+      </div>
+
+      <div *ngIf="showIncomes" class="mt-3">
+        <h4>Ingresos</h4>
+        <div class="mb-3">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Buscar ingresos..."
+            [(ngModel)]="incomeSearchTerm"
+            (ngModelChange)="filterIncomes()"
+          />
+        </div>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Descripción</th>
+              <th class="text-end">Monto</th>
+              <th class="text-center">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let income of filteredIncomes">
+              <td>
+                <div *ngIf="editingIncomeId !== income.incomeBudgetDetailId">
+                  {{ income.name }}
+                </div>
+                <div *ngIf="editingIncomeId === income.incomeBudgetDetailId">
+                  <input type="text" [(ngModel)]="income.name" class="form-control" />
+                </div>
+              </td>
+              <td class="text-end">
+                <div *ngIf="editingIncomeId !== income.incomeBudgetDetailId">
+                  {{ income.amount | customCurrency }}
+                </div>
+                <div *ngIf="editingIncomeId === income.incomeBudgetDetailId">
+                  <input type="number" [(ngModel)]="income.amount" class="form-control" />
+                </div>
+              </td>
+              <td class="text-center">
+                <div *ngIf="editingIncomeId !== income.incomeBudgetDetailId">
+                  <button class="btn btn-link text-warning btn-sm" (click)="startEditingIncome(income.incomeBudgetDetailId)">
+                    <i class="fas fa-pencil-alt"></i>
+                  </button>
+                  <button class="btn btn-link text-danger btn-sm" (click)="deleteIncome(income.incomeBudgetDetailId)">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+                <div *ngIf="editingIncomeId === income.incomeBudgetDetailId">
+                  <button class="btn btn-success btn-sm" (click)="saveIncome(income)">Guardar</button>
+                  <button class="btn btn-secondary btn-sm" (click)="cancelEditing()">Cancelar</button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Gastos Presupuestados -->
+    <div class="mb-3">
+      <button class="btn btn-info" (click)="toggleSection('expenses')">
+        <i class="fas fa-shopping-cart"></i> {{ showExpenses ? 'Ocultar Gastos Presupuestados' : 'Ver Gastos Presupuestados' }}
+      </button>
+      <button class="btn btn-success ms-2" (click)="startAddingExpense()">
+        <i class="fas fa-plus"></i> Agregar Gastos Al Presupuesto
+      </button>
+      <div *ngIf="isAddingExpense" class="mt-3">
+        <h4>Agregar Gasto Presupuestado</h4>
+        <form (ngSubmit)="saveNewExpense()" #expenseForm="ngForm">
+          <div class="mb-3">
+            <label for="expenseName" class="form-label">Nombre del Gasto</label>
+            <input
+              id="expenseName"
+              type="text"
+              class="form-control"
+              [(ngModel)]="newExpense.customName"
+              name="expenseName"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="expenseTypeId" class="form-label">Tipo de Gasto</label>
+            <select
+              id="expenseTypeId"
+              class="form-control"
+              [(ngModel)]="newExpense.expenseTypeId"
+              name="expenseTypeId"
+              required
+            >
+              <option *ngFor="let type of expenseTypes" [value]="type.id">
+                {{ type.name }} ({{ type.category }})
+              </option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="budgetedAmount" class="form-label">Monto Presupuestado</label>
+            <input
+              id="budgetedAmount"
+              type="number"
+              class="form-control"
+              [(ngModel)]="newExpense.budgetedAmount"
+              name="budgetedAmount"
+              required
+            />
+          </div>
+          <button type="submit" class="btn btn-primary" [disabled]="!expenseForm.valid">Guardar</button>
+          <button type="button" class="btn btn-secondary" (click)="cancelAddingExpense()">Cancelar</button>
+        </form>
+      </div>
+
+      <div *ngIf="showExpenses" class="mt-3">
+        <h4>Gastos Presupuestados</h4>
+        <div class="mb-3">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Buscar Gastos Presupuestados..."
+            [(ngModel)]="expenseSearchTerm"
+            (ngModelChange)="filterExpenses()"
+          />
+        </div>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Descripción</th>
+              <th class="text-end">Monto</th>
+              <th class="text-center">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let expense of filteredExpenses">
+              <td>
+                <div *ngIf="editingExpenseId !== expense.expenseBudgetDetailId">
+                  {{ expense.customName }}
+                </div>
+                <div *ngIf="editingExpenseId === expense.expenseBudgetDetailId">
+                  <input type="text" [(ngModel)]="expense.customName" class="form-control" />
+                </div>
+              </td>
+              <td class="text-end">
+                <div *ngIf="editingExpenseId !== expense.expenseBudgetDetailId">
+                  {{ expense.budgetedAmount | customCurrency }}
+                </div>
+                <div *ngIf="editingExpenseId === expense.expenseBudgetDetailId">
+                  <input type="number" [(ngModel)]="expense.budgetedAmount" class="form-control" />
+                </div>
+              </td>
+              <td class="text-center">
+                <div *ngIf="editingExpenseId !== expense.expenseBudgetDetailId">
+                  <button class="btn btn-link text-warning btn-sm" (click)="startEditingExpense(expense.expenseBudgetDetailId)">
+                    <i class="fas fa-pencil-alt"></i>
+                  </button>
+                  <button class="btn btn-link text-danger btn-sm" (click)="deleteExpense(expense.expenseBudgetDetailId)">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+                <div *ngIf="editingExpenseId === expense.expenseBudgetDetailId">
+                  <button class="btn btn-success btn-sm" (click)="saveExpense(expense)">Guardar</button>
+                  <button class="btn btn-secondary btn-sm" (click)="cancelEditing()">Cancelar</button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Gastos Diarios -->
+    <div class="mb-3">
+      <button class="btn btn-info" (click)="toggleSection('dailyExpenses')">
+        <i class="fas fa-calendar-day"></i> {{ showDailyExpenses ? 'Ocultar Gastos Diarios' : 'Ver Gastos Diarios' }}
+      </button>
+      <button class="btn btn-success ms-2" (click)="startAddingDailyExpense()">
+        <i class="fas fa-plus"></i> Agregar nuevo gasto diario
+      </button>
+      <div *ngIf="isAddingDailyExpense" class="mt-3">
+        <h4>Agregar Gasto Diario</h4>
+        <form (ngSubmit)="saveNewDailyExpense()" #dailyExpenseForm="ngForm">
+          <div class="mb-3">
+            <label for="expenseBudgetDetailId" class="form-label">Gasto Relacionado al Presupuesto</label>
+            <select
+              id="expenseBudgetDetailId"
+              class="form-control"
+              [(ngModel)]="newDailyExpense.expenseBudgetDetailId"
+              name="expenseBudgetDetailId"
+              required
+            >
+              <option *ngFor="let detail of expenseDetails" [value]="detail.expenseBudgetDetailId">
+                {{ detail.customName }} ({{ detail.expenseTypeName }})
+              </option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="expenseTypeId" class="form-label">¿Desea especificar el tipo de gasto?</label>
+            <select
+              id="expenseTypeId"
+              class="form-control"
+              [(ngModel)]="newDailyExpense.expenseTypeId"
+              name="expenseTypeId"
+            >
+              <option *ngFor="let type of expenseTypes" [value]="type.id">
+                {{ type.name }} ({{ type.category }})
+              </option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="paymentDate" class="form-label">Fecha de Pago</label>
+            <input
+              type="date"
+              id="paymentDate"
+              class="form-control"
+              [(ngModel)]="newDailyExpense.paymentDate"
+              name="paymentDate"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="amount" class="form-label">Monto</label>
+            <input
+              type="number"
+              id="amount"
+              class="form-control"
+              [(ngModel)]="newDailyExpense.amount"
+              name="amount"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="paymentMethodId" class="form-label">Método de Pago</label>
+            <select
+              id="paymentMethodId"
+              class="form-control"
+              [(ngModel)]="newDailyExpense.paymentMethodId"
+              name="paymentMethodId"
+              required
+            >
+              <option *ngFor="let method of paymentMethods" [value]="method.paymentMethodId">
+                {{ method.name }}
+              </option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="detail" class="form-label">Detalle</label>
+            <textarea
+              id="detail"
+              class="form-control"
+              [(ngModel)]="newDailyExpense.detail"
+              name="detail"
+              rows="3"
+              required
+            ></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" [disabled]="!dailyExpenseForm.valid">Guardar</button>
+          <button type="button" class="btn btn-secondary" (click)="cancelAddingDailyExpense()">Cancelar</button>
+        </form>
+      </div>
+
+      <div *ngIf="showDailyExpenses" class="mt-3">
+        <h4>Gastos Diarios</h4>
+        <div class="mb-3">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Buscar Gastos Diarios..."
+            [(ngModel)]="dailyExpenseSearchTerm"
+            (ngModelChange)="filterDailyExpenses()"
+          />
+        </div>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Descripción</th>
+              <th class="text-end">Monto</th>
+              <th class="text-center">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let dailyExpense of filteredDailyExpenses">
+              <td>
+                <div *ngIf="editingDailyExpenseId !== dailyExpense.dailyExpenseRecordId">
+                  {{ dailyExpense.customName }}
+                </div>
+                <div *ngIf="editingDailyExpenseId === dailyExpense.dailyExpenseRecordId">
+                  <input type="text" [(ngModel)]="dailyExpense.customName" class="form-control" />
+                </div>
+              </td>
+              <td class="text-end">
+                <div *ngIf="editingDailyExpenseId !== dailyExpense.dailyExpenseRecordId">
+                  {{ dailyExpense.amount | customCurrency }}
+                </div>
+                <div *ngIf="editingDailyExpenseId === dailyExpense.dailyExpenseRecordId">
+                  <input type="number" [(ngModel)]="dailyExpense.amount" class="form-control" />
+                </div>
+              </td>
+              <td class="text-center">
+                <div *ngIf="editingDailyExpenseId !== dailyExpense.dailyExpenseRecordId">
+                  <button class="btn btn-link text-warning btn-sm" (click)="startEditingDailyExpense(dailyExpense.dailyExpenseRecordId)">
+                    <i class="fas fa-pencil-alt"></i>
+                  </button>
+                  <button
+                    class="btn btn-link text-danger btn-sm"
+                    (click)="deleteDailyExpense(dailyExpense.dailyExpenseRecordId, dailyExpense.expenseBudgetDetailId)"
+                  >
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+                <div *ngIf="editingDailyExpenseId === dailyExpense.dailyExpenseRecordId">
+                  <button class="btn btn-success btn-sm" (click)="saveDailyExpense(dailyExpense)">Guardar</button>
+                  <button class="btn btn-secondary btn-sm" (click)="cancelEditing()">Cancelar</button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

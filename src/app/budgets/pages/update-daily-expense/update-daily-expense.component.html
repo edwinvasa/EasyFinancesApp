@@ -1,0 +1,74 @@
+<div class="container mt-4">
+  <h2>Actualizar Gasto Diario</h2>
+  <form (ngSubmit)="updateDailyExpense()" #dailyExpenseForm="ngForm">
+    <div class="mb-3">
+      <label for="expenseBudgetDetailId" class="form-label">Tipo de Gasto Relacionado</label>
+      <select
+        id="expenseBudgetDetailId"
+        class="form-control"
+        [(ngModel)]="dailyExpenseData.expenseBudgetDetailId"
+        name="expenseBudgetDetailId"
+        required
+      >
+        <option *ngFor="let detail of expenseDetails" [value]="detail.expenseBudgetDetailId">
+          {{ detail.customName }} ({{ detail.expenseTypeName }})
+        </option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="paymentDate" class="form-label">Fecha de Pago</label>
+      <input
+        type="date"
+        id="paymentDate"
+        class="form-control"
+        [(ngModel)]="dailyExpenseData.paymentDate"
+        name="paymentDate"
+        required
+      />
+    </div>
+
+    <div class="mb-3">
+      <label for="amount" class="form-label">Monto</label>
+      <input
+        type="number"
+        id="amount"
+        class="form-control"
+        [(ngModel)]="dailyExpenseData.amount"
+        name="amount"
+        required
+      />
+    </div>
+
+    <div class="mb-3">
+      <label for="paymentMethodId" class="form-label">Método de Pago</label>
+      <select
+        id="paymentMethodId"
+        class="form-control"
+        [(ngModel)]="dailyExpenseData.paymentMethodId"
+        name="paymentMethodId"
+        required
+      >
+        <option *ngFor="let method of paymentMethods" [value]="method.paymentMethodId">
+          {{ method.name }}
+        </option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="detail" class="form-label">Detalle</label>
+      <textarea
+        id="detail"
+        class="form-control"
+        [(ngModel)]="dailyExpenseData.detail"
+        name="detail"
+        rows="3"
+        required
+      ></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary" [disabled]="!dailyExpenseForm.valid">
+      Actualizar Gasto Diario
+    </button>
+  </form>
+</div>

@@ -1,0 +1,61 @@
+<div class="container mt-4">
+  <h2>Gestión de Presupuestos</h2>
+  <div *ngIf="budgets.length === 0" class="alert alert-info">
+    No hay presupuestos disponibles.
+  </div>
+  <div class="d-flex justify-content-end mb-3">
+    <button class="btn btn-success" routerLink="/budgets/create">+ Crear Presupuesto</button>
+  </div>
+  <table *ngIf="budgets.length > 0" class="table table-bordered mt-3">
+    <thead>
+      <tr>
+        <th>Descripción</th>
+        <th>Mes</th>
+        <th>Año</th>
+        <th>Ingreso</th>
+        <th>Gastos</th>
+        <th>Realizado</th>
+        <th>No presupuestado</th>
+        <th>Pendiente</th>
+        <th>Debería tener</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let budget of budgets">
+        <td>{{ budget.description }}</td>
+        <td>{{ budget.month }}</td>
+        <td>{{ budget.year }}</td>
+        <td>{{ budget.totalIncome | customCurrency }}</td>
+        <td>{{ budget.totalExpenses | customCurrency }}</td>
+        <td>{{ budget.executed | customCurrency }}</td>
+        <td>{{ budget.nonBudgetedExpenses | customCurrency }}</td>
+        <td>{{ budget.pendingPayment| customCurrency }}</td>
+        <td>{{ budget.shouldHave| customCurrency }}</td>
+        <td>
+          <button class="btn btn-warning btn-sm" [routerLink]="['/budgets/update', budget.budgetId]">
+            Editar
+          </button>
+          <button
+            class="btn btn-danger btn-sm"
+            (click)="confirmDelete(budget.budgetId)"
+          >
+            Eliminar
+          </button>
+          <button class="btn btn-secondary btn-sm" [routerLink]="['/budgets/clone', budget.budgetId]">
+            Clonar
+          </button>
+          <button class="btn btn-info btn-sm" [routerLink]="['/budgets/expenses', budget.budgetId]">
+            Ver Gastos
+          </button>
+          <button class="btn btn-info btn-sm" [routerLink]="['/budgets/incomes', budget.budgetId]">
+            Ver Ingresos
+          </button>
+          <button class="btn btn-info btn-sm" [routerLink]="['/budgets/daily-expenses', budget.budgetId]">
+            Ver Gastos Diarios
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

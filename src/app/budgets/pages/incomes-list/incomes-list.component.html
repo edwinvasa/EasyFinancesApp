@@ -1,0 +1,38 @@
+<div class="container mt-4">
+  <h2>Ingresos del Presupuesto</h2>
+  <div class="d-flex justify-content-end mb-3">
+    <button class="btn btn-success" [routerLink]="['/budgets/incomes/add', budgetId]">
+      + Agregar Ingreso
+    </button>
+  </div>
+
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Monto</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let income of incomes">
+        <td>{{ income.name }}</td>
+        <td>{{ income.amount | customCurrency }}</td>
+        <td>
+          <button
+            class="btn btn-warning btn-sm"
+            [routerLink]="['/budgets/incomes/update', budgetId, income.incomeBudgetDetailId]"
+          >
+            Editar
+          </button>
+          <button
+            class="btn btn-danger btn-sm"
+            (click)="confirmDelete(income.incomeBudgetDetailId)"
+          >
+            Eliminar
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

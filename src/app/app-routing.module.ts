@@ -4,12 +4,18 @@ import { BankInterestRatesComponent } from './info-tasas/pages/bank-interest-rat
 import { SubscribeNotificationsComponent } from './info-tasas/subscribe-notifications/subscribe-notifications.component';
 import { UnsubscribeNotificationsComponent } from './info-tasas/unsubscribe-notifications/unsubscribe-notifications.component';
 import { HomeComponent } from './pages/home/home.component';
+import { MainBudgetComponent } from './budgets/main-budget/main-budget.component';
 
 const routes: Routes = [
   {
     path: '',
     component: HomeComponent,
     pathMatch: 'full'
+  },
+  { path: 'budget', component: MainBudgetComponent },
+  {
+    path: 'budgets',
+    loadChildren: () => import('./budgets/budgets.module').then((m) => m.BudgetsModule)
   },
   {
     path: 'credit-management',

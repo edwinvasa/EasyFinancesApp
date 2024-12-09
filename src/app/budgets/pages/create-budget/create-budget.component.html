@@ -1,0 +1,47 @@
+<div class="container mt-4">
+  <h2>Crear Presupuesto</h2>
+  <form (ngSubmit)="createBudget()" #budgetForm="ngForm">
+    <div class="mb-3">
+      <label for="description" class="form-label">Descripción</label>
+      <input
+        type="text"
+        id="description"
+        class="form-control"
+        [(ngModel)]="budget.description"
+        name="description"
+        required
+      />
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label for="month" class="form-label">Mes</label>
+        <input
+          type="number"
+          id="month"
+          class="form-control"
+          [(ngModel)]="budget.month"
+          name="month"
+          required
+          min="1"
+          max="12"
+        />
+      </div>
+      <div class="col-md-6 mb-3">
+        <label for="year" class="form-label">Año</label>
+        <input
+          type="number"
+          id="year"
+          class="form-control"
+          [(ngModel)]="budget.year"
+          name="year"
+          required
+        />
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary" [disabled]="!budgetForm.valid">
+      Crear Presupuesto
+    </button>
+  </form>
+</div>

@@ -1,0 +1,67 @@
+<div class="container mt-4">
+  <h2>Clonar Presupuesto</h2>
+  <div *ngIf="budgetToClone">
+    <p><strong>Presupuesto base:</strong> {{ budgetToClone.description }}</p>
+    <p><strong>Mes:</strong> {{ budgetToClone.month }}</p>
+    <p><strong>Año:</strong> {{ budgetToClone.year }}</p>
+  </div>
+  <form (ngSubmit)="cloneBudget()" #cloneForm="ngForm">
+    <div class="mb-3">
+      <label for="description" class="form-label">Nueva Descripción</label>
+      <input
+        type="text"
+        id="description"
+        class="form-control"
+        [(ngModel)]="cloneData.description"
+        name="description"
+        required
+      />
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label for="month" class="form-label">Nuevo Mes</label>
+        <input
+          type="number"
+          id="month"
+          class="form-control"
+          [(ngModel)]="cloneData.month"
+          name="month"
+          required
+          min="1"
+          max="12"
+        />
+      </div>
+      <div class="col-md-6 mb-3">
+        <label for="year" class="form-label">Nuevo Año</label>
+        <input
+          type="number"
+          id="year"
+          class="form-control"
+          [(ngModel)]="cloneData.year"
+          name="year"
+          required
+        />
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <div class="form-check">
+        <input
+          type="checkbox"
+          class="form-check-input"
+          id="cloneIncomeDetails"
+          [(ngModel)]="cloneData.cloneIncomeDetails"
+          name="cloneIncomeDetails"
+        />
+        <label class="form-check-label" for="cloneIncomeDetails">
+          Clonar detalles de ingresos
+        </label>
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary" [disabled]="!cloneForm.valid">
+      Clonar Presupuesto
+    </button>
+  </form>
+</div>
