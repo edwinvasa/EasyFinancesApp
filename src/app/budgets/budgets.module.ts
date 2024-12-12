@@ -19,6 +19,14 @@ import { DailyExpensesListComponent } from './pages/daily-expenses-list/daily-ex
 import { AddDailyExpenseComponent } from './pages/add-daily-expense/add-daily-expense.component';
 import { UpdateDailyExpenseComponent } from './pages/update-daily-expense/update-daily-expense.component';
 import { MainBudgetComponent } from './main-budget/main-budget.component';
+import { BudgetChartsComponent } from './pages/budget-charts/budget-charts.component';
+import { NgChartsModule } from 'ng2-charts';
+import { BudgetPlanVsExecutedComponent } from './pages/budget-plan-vs-executed/budget-plan-vs-executed.component';
+import { ExpenseDistributionComponent } from './pages/expense-distribution/expense-distribution.component';
+import { IncomeExpenseTrendsComponent } from './pages/income-expense-trends/income-expense-trends.component';
+import { NonBudgetedExpensesComponent } from './pages/non-budgeted-expenses/non-budgeted-expenses.component';
+import { PaymentStatusComponent } from './pages/payment-status/payment-status.component';
+import { DailyExpenseTrendsComponent } from './pages/daily-expense-trends/daily-expense-trends.component';
 
 @NgModule({
   declarations: [
@@ -35,14 +43,22 @@ import { MainBudgetComponent } from './main-budget/main-budget.component';
     DailyExpensesListComponent,
     AddDailyExpenseComponent,
     UpdateDailyExpenseComponent,
-    MainBudgetComponent
+    MainBudgetComponent,
+    BudgetChartsComponent,
+    BudgetPlanVsExecutedComponent,
+    ExpenseDistributionComponent,
+    IncomeExpenseTrendsComponent,
+    NonBudgetedExpensesComponent,
+    PaymentStatusComponent,
+    DailyExpenseTrendsComponent
   ],
   imports: [
     CommonModule,
     BudgetsRoutingModule,
     CurrencyMaskModule,
     FormsModule,
-    SharedModule
+    SharedModule,
+    NgChartsModule
   ]
 })
 export class BudgetsModule { }

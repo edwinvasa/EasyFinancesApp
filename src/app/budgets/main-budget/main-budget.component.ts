@@ -15,19 +15,26 @@ import { ExpenseTypeService } from '../../economic-analysis/services/expense-typ
   styleUrls: ['./main-budget.component.css']
 })
 export class MainBudgetComponent implements OnInit {
+  selectedBudgetId: string | null = null;
+
   budgets: Budget[] = [];
   recentBudget: Budget | null = null;
   incomes: Income[] = [];
   expenses: Expense[] = [];
   dailyExpenses: DailyExpense[] = [];
+
   showIncomes = false;
   showExpenses = false;
   showDailyExpenses = false;
   isLoading = false;
+
   // Variables para gestionar ediciones
   editingIncomeId: number | null = null;
   editingExpenseId: number | null = null;
   editingDailyExpenseId: number | null = null;
+  isEditingBudget: boolean = false; // Estado para controlar el modo de edición
+  editableBudget: Partial<Budget> = {}; // Copia del presupuesto que se está editando
+
 
   //filtros de busqueda
   incomeSearchTerm: string = '';
@@ -53,6 +60,9 @@ export class MainBudgetComponent implements OnInit {
   paymentMethods: PaymentMethod[] = [];
   expenseDetails: any[] = [];
 
+  //graficas
+  expandedPanels: Set<string> = new Set();
+  userId: string = '6ba84529-1770-4caa-bbcf-db2f2a3db6ab';
 
   constructor(private budgetsService: BudgetsService, private toastr: ToastrService, private expenseTypeService: ExpenseTypeService, private paymentMethodService: PaymentMethodService,) {}
 
@@ -62,23 +72,47 @@ export class MainBudgetComponent implements OnInit {
 
   fetchBudgets(): void {
     this.isLoading = true;
-    this.budgetsService.getBudgetsByUser('6ba84529-1770-4caa-bbcf-db2f2a3db6ab').subscribe({
+    this.budgetsService.getBudgetsByUser(this.userId).subscribe({
       next: (data) => {
         this.budgets = data;
-        this.recentBudget = this.budgets[0] || null;
-        if (this.recentBudget?.budgetId) {
-          this.fetchIncomes(this.recentBudget.budgetId);
-          this.fetchExpenses(this.recentBudget.budgetId);
-          this.fetchDailyExpenses(this.recentBudget.budgetId);
-
+        if (this.budgets.length > 0) {
+          // Seleccionar el primer presupuesto por defecto
+          this.selectedBudgetId = this.budgets[0].budgetId;
+          this.onBudgetChange();
           this.fetchExpenseTypes();
           this.fetchPaymentMethods();
-        } else {
-          console.warn('No se encontró un presupuesto reciente.');
         }
       },
       error: (err) => this.handleError('Error al obtener presupuestos', err),
-      complete: () => (this.isLoading = false)
+      complete: () => (this.isLoading = false),
+    });
+  }
+
+  onBudgetChange(): void {
+    // Encontrar el presupuesto seleccionado
+    const selectedBudget = this.budgets.find(
+      (budget) => budget.budgetId === this.selectedBudgetId
+    );
+
+    if (selectedBudget) {
+      // Actualizar el presupuesto reciente
+      this.recentBudget = selectedBudget;
+
+      // Recargar los datos relacionados al presupuesto seleccionado
+      this.fetchIncomes(this.recentBudget.budgetId);
+      this.fetchExpenses(this.recentBudget.budgetId);
+      this.fetchDailyExpenses(this.recentBudget.budgetId);
+    }
+  }
+
+  fetchBudget(): void {
+    this.isLoading = true;
+    this.budgetsService.getBudgetById(this.userId, this.selectedBudgetId!).subscribe({
+      next: (data) => {
+        this.recentBudget = data;
+      },
+      error: (err) => this.handleError('Error al obtener presupuesto', err),
+      complete: () => (this.isLoading = false),
     });
   }
 
@@ -157,6 +191,32 @@ export class MainBudgetComponent implements OnInit {
     );
   }
 
+  startEditingBudget(): void {
+    if (!this.recentBudget) return;
+    this.isEditingBudget = true;
+    this.editableBudget = { ...this.recentBudget };
+  }
+
+  cancelEditingBudget(): void {
+    this.isEditingBudget = false;
+    this.editableBudget = {};
+  }
+
+  saveBudget(): void {
+    if (!this.recentBudget || !this.editableBudget) return;
+
+    this.isLoading = true;
+    this.budgetsService.updateBudget(this.userId, this.recentBudget.budgetId, this.editableBudget).subscribe({
+      next: (updatedBudget) => {
+        this.handleSuccess('Presupuesto actualizado con éxito');
+        this.recentBudget = updatedBudget;
+        this.cancelEditingBudget();
+      },
+      error: (err) => this.handleError('Error al actualizar el presupuesto', err),
+      complete: () => (this.isLoading = false)
+    });
+  }
+
   startEditingIncome(id: number): void {
     this.editingIncomeId = id;
   }
@@ -171,6 +231,7 @@ export class MainBudgetComponent implements OnInit {
         next: () => {
           this.handleSuccess('Ingreso actualizado con éxito');
           this.cancelEditing();
+          this.fetchBudget();
           this.fetchIncomes(this.recentBudget?.budgetId!);
         },
         error: (err) => this.handleError('Error al actualizar ingreso', err),
@@ -188,6 +249,7 @@ export class MainBudgetComponent implements OnInit {
       next: () => {
         this.handleSuccess('Gasto actualizado con éxito');
         this.cancelEditing();
+        this.fetchBudget();
         this.fetchExpenses(this.recentBudget?.budgetId!);
       },
       error: (err) => this.handleError('Error al actualizar gasto', err),
@@ -214,6 +276,8 @@ export class MainBudgetComponent implements OnInit {
         next: () => {
           this.handleSuccess('Gasto diario actualizado con éxito');
           this.cancelEditing();
+          this.fetchBudget();
+          this.fetchExpenses(this.recentBudget?.budgetId!);
           this.fetchDailyExpenses(this.recentBudget?.budgetId!);
         },
         error: (err) => this.handleError('Error al actualizar gasto diario', err),
@@ -252,6 +316,7 @@ export class MainBudgetComponent implements OnInit {
       this.budgetsService.deleteIncome(this.recentBudget!.budgetId, incomeId).subscribe({
         next: () => {
           this.handleSuccess('Ingreso eliminado con éxito');
+          this.fetchBudget();
           this.fetchIncomes(this.recentBudget!.budgetId);
         },
         error: (err) => {
@@ -268,6 +333,7 @@ export class MainBudgetComponent implements OnInit {
       this.budgetsService.deleteExpense(this.recentBudget!.budgetId, expenseId).subscribe({
         next: () => {
           this.handleSuccess('Gasto eliminado con éxito');
+          this.fetchBudget();
           this.fetchExpenses(this.recentBudget!.budgetId);
         },
         error: (err) => {
@@ -284,6 +350,8 @@ export class MainBudgetComponent implements OnInit {
       this.budgetsService.deleteDailyExpense(this.recentBudget!.budgetId, expenseDetailId, dailyExpenseId).subscribe({
         next: () => {
           this.handleSuccess('Gasto diario eliminado con éxito');
+          this.fetchBudget();
+          this.fetchExpenses(this.recentBudget?.budgetId!);
           this.fetchDailyExpenses(this.recentBudget!.budgetId);
         },
         error: (err) => {
@@ -316,6 +384,7 @@ export class MainBudgetComponent implements OnInit {
       next: () => {
         this.handleSuccess('Ingreso agregado con éxito');
         this.isAddingIncome = false;
+        this.fetchBudget();
         this.fetchIncomes(this.recentBudget?.budgetId!);
       },
       error: (err) => this.handleError('Error al agregar ingreso', err),
@@ -353,13 +422,13 @@ export class MainBudgetComponent implements OnInit {
       next: () => {
         this.handleSuccess('Gasto agregado con éxito');
         this.isAddingExpense = false;
+        this.fetchBudget();
         this.fetchExpenses(this.recentBudget?.budgetId!);
       },
       error: (err) => this.handleError('Error al agregar gasto', err),
       complete: () => (this.isLoading = false)
     });
   }
-
 
   cancelAddingExpense(): void {
     this.isAddingExpense = false;
@@ -400,6 +469,8 @@ export class MainBudgetComponent implements OnInit {
       next: () => {
         this.handleSuccess('Gasto diario agregado con éxito');
         this.isAddingDailyExpense = false;
+        this.fetchBudget();
+        this.fetchExpenses(this.recentBudget?.budgetId!);
         this.fetchDailyExpenses(this.recentBudget?.budgetId!);
       },
       error: (err) => this.handleError('Error al agregar gasto diario', err),
@@ -407,9 +478,20 @@ export class MainBudgetComponent implements OnInit {
     });
   }
 
-
   cancelAddingDailyExpense(): void {
     this.isAddingDailyExpense = false;
     this.newDailyExpense = {};
+  }
+
+  toggleAccordion(panelId: string): void {
+    if (this.expandedPanels.has(panelId)) {
+      this.expandedPanels.delete(panelId);
+    } else {
+      this.expandedPanels.add(panelId);
+    }
+  }
+
+  isExpanded(panelId: string): boolean {
+    return this.expandedPanels.has(panelId);
   }
 }

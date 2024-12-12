@@ -14,27 +14,83 @@
       <button class="btn btn-primary" routerLink="/budgets/create">
         <i class="fas fa-plus"></i> Crear Presupuesto
       </button>
-      <button class="btn btn-secondary" routerLink="/budgets/list">
+      <button class="btn btn-secondary" routerLink="/budgets">
         <i class="fas fa-list"></i> Ver Otros Presupuestos
       </button>
     </div>
 
+    <div class="form-group">
+      <label for="budgetSelect">Seleccionar Presupuesto:</label>
+      <select
+        id="budgetSelect"
+        class="form-select"
+        [(ngModel)]="selectedBudgetId"
+        (change)="onBudgetChange()"
+      >
+        <option *ngFor="let budget of budgets" [value]="budget.budgetId">
+          {{ budget.description }} ({{ budget.month }}/{{ budget.year }})
+        </option>
+      </select>
+    </div>
+
     <div *ngIf="recentBudget" class="card mb-4">
       <div class="card-body">
-        <h5 class="card-title">{{ recentBudget.description }}</h5>
-        <p class="card-text">
-          <strong>Mes:</strong> {{ recentBudget.month }}<br />
-          <strong>Año:</strong> {{ recentBudget.year }}<br />
-          <strong>Ingresos:</strong> {{ recentBudget.totalIncome | customCurrency }}<br />
-          <strong>Gastos:</strong> {{ recentBudget.totalExpenses | customCurrency }}<br />
-          <strong>Realizado:</strong> {{ recentBudget.executed | customCurrency }}<br />
-          <strong>No Presupuestado:</strong> {{ recentBudget.nonBudgetedExpenses | customCurrency }}<br />
-          <strong>Pendiente:</strong> {{ recentBudget.pendingPayment | customCurrency }}<br />
-          <strong>Debería Tener:</strong> {{ recentBudget.shouldHave | customCurrency }}
-        </p>
-        <button class="btn btn-warning" [routerLink]="['/budgets/update', recentBudget.budgetId]">
-          <i class="fas fa-pencil-alt"></i> Editar Presupuesto
-        </button>
+        <ng-container *ngIf="!isEditingBudget">
+          <h5 class="card-title">{{ recentBudget.description }}</h5>
+          <p class="card-text">
+            <strong>Mes:</strong> {{ recentBudget.month }}<br />
+            <strong>Año:</strong> {{ recentBudget.year }}<br />
+            <strong>Ingresos:</strong> {{ recentBudget.totalIncome | customCurrency }}<br />
+            <strong>Gastos:</strong> {{ recentBudget.totalExpenses | customCurrency }}<br />
+            <strong>Realizado:</strong> {{ recentBudget.executed | customCurrency }}<br />
+            <strong>No Presupuestado:</strong> {{ recentBudget.nonBudgetedExpenses | customCurrency }}<br />
+            <strong>Pendiente:</strong> {{ recentBudget.pendingPayment | customCurrency }}<br />
+            <strong>Debería Tener:</strong> {{ recentBudget.shouldHave | customCurrency }}
+          </p>
+          <button class="btn btn-warning" (click)="startEditingBudget()">
+            <i class="fas fa-pencil-alt"></i> Editar Presupuesto
+          </button>
+        </ng-container>
+
+        <ng-container *ngIf="isEditingBudget">
+          <form (ngSubmit)="saveBudget()">
+            <div class="mb-3">
+              <label for="description" class="form-label">Descripción</label>
+              <input
+                id="description"
+                type="text"
+                class="form-control"
+                [(ngModel)]="editableBudget.description"
+                name="description"
+                required
+              />
+            </div>
+            <div class="mb-3">
+              <label for="month" class="form-label">Mes</label>
+              <input
+                id="month"
+                type="number"
+                class="form-control"
+                [(ngModel)]="editableBudget.month"
+                name="month"
+                required
+              />
+            </div>
+            <div class="mb-3">
+              <label for="year" class="form-label">Año</label>
+              <input
+                id="year"
+                type="number"
+                class="form-control"
+                [(ngModel)]="editableBudget.year"
+                name="year"
+                required
+              />
+            </div>
+            <button type="submit" class="btn btn-success">Guardar</button>
+            <button type="button" class="btn btn-secondary" (click)="cancelEditingBudget()">Cancelar</button>
+          </form>
+        </ng-container>
       </div>
     </div>
 
@@ -200,7 +256,8 @@
           <thead>
             <tr>
               <th>Descripción</th>
-              <th class="text-end">Monto</th>
+              <th class="text-end">Presupeustado</th>
+              <th class="text-end">Pendiente</th>
               <th class="text-center">Acciones</th>
             </tr>
           </thead>
@@ -220,6 +277,11 @@
                 </div>
                 <div *ngIf="editingExpenseId === expense.expenseBudgetDetailId">
                   <input type="number" [(ngModel)]="expense.budgetedAmount" class="form-control" />
+                </div>
+              </td>
+              <td class="text-end">
+                <div *ngIf="editingExpenseId !== expense.expenseBudgetDetailId">
+                  {{ expense.pendingPayment | customCurrency }}
                 </div>
               </td>
               <td class="text-center">
@@ -391,5 +453,98 @@
         </table>
       </div>
     </div>
+    <div class="mt-4">
+      <h3>Gráficas de Presupuestos</h3>
+
+      <div class="accordion" id="chartsAccordion">
+        <!-- Gráfica: Comparativa Planeado vs. Ejecutado -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingPlanVsExecuted">
+            <button
+              class="accordion-button"
+              type="button"
+              [attr.aria-expanded]="true"
+              [attr.aria-controls]="'collapsePlanVsExecuted'"
+              (click)="toggleAccordion('collapsePlanVsExecuted')">
+              Comparativa Planeado vs. Ejecutado
+            </button>
+          </h2>
+          <div id="collapsePlanVsExecuted" [ngClass]="{'accordion-collapse': true, 'collapse': !isExpanded('collapsePlanVsExecuted'), 'show': isExpanded('collapsePlanVsExecuted')}">
+            <div class="accordion-body">
+              <ng-container *ngIf="recentBudget">
+                <app-budget-plan-vs-executed [budget]="recentBudget"></app-budget-plan-vs-executed>
+              </ng-container>
+              <ng-container *ngIf="!recentBudget">
+                <p>No hay presupuesto reciente disponible.</p>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+
+        <!-- Gráfica: Distribución de Gastos -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingExpenseDistribution">
+            <button
+              class="accordion-button collapsed"
+              type="button"
+              [attr.aria-expanded]="false"
+              [attr.aria-controls]="'collapseExpenseDistribution'"
+              (click)="toggleAccordion('collapseExpenseDistribution')">
+              Distribución de Gastos
+            </button>
+          </h2>
+          <div id="collapseExpenseDistribution"  [ngClass]="{'accordion-collapse': true, 'collapse': !isExpanded('collapseExpenseDistribution'), 'show': isExpanded('collapseExpenseDistribution')}">
+            <div class="accordion-body">
+              <app-expense-distribution [expenses]="filteredExpenses"></app-expense-distribution>
+            </div>
+          </div>
+        </div>
+
+        <!-- Gráfica: Tendencias de Gastos Diarios -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingIncomeExpenseTrends">
+            <button
+              class="accordion-button collapsed"
+              type="button"
+              [attr.aria-expanded]="false"
+              [attr.aria-controls]="'collapseIncomeExpenseTrends'"
+              (click)="toggleAccordion('collapseIncomeExpenseTrends')">
+              Tendencias Gastos Diarios
+            </button>
+          </h2>
+          <div id="collapseIncomeExpenseTrends" [ngClass]="{'accordion-collapse': true, 'collapse': !isExpanded('collapseIncomeExpenseTrends'), 'show': isExpanded('collapseIncomeExpenseTrends')}">
+            <div class="accordion-body">
+              <ng-container *ngIf="recentBudget">
+                <app-daily-expense-trends [dailyExpenses]="filteredDailyExpenses"></app-daily-expense-trends>
+              </ng-container>
+              <ng-container *ngIf="!recentBudget">
+                <p>No hay presupuesto reciente disponible.</p>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+
+        <!-- Gráfica: Estado de Pagos Pendientes -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingPaymentStatus">
+            <button
+              class="accordion-button collapsed"
+              type="button"
+              [attr.aria-expanded]="false"
+              [attr.aria-controls]="'collapsePaymentStatus'"
+              (click)="toggleAccordion('collapsePaymentStatus')">
+              Estado de Pagos Pendientes
+            </button>
+          </h2>
+          <div id="collapsePaymentStatus" [ngClass]="{'accordion-collapse': true, 'collapse': !isExpanded('collapsePaymentStatus'), 'show': isExpanded('collapsePaymentStatus')}">
+            <div class="accordion-body">
+              <app-payment-status [expenses]="filteredExpenses"></app-payment-status>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
+
 </div>

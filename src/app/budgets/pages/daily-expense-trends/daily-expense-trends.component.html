@@ -1,0 +1,15 @@
+<div *ngIf="isLoading" class="text-center">
+  <p>Cargando datos...</p>
+</div>
+<div *ngIf="!isLoading && chartData.datasets.length > 0" class="chart-container" style="display: block; height: 400px;">
+  <canvas
+    baseChart
+    [data]="chartData"
+    [labels]="chartData.labels"
+    [options]="chartOptions"
+    type="line">
+  </canvas>
+</div>
+<div *ngIf="!isLoading && chartData.datasets.length === 0" class="text-center">
+  <p>No hay datos disponibles para mostrar.</p>
+</div>
