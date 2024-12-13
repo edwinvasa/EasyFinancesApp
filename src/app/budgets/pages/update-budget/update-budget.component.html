@@ -1,5 +1,5 @@
 <div class="container mt-4">
-  <h2>Actualizar Presupuesto</h2>
+  <h4>Actualizar Presupuesto</h4>
   <form (ngSubmit)="updateBudget()" #updateForm="ngForm">
     <div class="mb-3">
       <label for="description" class="form-label">Descripción</label>
@@ -40,8 +40,13 @@
       </div>
     </div>
 
-    <button type="submit" class="btn btn-primary" [disabled]="!updateForm.valid">
-      Actualizar Presupuesto
-    </button>
+    <div class="d-flex justify-content-between">
+      <button type="submit" class="btn btn-primary" [disabled]="!updateForm.valid">
+        Actualizar
+      </button>
+      <button type="button" class="btn btn-secondary" (click)="cancel()">
+        Cancelar
+      </button>
+    </div>
   </form>
 </div>

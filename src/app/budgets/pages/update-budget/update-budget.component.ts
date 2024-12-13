@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { BudgetsService } from '../../services/budgets.service';
 import { Budget } from '../../interfaces/budget.interface';
 import { AuthService } from '../../../shared/services/auth.service';
@@ -10,7 +9,9 @@ import { AuthService } from '../../../shared/services/auth.service';
   styleUrls: ['./update-budget.component.css']
 })
 export class UpdateBudgetComponent implements OnInit {
-  budgetId: string | null = null;
+  @Input() budgetToEdit: Budget | null = null;
+  @Output() closeModal = new EventEmitter<void>();
+
   budgetData: Partial<Budget> = {
     description: '',
     month: 1,
@@ -19,60 +20,43 @@ export class UpdateBudgetComponent implements OnInit {
   userId: string | null = '';
 
   constructor(
-    private route: ActivatedRoute,
     private budgetsService: BudgetsService,
-    private router: Router,
     private authService: AuthService
   ) {}
 
   ngOnInit(): void {
     this.userId = this.authService.getUserIdFromToken();
-    if (this.userId) {
-
-      this.budgetId = this.route.snapshot.paramMap.get('budgetId');
-      if (this.budgetId) {
-        this.fetchBudgetData(this.budgetId);
-      }
-    } else {
+    if (!this.userId || !this.budgetToEdit) {
       console.error('No se pudo obtener el usuario del token.', 'Error');
+    } else {
+      this.budgetData = {
+        description: this.budgetToEdit.description,
+        month: this.budgetToEdit.month,
+        year: this.budgetToEdit.year
+      };
     }
   }
 
-  fetchBudgetData(budgetId: string): void {
-    if (!this.userId) return;
-
-    this.budgetsService.getBudgetById(this.userId, budgetId).subscribe({
-      next: (budget) => {
-        this.budgetData = {
-          description: budget.description,
-          month: budget.month,
-          year: budget.year
-        };
-      },
-      error: (err) => {
-        console.error('Error al obtener presupuesto', err);
-        alert('No se pudo cargar el presupuesto');
-        this.router.navigate(['/budgets']);
-      }
-    });
-  }
-
   updateBudget(): void {
-    if (!this.userId || !this.budgetId) return;
+    if (!this.userId || !this.budgetToEdit?.budgetId) return;
 
     const updateRequest = {
       ...this.budgetData
     };
 
-    this.budgetsService.updateBudget(this.userId, this.budgetId, updateRequest).subscribe({
+    this.budgetsService.updateBudget(this.userId, this.budgetToEdit.budgetId, updateRequest).subscribe({
       next: () => {
         alert('Presupuesto actualizado con éxito');
-        this.router.navigate(['/budgets']);
+        this.closeModal.emit();
       },
       error: (err) => {
         console.error('Error al actualizar el presupuesto', err);
         alert('Ocurrió un error al actualizar el presupuesto');
       }
     });
+  }
+
+  cancel(): void {
+    this.closeModal.emit();
   }
 }

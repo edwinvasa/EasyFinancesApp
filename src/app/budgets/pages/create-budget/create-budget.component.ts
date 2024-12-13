@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { BudgetsService } from '../../services/budgets.service';
 import { Budget } from '../../interfaces/budget.interface';
 import { AuthService } from '../../../shared/services/auth.service';
@@ -10,6 +9,8 @@ import { AuthService } from '../../../shared/services/auth.service';
   styleUrls: ['./create-budget.component.css']
 })
 export class CreateBudgetComponent implements OnInit {
+  @Output() closeModal = new EventEmitter<void>();
+
   budget: Partial<Budget> = {
     description: '',
     month: new Date().getMonth() + 1,
@@ -19,7 +20,7 @@ export class CreateBudgetComponent implements OnInit {
   // Esto debería venir de un sistema de autenticación
   userId: string | null = '';
 
-  constructor(private budgetsService: BudgetsService, private router: Router, private authService: AuthService) {}
+  constructor(private budgetsService: BudgetsService, private authService: AuthService) {}
 
   ngOnInit(): void {
     this.userId = this.authService.getUserIdFromToken();
@@ -36,12 +37,16 @@ export class CreateBudgetComponent implements OnInit {
     this.budgetsService.createBudget(budgetRequest).subscribe({
       next: (data) => {
         alert('Presupuesto creado con éxito');
-        this.router.navigate(['/budgets']);
+        this.closeModal.emit();
       },
       error: (err) => {
         console.error('Error al crear el presupuesto', err);
         alert('Ocurrió un error al crear el presupuesto');
       }
     });
+  }
+
+  cancel(): void {
+    this.closeModal.emit();
   }
 }

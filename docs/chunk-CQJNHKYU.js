@@ -1,0 +1,1 @@
+import{i as t,l as p,ya as r}from"./chunk-ZM5FHFQ5.js";var i=class e{constructor(o){this.http=o}apiUrl="https://easy-finances-app-63cef07822fc.herokuapp.com/api/expense-types";getExpenseTypes(){return this.http.get(this.apiUrl)}static \u0275fac=function(a){return new(a||e)(p(r))};static \u0275prov=t({token:e,factory:e.\u0275fac,providedIn:"root"})};export{i as a};

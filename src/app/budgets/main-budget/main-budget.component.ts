@@ -25,9 +25,6 @@ export class MainBudgetComponent implements OnInit {
   expenses: Expense[] = [];
   dailyExpenses: DailyExpense[] = [];
 
-  showIncomes = false;
-  showExpenses = false;
-  showDailyExpenses = false;
   isLoading = false;
 
   // Variables para gestionar ediciones
@@ -48,28 +45,33 @@ export class MainBudgetComponent implements OnInit {
   dailyExpenseSearchTerm: string = '';
   filteredDailyExpenses: DailyExpense[] = [];
 
-  // Propiedades para manejar el estado de "agregar"
-  isAddingIncome = false;
-  newIncome: Partial<Income> = {};
-
-  isAddingExpense = false;
-  newExpense: Partial<Expense> = {};
-
-  isAddingDailyExpense = false;
-  newDailyExpense: Partial<DailyExpense> = {};
-
   expenseTypes: ExpenseType[] = [];
   paymentMethods: PaymentMethod[] = [];
   expenseDetails: any[] = [];
 
-  //graficas
-  expandedPanels: Set<string> = new Set();
   userId: string | null = '';
 
+  isCreatingBudgetModalVisible = false;
+  isEditingBudgetModalVisible = false;
   isCloneModalVisible = false;
   isAddExpenseModalVisible = false;
   isAddIncomeModalVisible = false;
   isAddDailyExpenseModalVisible = false;
+
+  // Variables para paginación ingresos
+  pageSize: number = 5;
+  currentPage: number = 1;
+  totalPages: number = 0;
+
+  // Variables para paginaciónGastos
+  pageSizeExpenses: number = 5;
+  currentPageExpenses: number = 1;
+  totalPagesExpenses: number = 0;
+
+  // Variables para paginación Gastos diarios
+  pageSizeDailyExpenses: number = 5;
+  currentPageDailyExpenses: number = 1;
+  totalPagesDailyExpenses: number = 0;
 
   constructor(private budgetsService: BudgetsService, private toastr: ToastrService, private expenseTypeService: ExpenseTypeService, private paymentMethodService: PaymentMethodService,
     private authService: AuthService, private router: Router
@@ -147,6 +149,28 @@ export class MainBudgetComponent implements OnInit {
       error: (err) => this.handleError('Error al obtener ingresos', err),
       complete: () => (this.isLoading = false)
     });
+    this.updateTotalPages();
+  }
+
+  updateTotalPages(): void {
+    this.totalPages = Math.ceil(this.filteredIncomes.length / this.pageSize);
+  }
+
+  getPages(): number[] {
+    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
+  }
+
+  filterIncomes(): void {
+    this.filteredIncomes = this.incomes.filter((income) =>
+      income.name.toLowerCase().includes(this.incomeSearchTerm.toLowerCase())
+    );
+    this.currentPage = 1;
+    this.updateTotalPages();
+  }
+
+  clearIncomeSearch(): void {
+    this.incomeSearchTerm = '';
+    this.filterIncomes();
   }
 
   fetchExpenses(budgetId: string): void {
@@ -160,6 +184,28 @@ export class MainBudgetComponent implements OnInit {
       error: (err) => this.handleError('Error al obtener gastos', err),
       complete: () => (this.isLoading = false)
     });
+    this.updateTotalPagesExpenses();
+  }
+
+  updateTotalPagesExpenses(): void {
+    this.totalPagesExpenses = Math.ceil(this.filteredExpenses.length / this.pageSizeExpenses);
+  }
+
+  getPagesExpenses(): number[] {
+    return Array.from({ length: this.totalPagesExpenses }, (_, i) => i + 1);
+  }
+
+  filterExpenses(): void {
+    this.filteredExpenses = this.expenses.filter((expense) =>
+      expense.customName.toLowerCase().includes(this.expenseSearchTerm.toLowerCase())
+    );
+    this.currentPageExpenses = 1;
+    this.updateTotalPagesExpenses();
+  }
+
+  clearExpensesSearch(): void {
+    this.expenseSearchTerm = '';
+    this.filterExpenses();
   }
 
   fetchExpenseTypes(): void {
@@ -186,30 +232,28 @@ export class MainBudgetComponent implements OnInit {
       error: (err) => this.handleError('Error al obtener gastos diarios', err),
       complete: () => (this.isLoading = false)
     });
+    this.updateTotalPagesDailyExpenses();
   }
 
-  toggleSection(section: 'incomes' | 'expenses' | 'dailyExpenses'): void {
-    if (section === 'incomes') this.showIncomes = !this.showIncomes;
-    if (section === 'expenses') this.showExpenses = !this.showExpenses;
-    if (section === 'dailyExpenses') this.showDailyExpenses = !this.showDailyExpenses;
+  updateTotalPagesDailyExpenses(): void {
+    this.totalPagesDailyExpenses = Math.ceil(this.filteredDailyExpenses.length / this.pageSizeDailyExpenses);
   }
 
-  filterIncomes(): void {
-    this.filteredIncomes = this.incomes.filter((income) =>
-      income.name.toLowerCase().includes(this.incomeSearchTerm.toLowerCase())
-    );
-  }
-
-  filterExpenses(): void {
-    this.filteredExpenses = this.expenses.filter((expense) =>
-      expense.customName.toLowerCase().includes(this.expenseSearchTerm.toLowerCase())
-    );
+  getPagesDailyExpenses(): number[] {
+    return Array.from({ length: this.totalPagesDailyExpenses }, (_, i) => i + 1);
   }
 
   filterDailyExpenses(): void {
     this.filteredDailyExpenses = this.dailyExpenses.filter((dailyExpense) =>
       dailyExpense.customName.toLowerCase().includes(this.dailyExpenseSearchTerm.toLowerCase())
     );
+    this.currentPageDailyExpenses = 1; // Reset paginación al filtrar
+    this.updateTotalPagesDailyExpenses();
+  }
+
+  clearDailyExpensesSearch(): void {
+    this.dailyExpenseSearchTerm = '';
+    this.filterDailyExpenses();
   }
 
   startEditingBudget(): void {
@@ -322,7 +366,7 @@ export class MainBudgetComponent implements OnInit {
   private handleError(message: string, error: any): void {
     console.error(message, error);
     this.toastr.error(`${message}. Por favor, intente de nuevo.`, 'Error', { timeOut: 3000 });
-    this.isLoading = false
+    this.isLoading = false;
   }
 
   private isRecentBudgetValid(): boolean {
@@ -385,140 +429,6 @@ export class MainBudgetComponent implements OnInit {
     }
   }
 
-  // Método para iniciar el proceso de agregar un ingreso
-  startAddingIncome(): void {
-    this.isAddingIncome = true;
-    this.newIncome = {};
-  }
-
-  saveNewIncome(): void {
-    if (!this.newIncome.name || !this.newIncome.amount || !this.recentBudget?.budgetId) {
-      this.toastr.error('Por favor completa todos los campos.', 'Error');
-      return;
-    }
-
-    const incomeRequest = {
-      budgetId: this.recentBudget.budgetId,
-      name: this.newIncome.name,
-      amount: this.newIncome.amount
-    };
-
-    this.isLoading = true;
-    this.budgetsService.addIncome(incomeRequest).subscribe({
-      next: () => {
-        this.handleSuccess('Ingreso agregado con éxito');
-        this.isAddingIncome = false;
-        this.fetchBudget();
-        this.fetchIncomes(this.recentBudget?.budgetId!);
-      },
-      error: (err) => this.handleError('Error al agregar ingreso', err),
-      complete: () => (this.isLoading = false)
-    });
-  }
-
-  // Método para cancelar el proceso de agregar un ingreso
-  cancelAddingIncome(): void {
-    this.isAddingIncome = false;
-    this.newIncome = {};
-  }
-
-  // Repetir lógica para Gastos y Gastos Diarios
-  startAddingExpense(): void {
-    this.isAddingExpense = true;
-    this.newExpense = {};
-  }
-
-  saveNewExpense(): void {
-    if (!this.newExpense.customName || !this.newExpense.budgetedAmount || !this.recentBudget?.budgetId) {
-      this.toastr.error('Por favor completa todos los campos.', 'Error');
-      return;
-    }
-
-    const expenseRequest = {
-      budgetId: this.recentBudget.budgetId,
-      customName: this.newExpense.customName,
-      budgetedAmount: this.newExpense.budgetedAmount,
-      expenseTypeId: this.newExpense.expenseTypeId ?? 0
-    };
-
-    this.isLoading = true;
-    this.budgetsService.addExpense(expenseRequest).subscribe({
-      next: () => {
-        this.handleSuccess('Gasto agregado con éxito');
-        this.isAddingExpense = false;
-        this.fetchBudget();
-        this.fetchExpenses(this.recentBudget?.budgetId!);
-      },
-      error: (err) => this.handleError('Error al agregar gasto', err),
-      complete: () => (this.isLoading = false)
-    });
-  }
-
-  cancelAddingExpense(): void {
-    this.isAddingExpense = false;
-    this.newExpense = {};
-  }
-
-  // Similar para Gastos Diarios
-  startAddingDailyExpense(): void {
-    this.isAddingDailyExpense = true;
-    this.newDailyExpense = {};
-  }
-
-  saveNewDailyExpense(): void {
-    if (
-      !this.newDailyExpense.expenseBudgetDetailId ||
-      !this.newDailyExpense.paymentDate ||
-      !this.newDailyExpense.amount ||
-      !this.newDailyExpense.paymentMethodId ||
-      !this.newDailyExpense.detail ||
-      !this.recentBudget?.budgetId
-    ) {
-      this.toastr.error('Por favor completa todos los campos.', 'Error');
-      return;
-    }
-
-    const dailyExpenseRequest = {
-      budgetId: this.recentBudget.budgetId,
-      expenseBudgetDetailId: this.newDailyExpense.expenseBudgetDetailId,
-      paymentDate: this.newDailyExpense.paymentDate,
-      amount: this.newDailyExpense.amount,
-      paymentMethodId: this.newDailyExpense.paymentMethodId,
-      detail: this.newDailyExpense.detail,
-      expenseTypeId: this.newDailyExpense.expenseTypeId ?? null
-    };
-
-    this.isLoading = true;
-    this.budgetsService.addDailyExpense(dailyExpenseRequest).subscribe({
-      next: () => {
-        this.handleSuccess('Gasto diario agregado con éxito');
-        this.isAddingDailyExpense = false;
-        this.fetchBudget();
-        this.fetchExpenses(this.recentBudget?.budgetId!);
-        this.fetchDailyExpenses(this.recentBudget?.budgetId!);
-      },
-      error: (err) => this.handleError('Error al agregar gasto diario', err),
-      complete: () => (this.isLoading = false)
-    });
-  }
-
-  cancelAddingDailyExpense(): void {
-    this.isAddingDailyExpense = false;
-    this.newDailyExpense = {};
-  }
-
-  toggleAccordion(panelId: string): void {
-    if (this.expandedPanels.has(panelId)) {
-      this.expandedPanels.delete(panelId);
-    } else {
-      this.expandedPanels.add(panelId);
-    }
-  }
-
-  isExpanded(panelId: string): boolean {
-    return this.expandedPanels.has(panelId);
-  }
-
   confirmDeleteBudget(): void {
     if (!this.recentBudget || !this.recentBudget.budgetId) {
       this.toastr.error('No hay un presupuesto seleccionado para eliminar.', 'Error');
@@ -537,16 +447,35 @@ export class MainBudgetComponent implements OnInit {
     this.isLoading = true;
     this.budgetsService.deleteBudget(this.userId, budgetId).subscribe({
       next: () => {
-        this.toastr.success('Presupuesto eliminado con éxito.', 'Éxito');
-        this.isLoading = false;
+        this.handleSuccess('Presupuesto eliminado con éxito');
         this.fetchBudgets();
-      },
-      error: (err) => {
-        console.error('Error al eliminar el presupuesto:', err);
-        this.toastr.error('Ocurrió un error al eliminar el presupuesto.', 'Error');
         this.isLoading = false;
-      }
+      },
+      error: (err) => this.handleError('Error al eliminar el presupuesto', err),
+      complete: () => (this.isLoading = false),
     });
+  }
+
+  openCreatingBudgetModal(): void {
+      this.isCreatingBudgetModalVisible = true;
+  }
+
+  closeCreatingBudgetModal(event: any): void {
+    this.fetchBudgets();
+    this.isCreatingBudgetModalVisible = false;
+  }
+
+  openEditingBudgetModal(): void {
+    if (this.recentBudget) {
+      this.isEditingBudgetModalVisible = true;
+    } else {
+      this.toastr.error('Debe seleccionar un presupuesto para editar.', 'Error');
+    }
+  }
+
+  closeEdditingBudgetModal(event: any): void {
+    this.fetchBudgets();
+    this.isEditingBudgetModalVisible = false;
   }
 
   openCloneModal(): void {
@@ -610,4 +539,5 @@ export class MainBudgetComponent implements OnInit {
       this.fetchDailyExpenses(this.recentBudget?.budgetId!);
     }
   }
+
 }

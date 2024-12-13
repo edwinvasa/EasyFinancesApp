@@ -1,5 +1,5 @@
-<div class="container mt-4">
-  <h2>Agregar Ingreso</h2>
+<div class="container mt-2">
+  <h4>Agregar Ingreso</h4>
   <form (ngSubmit)="addIncome()" #incomeForm="ngForm">
     <div class="mb-3">
       <label for="name" class="form-label">Nombre del Ingreso</label>
@@ -27,7 +27,7 @@
 
     <div class="d-flex justify-content-between">
       <button type="submit" class="btn btn-primary" [disabled]="!incomeForm.valid">
-        Agregar Ingreso
+        Agregar
       </button>
       <button type="button" class="btn btn-secondary" (click)="cancel()">
         Cancelar

@@ -1,5 +1,5 @@
-<div class="container mt-4">
-  <h2>Agregar Gasto</h2>
+<div class="container mt-2">
+  <h4>Agregar Gasto</h4>
   <form (ngSubmit)="addExpense()" #expenseForm="ngForm">
     <div class="mb-3">
       <label for="customName" class="form-label">Nombre del Gasto</label>
@@ -42,7 +42,7 @@
 
     <div class="d-flex justify-content-between">
       <button type="submit" class="btn btn-primary" [disabled]="!expenseForm.valid">
-        Agregar Gasto
+        Agregar
       </button>
       <button type="button" class="btn btn-secondary" (click)="cancel()">
         Cancelar

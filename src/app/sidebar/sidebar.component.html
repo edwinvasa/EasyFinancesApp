@@ -5,17 +5,17 @@
   </a>
   <hr>
   <ul class="nav nav-pills flex-column mb-auto">
-    <li class="nav-item" *ngIf="!isAuthenticated">
+    <li class="nav-item">
       <a routerLink="/register" routerLinkActive="active" class="nav-link link-dark" aria-current="page">
         Registrarse
       </a>
     </li>
-    <li class="nav-item" *ngIf="!isAuthenticated">
+    <li class="nav-item">
       <a routerLink="/login" routerLinkActive="active" class="nav-link link-dark" aria-current="page">
         Iniciar Sesión
       </a>
     </li>
-    <li class="nav-item" *ngIf="isAuthenticated">
+    <li class="nav-item">
       <a (click)="logout()" class="nav-link link-dark" aria-current="page">
         Cerrar Sesión
       </a>
