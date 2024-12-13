@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { BudgetsService } from '../../services/budgets.service';
 
 @Component({
@@ -8,21 +7,19 @@ import { BudgetsService } from '../../services/budgets.service';
   styleUrls: ['./add-income.component.css']
 })
 export class AddIncomeComponent implements OnInit {
-  budgetId: string | null = null;
+  @Input() budgetId: string | null = null;
+  @Output() closeModal = new EventEmitter<void>();
+
   incomeData = {
     name: '',
     amount: 0
   };
 
   constructor(
-    private route: ActivatedRoute,
     private budgetsService: BudgetsService,
-    private router: Router
   ) {}
 
-  ngOnInit(): void {
-    this.budgetId = this.route.snapshot.paramMap.get('budgetId');
-  }
+  ngOnInit(): void {}
 
   addIncome(): void {
     if (!this.budgetId) return;
@@ -35,12 +32,16 @@ export class AddIncomeComponent implements OnInit {
     this.budgetsService.addIncome(incomeRequest).subscribe({
       next: () => {
         alert('Ingreso agregado con éxito');
-        this.router.navigate([`/budgets/incomes/${this.budgetId}`]);
+        this.closeModal.emit();
       },
       error: (err) => {
         console.error('Error al agregar ingreso', err);
         alert('Ocurrió un error al agregar el ingreso');
       }
     });
+  }
+
+  cancel(): void {
+    this.closeModal.emit();
   }
 }

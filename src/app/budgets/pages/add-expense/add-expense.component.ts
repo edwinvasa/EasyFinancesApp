@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { BudgetsService } from '../../services/budgets.service';
 import { ExpenseTypeService } from '../../../economic-analysis/services/expense-type.service';
 import { ExpenseType } from '../../../economic-analysis/interfaces/expense-type.interface';
@@ -10,7 +9,9 @@ import { ExpenseType } from '../../../economic-analysis/interfaces/expense-type.
   styleUrls: ['./add-expense.component.css']
 })
 export class AddExpenseComponent implements OnInit {
-  budgetId: string | null = null;
+  @Input() budgetId: string | null = null;
+  @Output() closeModal = new EventEmitter<void>();
+
   expenseData = {
     customName: '',
     expenseTypeId: 0,
@@ -19,21 +20,18 @@ export class AddExpenseComponent implements OnInit {
   expenseTypes: ExpenseType[] = []; // Lista de tipos de gastos
 
   constructor(
-    private route: ActivatedRoute,
     private budgetsService: BudgetsService,
     private expenseTypeService: ExpenseTypeService,
-    private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.budgetId = this.route.snapshot.paramMap.get('budgetId');
     this.fetchExpenseTypes();
   }
 
   fetchExpenseTypes(): void {
     this.expenseTypeService.getExpenseTypes().subscribe({
       next: (types) => (this.expenseTypes = types),
-      error: (err) => console.error('Error al obtener tipos de gastos', err)
+      error: (err) => console.error('Error al obtener tipos de gastos', err),
     });
   }
 
@@ -42,18 +40,22 @@ export class AddExpenseComponent implements OnInit {
 
     const expenseRequest = {
       ...this.expenseData,
-      budgetId: this.budgetId
+      budgetId: this.budgetId,
     };
 
     this.budgetsService.addExpense(expenseRequest).subscribe({
       next: () => {
         alert('Gasto agregado con éxito');
-        this.router.navigate([`/budgets/expenses/${this.budgetId}`]);
+        this.closeModal.emit();
       },
       error: (err) => {
         console.error('Error al agregar el gasto', err);
         alert('Ocurrió un error al agregar el gasto');
-      }
+      },
     });
+  }
+
+  cancel(): void {
+    this.closeModal.emit();
   }
 }

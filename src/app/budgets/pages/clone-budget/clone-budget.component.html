@@ -60,8 +60,13 @@
       </div>
     </div>
 
-    <button type="submit" class="btn btn-primary" [disabled]="!cloneForm.valid">
-      Clonar Presupuesto
-    </button>
+    <div class="d-flex justify-content-between">
+      <button type="submit" class="btn btn-primary" [disabled]="!cloneForm.valid">
+        Clonar Presupuesto
+      </button>
+      <button type="button" class="btn btn-secondary" (click)="cancel()">
+        Cancelar
+      </button>
+    </div>
   </form>
 </div>

@@ -25,8 +25,13 @@
       />
     </div>
 
-    <button type="submit" class="btn btn-primary" [disabled]="!incomeForm.valid">
-      Agregar Ingreso
-    </button>
+    <div class="d-flex justify-content-between">
+      <button type="submit" class="btn btn-primary" [disabled]="!incomeForm.valid">
+        Agregar Ingreso
+      </button>
+      <button type="button" class="btn btn-secondary" (click)="cancel()">
+        Cancelar
+      </button>
+    </div>
   </form>
 </div>

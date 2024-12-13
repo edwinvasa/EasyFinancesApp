@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BudgetsService } from '../../services/budgets.service';
 import { PaymentMethodService, PaymentMethod } from '../../services/payment-method.service';
@@ -11,7 +11,9 @@ import { ExpenseType } from '../../../economic-analysis/interfaces/expense-type.
   styleUrls: ['./add-daily-expense.component.css']
 })
 export class AddDailyExpenseComponent implements OnInit {
-  budgetId: string | null = null;
+  @Input() budgetId: string | null = null;
+  @Output() closeModal = new EventEmitter<void>();
+
   dailyExpenseData = {
     expenseBudgetDetailId: 0,
     paymentDate: '',
@@ -25,15 +27,12 @@ export class AddDailyExpenseComponent implements OnInit {
   expenseTypes: ExpenseType[] = [];
 
   constructor(
-    private route: ActivatedRoute,
     private budgetsService: BudgetsService,
     private paymentMethodService: PaymentMethodService,
-    private expenseTypeService: ExpenseTypeService,
-    private router: Router
+    private expenseTypeService: ExpenseTypeService
   ) {}
 
   ngOnInit(): void {
-    this.budgetId = this.route.snapshot.paramMap.get('budgetId');
     if (this.budgetId) {
       this.fetchExpenseDetails(this.budgetId);
       this.fetchPaymentMethods();
@@ -73,12 +72,16 @@ export class AddDailyExpenseComponent implements OnInit {
     this.budgetsService.addDailyExpense(dailyExpenseRequest).subscribe({
       next: () => {
         alert('Gasto diario agregado con éxito');
-        this.router.navigate([`/budgets/daily-expenses/${this.budgetId}`]);
+        this.closeModal.emit();
       },
       error: (err) => {
         console.error('Error al agregar el gasto diario', err);
         alert('Ocurrió un error al agregar el gasto diario');
       }
     });
+  }
+
+  cancel(): void {
+    this.closeModal.emit();
   }
 }

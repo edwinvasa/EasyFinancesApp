@@ -17,7 +17,7 @@
     </div>
 
     <div class="mb-3">
-      <label for="expenseTypeId" class="form-label">¿desea especificar el tipo de gasto?</label>
+      <label for="expenseTypeId" class="form-label">¿Desea especificar el tipo de gasto? (opcional)</label>
       <select
         id="expenseTypeId"
         class="form-control"
@@ -70,19 +70,21 @@
     </div>
 
     <div class="mb-3">
-      <label for="detail" class="form-label">Detalle</label>
+      <label for="detail" class="form-label">Detalles (opcional)</label>
       <textarea
         id="detail"
         class="form-control"
         [(ngModel)]="dailyExpenseData.detail"
         name="detail"
         rows="3"
-        required
       ></textarea>
     </div>
 
-    <button type="submit" class="btn btn-primary" [disabled]="!dailyExpenseForm.valid">
-      Agregar Gasto Diario
-    </button>
+    <div class="d-flex justify-content-between">
+      <button type="submit" class="btn btn-primary" [disabled]="!dailyExpenseForm.valid">
+        Guardar
+      </button>
+      <button type="button" class="btn btn-secondary" (click)="cancel()">Cancelar</button>
+    </div>
   </form>
 </div>

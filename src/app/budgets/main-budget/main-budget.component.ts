@@ -66,6 +66,11 @@ export class MainBudgetComponent implements OnInit {
   expandedPanels: Set<string> = new Set();
   userId: string | null = '';
 
+  isCloneModalVisible = false;
+  isAddExpenseModalVisible = false;
+  isAddIncomeModalVisible = false;
+  isAddDailyExpenseModalVisible = false;
+
   constructor(private budgetsService: BudgetsService, private toastr: ToastrService, private expenseTypeService: ExpenseTypeService, private paymentMethodService: PaymentMethodService,
     private authService: AuthService, private router: Router
   ) {}
@@ -512,5 +517,97 @@ export class MainBudgetComponent implements OnInit {
 
   isExpanded(panelId: string): boolean {
     return this.expandedPanels.has(panelId);
+  }
+
+  confirmDeleteBudget(): void {
+    if (!this.recentBudget || !this.recentBudget.budgetId) {
+      this.toastr.error('No hay un presupuesto seleccionado para eliminar.', 'Error');
+      return;
+    }
+
+    const confirmation = confirm('¿Estás seguro de que deseas eliminar este presupuesto?');
+    if (confirmation) {
+      this.deleteBudget(this.recentBudget.budgetId);
+    }
+  }
+
+  deleteBudget(budgetId: string): void {
+    if (!this.userId) return;
+
+    this.isLoading = true;
+    this.budgetsService.deleteBudget(this.userId, budgetId).subscribe({
+      next: () => {
+        this.toastr.success('Presupuesto eliminado con éxito.', 'Éxito');
+        this.isLoading = false;
+        this.fetchBudgets();
+      },
+      error: (err) => {
+        console.error('Error al eliminar el presupuesto:', err);
+        this.toastr.error('Ocurrió un error al eliminar el presupuesto.', 'Error');
+        this.isLoading = false;
+      }
+    });
+  }
+
+  openCloneModal(): void {
+    if (this.recentBudget) {
+      this.isCloneModalVisible = true;
+    } else {
+      this.toastr.error('Debe seleccionar un presupuesto para clonar.', 'Error');
+    }
+  }
+
+  closeCloneModal(event: any): void {
+    this.fetchBudgets();
+    this.isCloneModalVisible = false;
+  }
+
+  openAddExpenseModal(): void {
+    if (this.recentBudget) {
+      this.isAddExpenseModalVisible = true;
+    } else {
+      this.toastr.error('Debe seleccionar un presupuesto antes de agregar gastos.', 'Error');
+    }
+  }
+
+  closeAddExpenseModal(event: any): void {
+    this.isAddExpenseModalVisible = false;
+    if (this.recentBudget?.budgetId) {
+      this.fetchBudget();
+      this.fetchExpenses(this.recentBudget?.budgetId!);
+    }
+  }
+
+  openAddIncomeModal(): void {
+    if (this.recentBudget) {
+      this.isAddIncomeModalVisible = true;
+    } else {
+      this.toastr.error('Debe seleccionar un presupuesto antes de agregar ingresos.', 'Error');
+    }
+  }
+
+  closeAddIncomeModal(event: any): void {
+    this.isAddIncomeModalVisible = false;
+    if (this.recentBudget?.budgetId) {
+      this.fetchBudget();
+      this.fetchIncomes(this.recentBudget?.budgetId!);
+    }
+  }
+
+  openAddDailyExpenseModal(): void {
+    if (this.recentBudget) {
+      this.isAddDailyExpenseModalVisible = true;
+    } else {
+      this.toastr.error('Debe seleccionar un presupuesto antes de agregar gastos diarios.', 'Error');
+    }
+  }
+
+  closeAddDailyExpenseModal(event: any): void {
+    this.isAddDailyExpenseModalVisible = false;
+    if (this.recentBudget?.budgetId) {
+      this.fetchBudget();
+      this.fetchExpenses(this.recentBudget?.budgetId!);
+      this.fetchDailyExpenses(this.recentBudget?.budgetId!);
+    }
   }
 }
