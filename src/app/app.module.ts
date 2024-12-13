@@ -2,7 +2,7 @@ import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
-import { provideHttpClient } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { registerLocaleData } from '@angular/common';
 import localeEsCO from '@angular/common/locales/es-CO';
@@ -19,6 +19,9 @@ import { UnsubscribeNotificationsComponent } from './info-tasas/unsubscribe-noti
 import { EconomicAnalysisModule } from './economic-analysis/economic-analysis.module';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { HomeComponent } from './pages/home/home.component';
+import { LoginComponent } from './components/auth/login/login.component';
+import { RegisterComponent } from './components/auth/register/register.component';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
   align: "right",
@@ -41,6 +44,8 @@ registerLocaleData(localeEsCO);
     UnsubscribeNotificationsComponent,
     SidebarComponent,
     HomeComponent,
+    LoginComponent,
+    RegisterComponent,
   ],
   imports: [
     BrowserModule,
@@ -50,12 +55,13 @@ registerLocaleData(localeEsCO);
     EconomicAnalysisModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot({
-      positionClass: 'toast-top-right', // Cambiar a 'toast-bottom-right' si prefieres
+      positionClass: 'toast-top-right',
       preventDuplicates: true,
-      timeOut: 3000 // Duración del mensaje en milisegundos
+      timeOut: 3000
     }),
   ],
   providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     provideHttpClient(),
     { provide: LOCALE_ID, useValue: 'es-CO' },
     { provide: CURRENCY_MASK_CONFIG, useValue: CustomCurrencyMaskConfig }

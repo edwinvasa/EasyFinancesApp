@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ChartOptions, ChartType, ChartData } from 'chart.js';
 import { BudgetsService } from '../../services/budgets.service';
+import { AuthService } from '../../../shared/services/auth.service';
 
 @Component({
   selector: 'app-income-expense-trends',
@@ -20,15 +21,22 @@ export class IncomeExpenseTrendsComponent implements OnInit {
   };
 
   isLoading: boolean = true;
-  userId: string = '6ba84529-1770-4caa-bbcf-db2f2a3db6ab';
+  userId: string | null = '';
 
-  constructor(private budgetsService: BudgetsService) {}
+  constructor(private budgetsService: BudgetsService, private authService: AuthService) {}
 
   ngOnInit(): void {
-    this.fetchBudgetData();
+    this.userId = this.authService.getUserIdFromToken();
+    if (this.userId) {
+      this.fetchBudgetData();
+    } else {
+      console.error('No se pudo obtener el usuario del token.', 'Error');
+    }
   }
 
   fetchBudgetData(): void {
+    if (!this.userId) return;
+
     this.budgetsService.getBudgetsByUser(this.userId).subscribe(budgets => {
       if (budgets.length > 0) {
         this.chartData.labels = budgets.map(b => `${b.month}/${b.year}`);

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BudgetsService } from '../../services/budgets.service';
 import { Budget } from '../../interfaces/budget.interface';
+import { AuthService } from '../../../shared/services/auth.service';
 
 @Component({
   selector: 'app-update-budget',
@@ -15,22 +16,31 @@ export class UpdateBudgetComponent implements OnInit {
     month: 1,
     year: new Date().getFullYear()
   };
-  userId: string = '6ba84529-1770-4caa-bbcf-db2f2a3db6ab'; // Reemplazar con usuario autenticado
+  userId: string | null = '';
 
   constructor(
     private route: ActivatedRoute,
     private budgetsService: BudgetsService,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
-    this.budgetId = this.route.snapshot.paramMap.get('budgetId');
-    if (this.budgetId) {
-      this.fetchBudgetData(this.budgetId);
+    this.userId = this.authService.getUserIdFromToken();
+    if (this.userId) {
+
+      this.budgetId = this.route.snapshot.paramMap.get('budgetId');
+      if (this.budgetId) {
+        this.fetchBudgetData(this.budgetId);
+      }
+    } else {
+      console.error('No se pudo obtener el usuario del token.', 'Error');
     }
   }
 
   fetchBudgetData(budgetId: string): void {
+    if (!this.userId) return;
+
     this.budgetsService.getBudgetById(this.userId, budgetId).subscribe({
       next: (budget) => {
         this.budgetData = {
@@ -48,7 +58,7 @@ export class UpdateBudgetComponent implements OnInit {
   }
 
   updateBudget(): void {
-    if (!this.budgetId) return;
+    if (!this.userId || !this.budgetId) return;
 
     const updateRequest = {
       ...this.budgetData

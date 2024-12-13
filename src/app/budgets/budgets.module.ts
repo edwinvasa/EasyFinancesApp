@@ -19,7 +19,6 @@ import { DailyExpensesListComponent } from './pages/daily-expenses-list/daily-ex
 import { AddDailyExpenseComponent } from './pages/add-daily-expense/add-daily-expense.component';
 import { UpdateDailyExpenseComponent } from './pages/update-daily-expense/update-daily-expense.component';
 import { MainBudgetComponent } from './main-budget/main-budget.component';
-import { BudgetChartsComponent } from './pages/budget-charts/budget-charts.component';
 import { NgChartsModule } from 'ng2-charts';
 import { BudgetPlanVsExecutedComponent } from './pages/budget-plan-vs-executed/budget-plan-vs-executed.component';
 import { ExpenseDistributionComponent } from './pages/expense-distribution/expense-distribution.component';
@@ -44,7 +43,6 @@ import { DailyExpenseTrendsComponent } from './pages/daily-expense-trends/daily-
     AddDailyExpenseComponent,
     UpdateDailyExpenseComponent,
     MainBudgetComponent,
-    BudgetChartsComponent,
     BudgetPlanVsExecutedComponent,
     ExpenseDistributionComponent,
     IncomeExpenseTrendsComponent,

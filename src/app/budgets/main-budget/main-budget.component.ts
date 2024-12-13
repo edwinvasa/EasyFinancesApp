@@ -8,6 +8,8 @@ import { ToastrService } from 'ngx-toastr';
 import { ExpenseType } from '../../economic-analysis/interfaces/expense-type.interface';
 import { PaymentMethod, PaymentMethodService } from '../services/payment-method.service';
 import { ExpenseTypeService } from '../../economic-analysis/services/expense-type.service';
+import { AuthService } from '../../shared/services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-main-budget',
@@ -62,15 +64,24 @@ export class MainBudgetComponent implements OnInit {
 
   //graficas
   expandedPanels: Set<string> = new Set();
-  userId: string = '6ba84529-1770-4caa-bbcf-db2f2a3db6ab';
+  userId: string | null = '';
 
-  constructor(private budgetsService: BudgetsService, private toastr: ToastrService, private expenseTypeService: ExpenseTypeService, private paymentMethodService: PaymentMethodService,) {}
+  constructor(private budgetsService: BudgetsService, private toastr: ToastrService, private expenseTypeService: ExpenseTypeService, private paymentMethodService: PaymentMethodService,
+    private authService: AuthService, private router: Router
+  ) {}
 
   ngOnInit(): void {
-    this.fetchBudgets();
+    this.userId = this.authService.getUserIdFromToken();
+    if (this.userId) {
+      this.fetchBudgets();
+    } else {
+      this.toastr.error('No se pudo obtener el usuario del token.', 'Error');
+    }
   }
 
   fetchBudgets(): void {
+    if (!this.userId) return;
+
     this.isLoading = true;
     this.budgetsService.getBudgetsByUser(this.userId).subscribe({
       next: (data) => {
@@ -81,11 +92,14 @@ export class MainBudgetComponent implements OnInit {
           this.onBudgetChange();
           this.fetchExpenseTypes();
           this.fetchPaymentMethods();
+        } else {
+          //this.router.navigate(['create']);
         }
       },
       error: (err) => this.handleError('Error al obtener presupuestos', err),
       complete: () => (this.isLoading = false),
     });
+    this.isLoading = false
   }
 
   onBudgetChange(): void {
@@ -106,6 +120,8 @@ export class MainBudgetComponent implements OnInit {
   }
 
   fetchBudget(): void {
+    if (!this.userId) return;
+
     this.isLoading = true;
     this.budgetsService.getBudgetById(this.userId, this.selectedBudgetId!).subscribe({
       next: (data) => {
@@ -203,6 +219,8 @@ export class MainBudgetComponent implements OnInit {
   }
 
   saveBudget(): void {
+    if (!this.userId) return;
+
     if (!this.recentBudget || !this.editableBudget) return;
 
     this.isLoading = true;
@@ -299,6 +317,7 @@ export class MainBudgetComponent implements OnInit {
   private handleError(message: string, error: any): void {
     console.error(message, error);
     this.toastr.error(`${message}. Por favor, intente de nuevo.`, 'Error', { timeOut: 3000 });
+    this.isLoading = false
   }
 
   private isRecentBudgetValid(): boolean {

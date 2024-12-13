@@ -5,6 +5,9 @@ import { SubscribeNotificationsComponent } from './info-tasas/subscribe-notifica
 import { UnsubscribeNotificationsComponent } from './info-tasas/unsubscribe-notifications/unsubscribe-notifications.component';
 import { HomeComponent } from './pages/home/home.component';
 import { MainBudgetComponent } from './budgets/main-budget/main-budget.component';
+import { LoginComponent } from './components/auth/login/login.component';
+import { RegisterComponent } from './components/auth/register/register.component';
+import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   {
@@ -12,10 +15,13 @@ const routes: Routes = [
     component: HomeComponent,
     pathMatch: 'full'
   },
-  { path: 'budget', component: MainBudgetComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
+  { path: 'budget', component: MainBudgetComponent, canActivate: [AuthGuard] },
   {
     path: 'budgets',
-    loadChildren: () => import('./budgets/budgets.module').then((m) => m.BudgetsModule)
+    loadChildren: () => import('./budgets/budgets.module').then((m) => m.BudgetsModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'credit-management',

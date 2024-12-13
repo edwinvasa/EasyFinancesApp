@@ -1,14 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BudgetsService } from '../../services/budgets.service';
 import { Budget } from '../../interfaces/budget.interface';
+import { AuthService } from '../../../shared/services/auth.service';
 
 @Component({
   selector: 'app-create-budget',
   templateUrl: './create-budget.component.html',
   styleUrls: ['./create-budget.component.css']
 })
-export class CreateBudgetComponent {
+export class CreateBudgetComponent implements OnInit {
   budget: Partial<Budget> = {
     description: '',
     month: new Date().getMonth() + 1,
@@ -16,11 +17,17 @@ export class CreateBudgetComponent {
   };
 
   // Esto debería venir de un sistema de autenticación
-  userId: string = '6ba84529-1770-4caa-bbcf-db2f2a3db6ab';
+  userId: string | null = '';
 
-  constructor(private budgetsService: BudgetsService, private router: Router) {}
+  constructor(private budgetsService: BudgetsService, private router: Router, private authService: AuthService) {}
+
+  ngOnInit(): void {
+    this.userId = this.authService.getUserIdFromToken();
+  }
 
   createBudget(): void {
+    if (!this.userId) return;
+
     const budgetRequest = {
       ...this.budget,
       userId: this.userId

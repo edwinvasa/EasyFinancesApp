@@ -27,6 +27,7 @@
     "@angular/router": "^18.2.0",
     "bootstrap": "^5.3.3",
     "chart.js": "^3.9.1",
+    "jwt-decode": "^3.1.2",
     "ng2-charts": "^4.0.1",
     "ng2-currency-mask": "^13.0.3",
     "ngx-toastr": "^19.0.0",

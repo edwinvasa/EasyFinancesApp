@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BudgetsService } from '../../services/budgets.service';
 import { Budget } from '../../interfaces/budget.interface';
+import { AuthService } from '../../../shared/services/auth.service';
 
 @Component({
   selector: 'app-budgets-list',
@@ -9,15 +10,22 @@ import { Budget } from '../../interfaces/budget.interface';
 })
 export class BudgetsListComponent implements OnInit {
   budgets: Budget[] = [];
-  userId: string = '6ba84529-1770-4caa-bbcf-db2f2a3db6ab';
+  userId: string | null = '';
 
-  constructor(private budgetsService: BudgetsService) {}
+  constructor(private budgetsService: BudgetsService, private authService: AuthService) {}
 
   ngOnInit(): void {
-    this.fetchBudgets();
+    this.userId = this.authService.getUserIdFromToken();
+    if (this.userId) {
+      this.fetchBudgets();
+    } else {
+      console.error('No se pudo obtener el usuario del token.', 'Error');
+    }
   }
 
   fetchBudgets(): void {
+    if (!this.userId) return;
+
     this.budgetsService.getBudgetsByUser(this.userId).subscribe({
       next: (data) => (this.budgets = data),
       error: (err) => console.error('Error al obtener presupuestos', err)
@@ -32,6 +40,8 @@ export class BudgetsListComponent implements OnInit {
   }
 
   deleteBudget(budgetId: string): void {
+    if (!this.userId) return;
+
     this.budgetsService.deleteBudget(this.userId, budgetId).subscribe({
       next: () => {
         alert('Presupuesto eliminado con éxito');

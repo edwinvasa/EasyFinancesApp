@@ -1,11 +1,25 @@
-<!-- Sidebar Component HTML -->
 <div class="sidebar p-3">
   <!-- Navegación -->
-  <a href="/EasyFinancesApp" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+  <a href="/EasyFinancesApp" class="d-flex align-items-center mb-3 mb-md-auto me-md-auto link-dark text-decoration-none">
     <span class="nav-link fs-5">Inicio</span>
   </a>
   <hr>
   <ul class="nav nav-pills flex-column mb-auto">
+    <li class="nav-item" *ngIf="!isAuthenticated">
+      <a routerLink="/register" routerLinkActive="active" class="nav-link link-dark" aria-current="page">
+        Registrarse
+      </a>
+    </li>
+    <li class="nav-item" *ngIf="!isAuthenticated">
+      <a routerLink="/login" routerLinkActive="active" class="nav-link link-dark" aria-current="page">
+        Iniciar Sesión
+      </a>
+    </li>
+    <li class="nav-item" *ngIf="isAuthenticated">
+      <a (click)="logout()" class="nav-link link-dark" aria-current="page">
+        Cerrar Sesión
+      </a>
+    </li>
     <li class="nav-item">
       <a routerLink="/credit-management" routerLinkActive="active" class="nav-link link-dark" aria-current="page">
         Gestión de Crédito

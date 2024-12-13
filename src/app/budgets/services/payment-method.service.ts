@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { AuthService } from '../../shared/services/auth.service';
+import { BaseService } from '../../shared/services/base.service';
 
 export interface PaymentMethod {
   paymentMethodId: number;
@@ -10,17 +12,15 @@ export interface PaymentMethod {
 @Injectable({
   providedIn: 'root'
 })
-export class PaymentMethodService {
-  private readonly apiUrl = 'http://localhost:8080/api/queries/payment-methods';
+export class PaymentMethodService extends BaseService {
+  private readonly apiUrl = 'https://easy-finances-app-63cef07822fc.herokuapp.com/api/queries/payment-methods';
 
-  constructor(private readonly http: HttpClient) {}
+  constructor(http: HttpClient, authService: AuthService) {
+    super(http, authService);
+  }
 
   getPaymentMethods(): Observable<PaymentMethod[]> {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      Authorization: 'Basic YWRtaW46cGFzc3dvcmQ='
-    });
-
+    const headers = this.getAuthHeaders();
     return this.http.get<PaymentMethod[]>(this.apiUrl, { headers });
   }
 }

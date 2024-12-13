@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BudgetsService } from '../../services/budgets.service';
 import { Budget } from '../../interfaces/budget.interface';
+import { AuthService } from '../../../shared/services/auth.service';
 
 @Component({
   selector: 'app-clone-budget',
@@ -17,22 +18,30 @@ export class CloneBudgetComponent implements OnInit {
     cloneIncomeDetails: true
   };
 
-  userId: string = '6ba84529-1770-4caa-bbcf-db2f2a3db6ab'; // ID del usuario autenticado
+  userId: string | null = '';
 
   constructor(
     private route: ActivatedRoute,
     private budgetsService: BudgetsService,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
-    const budgetId = this.route.snapshot.paramMap.get('budgetId');
-    if (budgetId) {
-      this.fetchBudgetToClone(budgetId);
+    this.userId = this.authService.getUserIdFromToken();
+    if (this.userId) {
+      const budgetId = this.route.snapshot.paramMap.get('budgetId');
+      if (budgetId) {
+        this.fetchBudgetToClone(budgetId);
+      }
+    } else {
+      console.error('No se pudo obtener el usuario del token.', 'Error');
     }
   }
 
   fetchBudgetToClone(budgetId: string): void {
+    if (!this.userId) return;
+
     this.budgetsService.getBudgetById(this.userId, budgetId).subscribe({
       next: (budget) => (this.budgetToClone = budget),
       error: (err) => {

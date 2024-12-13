@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ChartOptions, ChartType, ChartData } from 'chart.js';
 import { BudgetsService } from '../../services/budgets.service';
+import { AuthService } from '../../../shared/services/auth.service';
 
 @Component({
   selector: 'app-non-budgeted-expenses',
@@ -18,17 +19,24 @@ export class NonBudgetedExpensesComponent implements OnInit {
     labels: [],
     datasets: [],
   };
-  userId: string = '6ba84529-1770-4caa-bbcf-db2f2a3db6ab';
+  userId: string | null = '';
 
   isLoading: boolean = true;
 
-  constructor(private budgetsService: BudgetsService) {}
+  constructor(private budgetsService: BudgetsService, private authService: AuthService) {}
 
   ngOnInit(): void {
-    this.processData();
+    this.userId = this.authService.getUserIdFromToken();
+    if (this.userId) {
+      this.processData();
+    } else {
+      console.error('No se pudo obtener el usuario del token.', 'Error');
+    }
   }
 
   processData(): void {
+    if (!this.userId) return;
+
     this.budgetsService.getBudgetsByUser(this.userId).subscribe(budgets => {
       if (budgets.length > 0) {
         this.chartData.labels = budgets.map(b => `${b.month}/${b.year}`);
