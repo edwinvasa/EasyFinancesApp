@@ -15,7 +15,7 @@
     "delete:docs": "rm -rf docs",
     "delete:docs:win": "del docs",
     "copy:dist:browser": "copyfiles dist/easy-finances/browser/* ./docs -f",
-    "heroku-postbuild": "npm install --legacy-bundling && ng build --configuration production"
+    "heroku-postbuild": "npm install --legacy-peer-deps && ng build --configuration production"
   },
   "private": true,
   "dependencies": {
