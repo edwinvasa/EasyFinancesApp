@@ -3,8 +3,9 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
+    "start": "node  serve.js",
+    "start:dev": "ng serve",
+    "build": "ng build --configuration production",
     "build:href": "ng build --base-href /EasyFinancesApp/",
     "build:github": "npm run delete:docs && npm run build:href && npm run copy:dist:browser",
     "build:github:win": "npm run delete:docs:win && npm run build:href && npm run copy:dist:browser",
@@ -13,11 +14,13 @@
     "test": "ng test --code-coverage --coverageReporters=lcov",
     "delete:docs": "rm -rf docs",
     "delete:docs:win": "del docs",
-    "copy:dist:browser": "copyfiles dist/easy-finances/browser/* ./docs -f"
+    "copy:dist:browser": "copyfiles dist/easy-finances/browser/* ./docs -f",
+    "heroku-postbuild": "npm install --legacy-bundling && ng build --configuration production"
   },
   "private": true,
   "dependencies": {
     "@angular/animations": "^18.2.9",
+    "@angular/cdk": "^18.2.13",
     "@angular/common": "^18.2.0",
     "@angular/compiler": "^18.2.0",
     "@angular/core": "^18.2.0",
@@ -27,6 +30,7 @@
     "@angular/router": "^18.2.0",
     "bootstrap": "^5.3.3",
     "chart.js": "^3.9.1",
+    "express": "^4.21.2",
     "jwt-decode": "^3.1.2",
     "ng2-charts": "^4.0.1",
     "ng2-currency-mask": "^13.0.3",
@@ -53,5 +57,9 @@
     "karma-jasmine-html-reporter": "^2.0.0",
     "nyc": "^17.1.0",
     "typescript": "~5.5.2"
+  },
+  "engines": {
+    "node": "20.x",
+    "npm": ">=8.x"
   }
 }
