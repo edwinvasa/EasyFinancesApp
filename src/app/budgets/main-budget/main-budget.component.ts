@@ -58,6 +58,14 @@ export class MainBudgetComponent implements OnInit {
   isAddIncomeModalVisible = false;
   isAddDailyExpenseModalVisible = false;
 
+  //visualización de columnas
+  showBudgetedColumn: boolean = true;
+  showPendingColumn: boolean = true;
+  showPaidColumn: boolean = true;
+
+  expandedDailyExpenseId: number | null = null; // Rastrea la fila expandida
+
+
   // Variables para paginación ingresos
   pageSize: number = 5;
   currentPage: number = 1;
@@ -538,6 +546,10 @@ export class MainBudgetComponent implements OnInit {
       this.fetchExpenses(this.recentBudget?.budgetId!);
       this.fetchDailyExpenses(this.recentBudget?.budgetId!);
     }
+  }
+
+  toggleDailyExpenseDetails(id: number): void {
+    this.expandedDailyExpenseId = this.expandedDailyExpenseId === id ? null : id;
   }
 
 }

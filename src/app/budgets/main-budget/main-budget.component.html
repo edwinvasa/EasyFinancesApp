@@ -179,22 +179,29 @@
     <div class="tab-content mt-3" id="budgetTabsContent">
       <!-- Tab de Ingresos -->
       <div class="tab-pane fade show active" id="incomes" role="tabpanel" aria-labelledby="incomes-tab">
-        <!-- <div *ngIf="showIncomes" class="mt-3"> -->
         <div class="mt-3">
           <div class="d-flex justify-content-between align-items-center mb-3">
-            <input
-              type="text"
-              class="form-control me-3"
-              placeholder="Buscar ingresos..."
-              [(ngModel)]="incomeSearchTerm"
-              (ngModelChange)="filterIncomes()"
-              style="max-width: 300px;"
-            />
-            <button class="btn btn-primary btn-sm" (click)="clearIncomeSearch()">
-              <i class="fas fa-times"></i>
-            </button>
+            <div class="input-group" style="max-width: 400px;">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Buscar ingresos..."
+                [(ngModel)]="incomeSearchTerm"
+                (ngModelChange)="filterIncomes()"
+              />
+              <button
+                class="btn btn-outline-secondary"
+                type="button"
+                (click)="clearIncomeSearch()"
+                [disabled]="!incomeSearchTerm"
+              >
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+
+            <!-- Botón de agregar -->
             <button class="btn btn-success" (click)="openAddIncomeModal()">
-              <i class="fas fa-plus"></i>
+              Agregar Ingreso
             </button>
             <!-- Modal para agregar ingresos -->
             <div class="modal-overlay" *ngIf="isAddIncomeModalVisible">
@@ -266,78 +273,103 @@
       <div class="tab-pane fade" id="expenses" role="tabpanel" aria-labelledby="expenses-tab">
         <div class="mt-3">
           <div class="d-flex justify-content-between mb-3">
-            <input
-              type="text"
-              class="form-control w-50"
-              placeholder="Buscar gastos..."
-              [(ngModel)]="expenseSearchTerm"
-              (ngModelChange)="filterExpenses()"
-              style="max-width: 300px;"
-            />
-            <button class="btn btn-primary btn-sm" (click)="clearExpensesSearch()">
-              <i class="fas fa-times"></i>
-            </button>
-            <button class="btn btn-success" (click)="openAddExpenseModal()">
-              <i class="fas fa-plus"></i>
-            </button>
-            <!-- Modal para agregar gastos -->
-            <div class="modal-overlay" *ngIf="isAddExpenseModalVisible">
-              <div class="modal-content">
-                <div class="modal-body">
-                  <app-add-expense
-                    [budgetId]="recentBudget?.budgetId!"
-                    (closeModal)="closeAddExpenseModal($event)"
-                  ></app-add-expense>
-                </div>
-              </div>
+            <div class="input-group" style="max-width: 400px;">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Buscar gastos..."
+                [(ngModel)]="expenseSearchTerm"
+                (ngModelChange)="filterExpenses()"
+              />
+              <button
+                class="btn btn-outline-secondary"
+                type="button"
+                (click)="clearExpensesSearch()"
+                [disabled]="!expenseSearchTerm"
+              >
+                <i class="fas fa-trash"></i>
+              </button>
             </div>
+
+            <button class="btn btn-success" (click)="openAddExpenseModal()">
+              Agregar Gasto
+            </button>
           </div>
-          <table class="table table-striped table-hover">
-            <thead>
-              <tr>
-                <th>Descripción</th>
-                <th class="text-end">Presupuestado</th>
-                <th class="text-end">Pendiente</th>
-                <th class="text-end">Pagado</th>
-                <th class="text-center">Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let expense of filteredExpenses | slice: (currentPageExpenses - 1) * pageSizeExpenses : currentPageExpenses * pageSizeExpenses">
-                <td>
-                  <span *ngIf="editingExpenseId !== expense.expenseBudgetDetailId">{{ expense.customName }}</span>
-                  <input *ngIf="editingExpenseId === expense.expenseBudgetDetailId" type="text" [(ngModel)]="expense.customName" class="form-control" />
-                </td>
-                <td class="text-end">
-                  <span *ngIf="editingExpenseId !== expense.expenseBudgetDetailId">{{ expense.budgetedAmount | customCurrency }}</span>
-                  <input *ngIf="editingExpenseId === expense.expenseBudgetDetailId" type="number" [(ngModel)]="expense.budgetedAmount" class="form-control" />
-                </td>
-                <td class="text-end">
-                  <span *ngIf="editingExpenseId !== expense.expenseBudgetDetailId">{{ expense.pendingPayment | customCurrency }}</span>
-                </td>
-                <td class="text-end">
-                  <span *ngIf="editingExpenseId !== expense.expenseBudgetDetailId">{{ expense.amountPaid| customCurrency }}</span>
-                </td>
-                <td class="text-center">
-                  <ng-container *ngIf="editingExpenseId !== expense.expenseBudgetDetailId">
-                    <button class="btn btn-link text-warning btn-sm" (click)="startEditingExpense(expense.expenseBudgetDetailId)">
-                      <i class="fas fa-pencil-alt"></i>
-                    </button>
-                    <button class="btn btn-link text-danger btn-sm" (click)="deleteExpense(expense.expenseBudgetDetailId)">
-                      <i class="fas fa-trash"></i>
-                    </button>
-                  </ng-container>
-                  <ng-container *ngIf="editingExpenseId === expense.expenseBudgetDetailId">
-                    <button class="btn btn-success btn-sm" (click)="saveExpense(expense)" [disabled]="isLoading">
-                      <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                      <span *ngIf="!isLoading">Guardar</span>
-                    </button>
-                    <button class="btn btn-secondary btn-sm" (click)="cancelEditing()">Cancelar</button>
-                  </ng-container>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+
+          <!-- Opciones para mostrar/ocultar columnas -->
+          <div class="mb-3">
+            <label class="form-check-inline">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                [(ngModel)]="showBudgetedColumn"
+              /> Mostrar "Presupuestado"
+            </label>
+            <label class="form-check-inline">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                [(ngModel)]="showPendingColumn"
+              /> Mostrar "Pendiente"
+            </label>
+            <label class="form-check-inline">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                [(ngModel)]="showPaidColumn"
+              /> Mostrar "Pagado"
+            </label>
+          </div>
+
+          <!-- Contenedor para la tabla con desplazamiento horizontal -->
+          <div class="table-responsive">
+            <table class="table table-hover table-striped">
+              <thead class="table-primary">
+                <tr>
+                  <th>Descripción</th>
+                  <th class="text-end" *ngIf="showBudgetedColumn">Presupuestado</th>
+                  <th class="text-end" *ngIf="showPendingColumn">Pendiente</th>
+                  <th class="text-end" *ngIf="showPaidColumn">Pagado</th>
+                  <th class="text-center">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let expense of filteredExpenses | slice: (currentPageExpenses - 1) * pageSizeExpenses : currentPageExpenses * pageSizeExpenses">
+                  <td>
+                    <span *ngIf="editingExpenseId !== expense.expenseBudgetDetailId">{{ expense.customName }}</span>
+                    <input *ngIf="editingExpenseId === expense.expenseBudgetDetailId" type="text" [(ngModel)]="expense.customName" class="form-control" />
+                  </td>
+                  <td class="text-end" *ngIf="showBudgetedColumn">
+                    <span *ngIf="editingExpenseId !== expense.expenseBudgetDetailId">{{ expense.budgetedAmount | customCurrency }}</span>
+                    <input *ngIf="editingExpenseId === expense.expenseBudgetDetailId" type="number" [(ngModel)]="expense.budgetedAmount" class="form-control" />
+                  </td>
+                  <td class="text-end" *ngIf="showPendingColumn">
+                    <span *ngIf="editingExpenseId !== expense.expenseBudgetDetailId">{{ expense.pendingPayment | customCurrency }}</span>
+                  </td>
+                  <td class="text-end" *ngIf="showPaidColumn">
+                    <span *ngIf="editingExpenseId !== expense.expenseBudgetDetailId">{{ expense.amountPaid | customCurrency }}</span>
+                  </td>
+                  <td class="text-center">
+                    <ng-container *ngIf="editingExpenseId !== expense.expenseBudgetDetailId">
+                      <button class="btn btn-link text-warning btn-sm" (click)="startEditingExpense(expense.expenseBudgetDetailId)">
+                        <i class="fas fa-pencil-alt"></i>
+                      </button>
+                      <button class="btn btn-link text-danger btn-sm" (click)="deleteExpense(expense.expenseBudgetDetailId)">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </ng-container>
+                    <ng-container *ngIf="editingExpenseId === expense.expenseBudgetDetailId">
+                      <button class="btn btn-success btn-sm" (click)="saveExpense(expense)" [disabled]="isLoading">
+                        <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        <span *ngIf="!isLoading">Guardar</span>
+                      </button>
+                      <button class="btn btn-secondary btn-sm" (click)="cancelEditing()">Cancelar</button>
+                    </ng-container>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
           <nav aria-label="Gastos Presupuestados Paginación" class="mt-3">
             <ul class="pagination justify-content-center">
               <li class="page-item" [class.disabled]="currentPageExpenses === 1">
@@ -357,20 +389,27 @@
       <!-- Tab de Gastos Diarios -->
       <div class="tab-pane fade" id="daily-expenses" role="tabpanel" aria-labelledby="daily-expenses-tab">
         <div class="mt-3">
-          <div class="d-flex justify-content-between mb-3">
-            <input
-              type="text"
-              class="form-control w-50"
-              placeholder="Buscar gastos diarios..."
-              [(ngModel)]="dailyExpenseSearchTerm"
-              (ngModelChange)="filterDailyExpenses()"
-              style="max-width: 300px;"
-            />
-            <button class="btn btn-primary btn-sm" (click)="clearDailyExpensesSearch()">
-              <i class="fas fa-times"></i>
-            </button>
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="input-group" style="max-width: 400px;">
+                <input
+                type="text"
+                class="form-control"
+                placeholder="Buscar gastos diarios..."
+                [(ngModel)]="dailyExpenseSearchTerm"
+                (ngModelChange)="filterDailyExpenses()"
+              />
+              <button
+                class="btn btn-outline-secondary"
+                type="button"
+                (click)="clearDailyExpensesSearch()"
+                [disabled]="!dailyExpenseSearchTerm"
+              >
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+
             <button class="btn btn-success" (click)="openAddDailyExpenseModal()">
-              <i class="fas fa-plus"></i>
+              Agregar gasto diario
             </button>
             <!-- Modal para agregar gastos diarios -->
             <div class="modal-overlay" *ngIf="isAddDailyExpenseModalVisible">
@@ -386,7 +425,7 @@
 
           </div>
           <table class="table table-striped table-hover">
-            <thead>
+            <thead class="table-primary">
               <tr>
                 <th>Descripción</th>
                 <th class="text-end">Monto</th>
@@ -394,33 +433,56 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let dailyExpense of filteredDailyExpenses | slice: (currentPageDailyExpenses - 1) * pageSizeDailyExpenses : currentPageDailyExpenses * pageSizeDailyExpenses">
-                <td>
-                  <span *ngIf="editingDailyExpenseId !== dailyExpense.dailyExpenseRecordId">{{ dailyExpense.customName }}</span>
-                  <input *ngIf="editingDailyExpenseId === dailyExpense.dailyExpenseRecordId" type="text" [(ngModel)]="dailyExpense.customName" class="form-control" />
-                </td>
-                <td class="text-end">
-                  <span *ngIf="editingDailyExpenseId !== dailyExpense.dailyExpenseRecordId">{{ dailyExpense.amount | customCurrency }}</span>
-                  <input *ngIf="editingDailyExpenseId === dailyExpense.dailyExpenseRecordId" type="number" [(ngModel)]="dailyExpense.amount" class="form-control" />
-                </td>
-                <td class="text-center">
-                  <ng-container *ngIf="editingDailyExpenseId !== dailyExpense.dailyExpenseRecordId">
-                    <button class="btn btn-link text-warning btn-sm" (click)="startEditingDailyExpense(dailyExpense.dailyExpenseRecordId)">
-                      <i class="fas fa-pencil-alt"></i>
-                    </button>
-                    <button class="btn btn-link text-danger btn-sm" (click)="deleteDailyExpense(dailyExpense.dailyExpenseRecordId, dailyExpense.expenseBudgetDetailId)">
-                      <i class="fas fa-trash"></i>
-                    </button>
-                  </ng-container>
-                  <ng-container *ngIf="editingDailyExpenseId === dailyExpense.dailyExpenseRecordId">
-                    <button class="btn btn-success btn-sm" (click)="saveDailyExpense(dailyExpense)" [disabled]="isLoading">
-                      <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                      <span *ngIf="!isLoading">Guardar</span>
-                    </button>
-                    <button class="btn btn-secondary btn-sm" (click)="cancelEditing()">Cancelar</button>
-                  </ng-container>
-                </td>
-              </tr>
+              <ng-container *ngFor="let dailyExpense of filteredDailyExpenses | slice: (currentPageDailyExpenses - 1) * pageSizeDailyExpenses : currentPageDailyExpenses * pageSizeDailyExpenses">
+                <!-- Fila Principal -->
+                <tr>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <button
+                        class="btn btn-link p-0 me-2"
+                        (click)="toggleDailyExpenseDetails(dailyExpense.dailyExpenseRecordId)"
+                        [attr.aria-expanded]="expandedDailyExpenseId === dailyExpense.dailyExpenseRecordId"
+                      >
+                        <i
+                          class="fas"
+                          [ngClass]="expandedDailyExpenseId === dailyExpense.dailyExpenseRecordId ? 'fa-chevron-down' : 'fa-chevron-right'"
+                        ></i>
+                      </button>
+                      <span *ngIf="editingDailyExpenseId !== dailyExpense.dailyExpenseRecordId">{{ dailyExpense.customName }}</span>
+                      <input *ngIf="editingDailyExpenseId === dailyExpense.dailyExpenseRecordId" type="text" [(ngModel)]="dailyExpense.customName" class="form-control" />
+                    </div>
+                  </td>
+                  <td class="text-end">
+                    <span *ngIf="editingDailyExpenseId !== dailyExpense.dailyExpenseRecordId">{{ dailyExpense.amount | customCurrency }}</span>
+                    <input *ngIf="editingDailyExpenseId === dailyExpense.dailyExpenseRecordId" type="number" [(ngModel)]="dailyExpense.amount" class="form-control" />
+                  </td>
+                  <td class="text-center">
+                    <ng-container *ngIf="editingDailyExpenseId !== dailyExpense.dailyExpenseRecordId">
+                      <button class="btn btn-link text-warning btn-sm" (click)="startEditingDailyExpense(dailyExpense.dailyExpenseRecordId)">
+                        <i class="fas fa-pencil-alt"></i>
+                      </button>
+                      <button class="btn btn-link text-danger btn-sm" (click)="deleteDailyExpense(dailyExpense.dailyExpenseRecordId, dailyExpense.expenseBudgetDetailId)">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </ng-container>
+                    <ng-container *ngIf="editingDailyExpenseId === dailyExpense.dailyExpenseRecordId">
+                      <button class="btn btn-success btn-sm" (click)="saveDailyExpense(dailyExpense)" [disabled]="isLoading">
+                        <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        <span *ngIf="!isLoading">Guardar</span>
+                      </button>
+                      <button class="btn btn-secondary btn-sm" (click)="cancelEditing()">Cancelar</button>
+                    </ng-container>
+                  </td>
+                </tr>
+                <!-- Fila de Detalles -->
+                <tr *ngIf="expandedDailyExpenseId === dailyExpense.dailyExpenseRecordId">
+                  <td colspan="3">
+                    <div class="bg-light p-3 rounded">
+                      <p>{{ dailyExpense.detail }}</p>
+                    </div>
+                  </td>
+                </tr>
+              </ng-container>
             </tbody>
           </table>
           <nav aria-label="Gastos Diarios Paginación" class="mt-3">

@@ -22,6 +22,11 @@ export class AddDailyExpenseComponent implements OnInit {
     paymentMethodId: 0,
     detail: ''
   };
+
+  currentStep: number = 1; // Rastrea el paso actual (1, 2, 3, etc.)
+  totalSteps: number = 4; // Total de pasos
+  stepErrors: string[] = [];
+
   paymentMethods: PaymentMethod[] = [];
   expenseDetails: any[] = []; // Lista de detalles de presupuesto
   expenseTypes: ExpenseType[] = [];
@@ -80,6 +85,52 @@ export class AddDailyExpenseComponent implements OnInit {
       },
       error: (err) => console.error('Error al obtener tipos de gastos', err)
     });
+  }
+
+  // Método para validar campos de cada paso
+  validateStep(step: number): boolean {
+    console.log('paymentMethodId: ', this.dailyExpenseData.paymentMethodId);
+    this.stepErrors = [];
+    switch (step) {
+      case 1:
+        if (!this.selectedExpenseDetail) {
+          this.stepErrors.push('Debe seleccionar un gasto relacionado.');
+          return false;
+        }
+        break;
+      /* case 2:
+        if (!this.selectedExpenseType) {
+          this.stepErrors.push('Debe seleccionar un tipo de gasto.');
+          return false;
+        }
+        brecak;*/
+      case 3:
+        if (!this.dailyExpenseData.paymentDate) {
+          this.stepErrors.push('Debe ingresar una fecha de pago.');
+        }
+        if (!this.dailyExpenseData.amount || this.dailyExpenseData.amount <= 0) {
+          this.stepErrors.push('Debe ingresar un monto válido.');
+        }
+        if (this.stepErrors.length > 0) return false;
+        break;
+      case 4:
+        if (!this.dailyExpenseData.paymentMethodId || this.dailyExpenseData.paymentMethodId === 0) {
+          this.stepErrors.push('Debe seleccionar un método de pago.');
+          return false;
+        }
+        break;
+    }
+    return true;
+  }
+
+  // Método para avanzar al siguiente paso
+  goToStep(step: number): void {
+    if (step > this.currentStep && !this.validateStep(this.currentStep)) {
+      return;
+    }
+    if (step >= 1 && step <= this.totalSteps) {
+      this.currentStep = step;
+    }
   }
 
   // Agrupar gastos relacionados por categoría
@@ -185,6 +236,10 @@ export class AddDailyExpenseComponent implements OnInit {
 
   addDailyExpense(): void {
     if (!this.budgetId) return;
+
+    if (!this.validateStep(4)) {
+      return;
+    }
 
     const dailyExpenseRequest = {
       ...this.dailyExpenseData,

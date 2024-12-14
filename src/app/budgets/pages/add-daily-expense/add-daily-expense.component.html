@@ -1,28 +1,31 @@
 <div class="container mt-2">
   <h4>Agregar Gasto Diario</h4>
-  <form (ngSubmit)="addDailyExpense()" #dailyExpenseForm="ngForm">
-    <div class="mb-3">
-      <label for="expenseBudgetDetailId" class="form-label">Gasto Relacionado al Presupuesto</label>
-      <button
-        type="button"
-        class="form-control text-start"
-        (click)="openExpenseDetailModal()"
-      >
-        {{ selectedExpenseDetail?.customName || 'Seleccionar Gasto Relacionado' }}
-      </button>
-    </div>
 
-    <div class="mb-3">
-      <label for="expenseTypeId" class="form-label">¿Desea especificar el tipo de gasto? (opcional)</label>
-      <button
-        type="button"
-        class="form-control text-start"
-        (click)="openExpenseTypeModal()"
-      >
-        {{ selectedExpenseType?.name || 'Seleccionar Tipo de Gasto' }}
-      </button>
-    </div>
+  <!-- Mensaje de error -->
+  <div *ngIf="stepErrors.length > 0" class="alert alert-danger">
+    <ul>
+      <li *ngFor="let error of stepErrors">{{ error }}</li>
+    </ul>
+  </div>
 
+  <!-- Paso 1: Seleccionar Gasto Relacionado -->
+  <div *ngIf="currentStep === 1">
+    <label for="expenseBudgetDetailId" class="form-label">Gasto Relacionado al Presupuesto</label>
+    <button type="button" class="form-control text-start" (click)="openExpenseDetailModal()">
+      {{ selectedExpenseDetail?.customName || 'Seleccionar Gasto Relacionado' }}
+    </button>
+  </div>
+
+  <!-- Paso 2: Seleccionar Tipo de Gasto -->
+  <div *ngIf="currentStep === 2">
+    <label for="expenseTypeId" class="form-label">¿Desea especificar el tipo de gasto? (opcional)</label>
+    <button type="button" class="form-control text-start" (click)="openExpenseTypeModal()">
+      {{ selectedExpenseType?.name || 'Seleccionar Tipo de Gasto' }}
+    </button>
+  </div>
+
+  <!-- Paso 3: Ingresar Fecha y Monto -->
+  <div *ngIf="currentStep === 3">
     <div class="mb-3">
       <label for="paymentDate" class="form-label">Fecha de Pago</label>
       <input
@@ -34,7 +37,6 @@
         required
       />
     </div>
-
     <div class="mb-3">
       <label for="amount" class="form-label">Monto</label>
       <input
@@ -46,22 +48,22 @@
         required
       />
     </div>
+  </div>
 
-    <div class="mb-3">
-      <label for="paymentMethodId" class="form-label">Método de Pago</label>
-      <select
-        id="paymentMethodId"
-        class="form-control"
-        [(ngModel)]="dailyExpenseData.paymentMethodId"
-        name="paymentMethodId"
-        required
-      >
-        <option *ngFor="let method of paymentMethods" [value]="method.paymentMethodId">
-          {{ method.name }}
-        </option>
-      </select>
-    </div>
-
+  <!-- Paso 4: Seleccionar Método de Pago -->
+  <div *ngIf="currentStep === 4">
+    <label for="paymentMethodId" class="form-label">Método de Pago</label>
+    <select
+      id="paymentMethodId"
+      class="form-control"
+      [(ngModel)]="dailyExpenseData.paymentMethodId"
+      name="paymentMethodId"
+      required
+    >
+      <option *ngFor="let method of paymentMethods" [value]="method.paymentMethodId">
+        {{ method.name }}
+      </option>
+    </select>
     <div class="mb-3">
       <label for="detail" class="form-label">Detalles (opcional)</label>
       <textarea
@@ -72,15 +74,23 @@
         rows="3"
       ></textarea>
     </div>
+  </div>
 
-    <div class="d-flex justify-content-between">
-      <button type="submit" class="btn btn-primary" [disabled]="!dailyExpenseForm.valid">
-        Guardar
-      </button>
-      <button type="button" class="btn btn-secondary" (click)="cancel()">Cancelar</button>
-    </div>
-  </form>
+  <!-- Navegación entre pasos -->
+  <div class="d-flex justify-content-between mt-3">
+    <button type="button" class="btn btn-danger" (click)="cancel()">Cancelar</button>
+    <button type="button" class="btn btn-secondary" [disabled]="currentStep === 1" (click)="goToStep(currentStep - 1)">
+      Anterior
+    </button>
+    <button *ngIf="currentStep < totalSteps" type="button" class="btn btn-primary" (click)="goToStep(currentStep + 1)">
+      Siguiente
+    </button>
+    <button *ngIf="currentStep === totalSteps" type="button" class="btn btn-success" (click)="addDailyExpense()">
+      Guardar
+    </button>
+  </div>
 </div>
+
 
 <!-- Modal de Tipos de Gasto -->
 <div class="modal fade" id="expenseTypeModal" tabindex="-1" aria-labelledby="expenseTypeModalLabel" aria-hidden="true">
