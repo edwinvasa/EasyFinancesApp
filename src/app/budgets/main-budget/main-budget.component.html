@@ -51,7 +51,7 @@
       </h5>
       <div>
         <button class="btn btn-warning btn-sm me-2" (click)="openEditingBudgetModal()">
-          <i class="fas fa-pencil-alt"></i> Editar
+          <i class="fas fa-pencil-alt"></i>
         </button>
         <div class="modal-overlay" *ngIf="isEditingBudgetModalVisible">
           <div class="modal-content">
@@ -64,7 +64,7 @@
           </div>
         </div>
         <button class="btn btn-secondary btn-sm me-2" (click)="openCloneModal()">
-          <i class="fas fa-clone"></i> Clonar
+          <i class="fas fa-clone"></i>
         </button>
         <div class="modal-overlay" *ngIf="isCloneModalVisible">
           <div class="modal-content">
@@ -78,7 +78,7 @@
         </div>
 
         <button class="btn btn-danger btn-sm" (click)="confirmDeleteBudget()">
-          <i class="fas fa-trash"></i> Eliminar
+          <i class="fas fa-trash"></i>
         </button>
       </div>
     </div>
@@ -98,6 +98,14 @@
       <div class="col-md-4 col-6 mb-3">
         <p class="mb-1 text-muted">Gastos</p>
         <h6 class="fw-bold text-danger">{{ recentBudget.totalExpenses | customCurrency }}</h6>
+      </div>
+      <div class="col-md-4 col-6 mb-3">
+        <p class="mb-1 text-muted">Ingresos - Gastos</p>
+        <h6
+          class="fw-bold"
+          [ngClass]="recentBudget.totalIncome - recentBudget.totalExpenses < 0 ? 'text-danger' : 'text-success'">
+          {{ recentBudget.totalIncome - recentBudget.totalExpenses | customCurrency }}
+        </h6>
       </div>
       <div class="col-md-4 col-6 mb-3">
         <p class="mb-1 text-muted">Realizado</p>
@@ -183,10 +191,10 @@
               style="max-width: 300px;"
             />
             <button class="btn btn-primary btn-sm" (click)="clearIncomeSearch()">
-              <i class="fas fa-times"></i> Limpiar Filtro
+              <i class="fas fa-times"></i>
             </button>
             <button class="btn btn-success" (click)="openAddIncomeModal()">
-              <i class="fas fa-plus"></i> Agregar Ingreso
+              <i class="fas fa-plus"></i>
             </button>
             <!-- Modal para agregar ingresos -->
             <div class="modal-overlay" *ngIf="isAddIncomeModalVisible">
@@ -267,10 +275,10 @@
               style="max-width: 300px;"
             />
             <button class="btn btn-primary btn-sm" (click)="clearExpensesSearch()">
-              <i class="fas fa-times"></i> Limpiar Filtro
+              <i class="fas fa-times"></i>
             </button>
             <button class="btn btn-success" (click)="openAddExpenseModal()">
-              <i class="fas fa-plus"></i> Agregar Gasto
+              <i class="fas fa-plus"></i>
             </button>
             <!-- Modal para agregar gastos -->
             <div class="modal-overlay" *ngIf="isAddExpenseModalVisible">
@@ -290,6 +298,7 @@
                 <th>Descripción</th>
                 <th class="text-end">Presupuestado</th>
                 <th class="text-end">Pendiente</th>
+                <th class="text-end">Pagado</th>
                 <th class="text-center">Acciones</th>
               </tr>
             </thead>
@@ -305,6 +314,9 @@
                 </td>
                 <td class="text-end">
                   <span *ngIf="editingExpenseId !== expense.expenseBudgetDetailId">{{ expense.pendingPayment | customCurrency }}</span>
+                </td>
+                <td class="text-end">
+                  <span *ngIf="editingExpenseId !== expense.expenseBudgetDetailId">{{ expense.amountPaid| customCurrency }}</span>
                 </td>
                 <td class="text-center">
                   <ng-container *ngIf="editingExpenseId !== expense.expenseBudgetDetailId">
@@ -355,10 +367,10 @@
               style="max-width: 300px;"
             />
             <button class="btn btn-primary btn-sm" (click)="clearDailyExpensesSearch()">
-              <i class="fas fa-times"></i> Limpiar Filtro
+              <i class="fas fa-times"></i>
             </button>
             <button class="btn btn-success" (click)="openAddDailyExpenseModal()">
-              <i class="fas fa-plus"></i> Agregar Gasto Diario
+              <i class="fas fa-plus"></i>
             </button>
             <!-- Modal para agregar gastos diarios -->
             <div class="modal-overlay" *ngIf="isAddDailyExpenseModalVisible">

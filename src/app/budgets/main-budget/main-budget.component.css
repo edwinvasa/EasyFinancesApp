@@ -228,6 +228,8 @@
   width: 500px;
   max-width: 90%;
   animation: fadeIn 0.3s ease;
+  max-height: 90vh;
+  overflow-y: auto;
 }
 
 @keyframes fadeIn {
@@ -245,7 +247,7 @@
 @media (max-width: 768px) {
   .btn {
     font-size: 0.875rem;
-    padding: 0.5rem 0.75rem;
+    padding: 0.5rem;
   }
 
   .card-header {
@@ -266,7 +268,12 @@
     font-size: 0.875rem;
   }
 
-  .btn i {
-    display: none;
+  .table th,
+  .table td {
+    font-size: 0.875rem;
+  }
+
+  h5.card-title {
+    font-size: 1rem;
   }
 }

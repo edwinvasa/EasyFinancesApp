@@ -15,17 +15,16 @@
 
     <div class="mb-3">
       <label for="expenseTypeId" class="form-label">Tipo de Gasto</label>
-      <select
-        id="expenseTypeId"
-        class="form-control"
-        [(ngModel)]="expenseData.expenseTypeId"
-        name="expenseTypeId"
-        required
+      <button
+        type="button"
+        class="form-control text-start"
+        (click)="openExpenseTypeModal()"
       >
-        <option *ngFor="let type of expenseTypes" [value]="type.id">
-          {{ type.name }} ({{ type.category }})
-        </option>
-      </select>
+        {{ selectedExpenseType?.name || 'Seleccionar Tipo de Gasto' }}
+      </button>
+      <div *ngIf="!expenseData.expenseTypeId && expenseForm.submitted" class="text-danger mt-2">
+        Por favor, seleccione un tipo de gasto.
+      </div>
     </div>
 
     <div class="mb-3">
@@ -41,7 +40,7 @@
     </div>
 
     <div class="d-flex justify-content-between">
-      <button type="submit" class="btn btn-primary" [disabled]="!expenseForm.valid">
+      <button type="submit" class="btn btn-primary" [disabled]="!expenseForm.valid || !expenseData.expenseTypeId">
         Agregar
       </button>
       <button type="button" class="btn btn-secondary" (click)="cancel()">
@@ -49,4 +48,48 @@
       </button>
     </div>
   </form>
+</div>
+
+<!-- Modal para seleccionar tipo de gasto -->
+<div class="modal fade" id="expenseTypeModal" tabindex="-1" aria-labelledby="expenseTypeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="expenseTypeModalLabel">Seleccionar Tipo de Gasto</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Campo de búsqueda -->
+        <div class="mb-3">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Buscar tipo de gasto"
+            [(ngModel)]="searchTerm"
+            (input)="filterExpenseTypes()"
+          />
+        </div>
+
+        <!-- Lista de tipos de gasto organizados por categoría -->
+        <div style="max-height: 400px; overflow-y: auto;">
+          <div *ngFor="let category of filteredExpenseTypes | keyvalue">
+            <h6 class="text-secondary">{{ category.key }}</h6>
+            <ul class="list-group mb-3">
+              <li
+                *ngFor="let type of category.value"
+                class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+                (click)="selectExpenseType(type)"
+              >
+                <span>{{ type.name }}</span>
+                <i class="bi bi-check-circle text-success"></i>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
 </div>

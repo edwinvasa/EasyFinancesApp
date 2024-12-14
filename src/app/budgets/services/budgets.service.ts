@@ -53,7 +53,7 @@ export class BudgetsService extends BaseService {
     return this.http.get<Expense[]>(`${this.apiUrl}/queries/budget-details/expense/${budgetId}`, { headers });
   }
 
-  addExpense(expenseRequest: { budgetId: string; customName: string; budgetedAmount: number; expenseTypeId: number }): Observable<void> {
+  addExpense(expenseRequest: { budgetId: string; customName: string; budgetedAmount: number; expenseTypeId: number | null }): Observable<void> {
     const headers = this.getAuthHeaders();
     return this.http.post<void>(`${this.apiUrl}/commands/budget-details/expense`, expenseRequest, { headers });
   }
