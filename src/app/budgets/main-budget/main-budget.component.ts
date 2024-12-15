@@ -81,6 +81,11 @@ export class MainBudgetComponent implements OnInit {
   currentPageDailyExpenses: number = 1;
   totalPagesDailyExpenses: number = 0;
 
+  // para manejar el orden de los registros
+  sortOrder: 'asc' | 'desc' = 'desc';
+  // Añadir manejo de cantidad de registros por página
+  pageSizes: number[] = [5, 10, 15, 20];
+
   constructor(private budgetsService: BudgetsService, private toastr: ToastrService, private expenseTypeService: ExpenseTypeService, private paymentMethodService: PaymentMethodService,
     private authService: AuthService, private router: Router
   ) {}
@@ -92,6 +97,14 @@ export class MainBudgetComponent implements OnInit {
     } else {
       this.toastr.error('No se pudo obtener el usuario del token.', 'Error');
     }
+  }
+
+  sortDataByDate(data: any[]): any[] {
+    return [...data].sort((a, b) => {
+      const dateA = new Date(a.created_at).getTime();
+      const dateB = new Date(b.created_at).getTime();
+      return this.sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
+    });
   }
 
   fetchBudgets(): void {
@@ -151,7 +164,7 @@ export class MainBudgetComponent implements OnInit {
     this.isLoading = true;
     this.budgetsService.getIncomesByBudget(budgetId).subscribe({
       next: (data) => {
-        this.incomes = data
+        this.incomes = this.sortDataByDate(data);
         this.filteredIncomes = [...this.incomes];
       },
       error: (err) => this.handleError('Error al obtener ingresos', err),
@@ -185,8 +198,9 @@ export class MainBudgetComponent implements OnInit {
     this.isLoading = true;
     this.budgetsService.getExpensesByBudget(budgetId).subscribe({
       next: (data) => {
-        this.expenses = data;
-        this.expenseDetails = data;
+        const dataSorted = this.sortDataByDate(data);
+        this.expenses = dataSorted;
+        this.expenseDetails = dataSorted;
         this.filteredExpenses = [...this.expenses];
       },
       error: (err) => this.handleError('Error al obtener gastos', err),
@@ -234,13 +248,31 @@ export class MainBudgetComponent implements OnInit {
     this.isLoading = true;
     this.budgetsService.getDailyExpensesByBudget(budgetId).subscribe({
       next: (data) => {
-        this.dailyExpenses = data;
+        this.dailyExpenses =  this.sortDataByDate(data);
         this.filteredDailyExpenses = [...this.dailyExpenses];
       },
       error: (err) => this.handleError('Error al obtener gastos diarios', err),
       complete: () => (this.isLoading = false)
     });
     this.updateTotalPagesDailyExpenses();
+  }
+
+  // Agregar manejo para cambiar el número de registros por página
+  updatePageSize(newPageSize: number, type: 'income' | 'expense' | 'dailyExpense'): void {
+    switch (type) {
+      case 'income':
+        this.pageSize = newPageSize;
+        this.updateTotalPages();
+        break;
+      case 'expense':
+        this.pageSizeExpenses = newPageSize;
+        this.updateTotalPagesExpenses();
+        break;
+      case 'dailyExpense':
+        this.pageSizeDailyExpenses = newPageSize;
+        this.updateTotalPagesDailyExpenses();
+        break;
+    }
   }
 
   updateTotalPagesDailyExpenses(): void {

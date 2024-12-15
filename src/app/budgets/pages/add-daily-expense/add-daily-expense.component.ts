@@ -18,7 +18,7 @@ export class AddDailyExpenseComponent implements OnInit {
     expenseBudgetDetailId: 0,
     paymentDate: '',
     expenseTypeId: null as number | null,
-    amount: 0,
+    amount: null,
     paymentMethodId: 0,
     detail: ''
   };
@@ -43,6 +43,8 @@ export class AddDailyExpenseComponent implements OnInit {
 
   selectedExpenseDetail: any | null = null;
   selectedExpenseType: ExpenseType | null = null;
+
+  isLoading: boolean = false;
 
   constructor(
     private budgetsService: BudgetsService,
@@ -241,19 +243,26 @@ export class AddDailyExpenseComponent implements OnInit {
       return;
     }
 
+    this.isLoading = true;
     const dailyExpenseRequest = {
       ...this.dailyExpenseData,
-      budgetId: this.budgetId
+      budgetId: this.budgetId,
+      amount: Number(this.dailyExpenseData.amount),
     };
 
     this.budgetsService.addDailyExpense(dailyExpenseRequest).subscribe({
       next: () => {
         alert('Gasto diario agregado con éxito');
+        this.isLoading = false;
         this.closeModal.emit();
       },
       error: (err) => {
         console.error('Error al agregar el gasto diario', err);
         alert('Ocurrió un error al agregar el gasto diario');
+        this.isLoading = false;
+      },
+      complete: () => {
+        this.isLoading = false;
       }
     });
   }

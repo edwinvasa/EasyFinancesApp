@@ -16,18 +16,21 @@
     <div class="mb-3">
       <label for="amount" class="form-label">Monto</label>
       <input
-        type="number"
+        type="text"
         id="amount"
         class="form-control"
         [(ngModel)]="incomeData.amount"
         name="amount"
+        currencyMask
+        placeholder="Ej: 50.000"
         required
       />
     </div>
 
     <div class="d-flex justify-content-between">
-      <button type="submit" class="btn btn-primary" [disabled]="!incomeForm.valid">
-        Agregar
+      <button type="submit" class="btn btn-primary" [disabled]="!incomeForm.valid || isLoading">
+        <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+        <span *ngIf="!isLoading">Agregar</span>
       </button>
       <button type="button" class="btn btn-secondary" (click)="cancel()">
         Cancelar

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import jwtDecode from 'jwt-decode';
 
 @Injectable({
@@ -8,6 +8,8 @@ import jwtDecode from 'jwt-decode';
 })
 export class AuthService {
   private baseUrl = `https://easy-finances-app-63cef07822fc.herokuapp.com/api/auth`;
+  private isAuthenticatedSubject = new BehaviorSubject<boolean>(this.isLoggedIn());
+  isAuthenticated$: Observable<boolean> = this.isAuthenticatedSubject.asObservable();
 
   constructor(private http: HttpClient) {}
 
@@ -15,12 +17,13 @@ export class AuthService {
     return this.http.post<{ token: string }>(`${this.baseUrl}/login`, { username, password });
   }
 
-  register(username: string, password: string): Observable<any> {
-    return this.http.post<any>(`${this.baseUrl}/register`, { username, password });
+  register(username: string, password: string): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(`${this.baseUrl}/register`, { username, password });
   }
 
   saveToken(token: string): void {
     localStorage.setItem('authToken', token);
+    this.isAuthenticatedSubject.next(true);
   }
 
   getToken(): string | null {
@@ -33,6 +36,7 @@ export class AuthService {
 
   logout(): void {
     localStorage.removeItem('authToken');
+    this.isAuthenticatedSubject.next(false);
   }
 
   getUserIdFromToken(): string | null {

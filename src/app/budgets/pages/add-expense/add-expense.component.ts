@@ -16,15 +16,16 @@ export class AddExpenseComponent implements OnInit {
   expenseData = {
     customName: '',
     expenseTypeId: null as number | null,
-    budgetedAmount: 0
+    budgetedAmount: null
   };
 
-  expenseTypes: ExpenseType[] = []; // Lista de tipos de gastos
-  groupedExpenseTypes: { [category: string]: ExpenseType[] } = {}; // Agrupados por categoría
-  filteredExpenseTypes: { [category: string]: ExpenseType[] } = {}; // Filtrados
-  searchTerm: string = ''; // Término de búsqueda
+  expenseTypes: ExpenseType[] = [];
+  groupedExpenseTypes: { [category: string]: ExpenseType[] } = {};
+  filteredExpenseTypes: { [category: string]: ExpenseType[] } = {};
+  searchTerm: string = '';
 
-  selectedExpenseType: ExpenseType | null = null; // Tipo de gasto seleccionado
+  selectedExpenseType: ExpenseType | null = null;
+  isLoading: boolean = false;
 
   constructor(
     private budgetsService: BudgetsService,
@@ -57,7 +58,6 @@ export class AddExpenseComponent implements OnInit {
     }, {});
   }
 
-  // Filtrar tipos de gasto por término de búsqueda
   filterExpenseTypes(): void {
     const lowerCaseSearchTerm = this.searchTerm.toLowerCase();
     const filteredGroups: { [category: string]: ExpenseType[] } = {};
@@ -87,7 +87,7 @@ export class AddExpenseComponent implements OnInit {
   // Seleccionar un tipo de gasto
   selectExpenseType(type: ExpenseType): void {
     this.selectedExpenseType = type;
-    this.expenseData.expenseTypeId = type.id; // Asignar el ID del tipo de gasto seleccionado
+    this.expenseData.expenseTypeId = type.id;
     this.closeModalById('expenseTypeModal');
   }
 
@@ -108,20 +108,27 @@ export class AddExpenseComponent implements OnInit {
       return;
     }
 
+    this.isLoading = true;
     const expenseRequest = {
       ...this.expenseData,
       budgetId: this.budgetId,
+      budgetedAmount: Number(this.expenseData.budgetedAmount),
     };
 
     this.budgetsService.addExpense(expenseRequest).subscribe({
       next: () => {
         alert('Gasto agregado con éxito');
+        this.isLoading = false;
         this.closeModal.emit();
       },
       error: (err) => {
         console.error('Error al agregar el gasto', err);
         alert('Ocurrió un error al agregar el gasto');
+        this.isLoading = false;
       },
+      complete: () => {
+        this.isLoading = false;
+      }
     });
   }
 

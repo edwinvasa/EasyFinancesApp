@@ -1,7 +1,11 @@
 .sidebar {
-  background-color: #F5F5F5 !important; 
+  background-color: #F5F5F5 !important;
   padding: 20px;
   height: 100vh !important;
+}
+
+.sidebar .nav-link {
+  cursor: pointer;
 }
 
 .sidebar .nav-pills {
@@ -10,7 +14,7 @@
 }
 
 .sidebar .nav-link {
-  color: #37474F !important; 
+  color: #37474F !important;
   font-weight: 500 !important;
   white-space: nowrap !important;
   transition: all 0.3s ease !important;

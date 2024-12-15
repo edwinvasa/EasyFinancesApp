@@ -11,10 +11,14 @@ export class LoginComponent {
   username = '';
   password = '';
   errorMessage = '';
+  isLoading = false; // Estado de carga
 
   constructor(private authService: AuthService, private router: Router) {}
 
   login(): void {
+    if (this.isLoading) return; // Evitar múltiples clics
+    this.isLoading = true; // Activar el estado de carga
+
     this.authService.login(this.username, this.password).subscribe({
       next: (response) => {
         this.authService.saveToken(response.token);
@@ -22,7 +26,9 @@ export class LoginComponent {
       },
       error: (error) => {
         this.errorMessage = 'Credenciales incorrectas. Inténtalo de nuevo.';
-      }
+      },
+      complete: () => (this.isLoading = false) // Desactivar estado de carga
     });
+    this.isLoading = false
   }
 }

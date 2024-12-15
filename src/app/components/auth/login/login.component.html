@@ -11,6 +11,7 @@
         class="form-control"
         placeholder="Ingresa tu usuario"
         required
+        [disabled]="isLoading"
       />
     </div>
     <div class="form-group mb-3">
@@ -23,9 +24,17 @@
         class="form-control"
         placeholder="Ingresa tu contraseña"
         required
+        [disabled]="isLoading"
       />
     </div>
-    <button type="submit" class="btn btn-primary w-100">Iniciar Sesión</button>
+    <button
+      type="submit"
+      class="btn btn-primary w-100"
+      [disabled]="isLoading"
+    >
+      <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+      <span *ngIf="!isLoading">Iniciar Sesión</span>
+    </button>
     <p *ngIf="errorMessage" class="text-danger mt-3 text-center">{{ errorMessage }}</p>
   </form>
 </div>

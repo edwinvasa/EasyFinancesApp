@@ -12,8 +12,9 @@ export class AddIncomeComponent implements OnInit {
 
   incomeData = {
     name: '',
-    amount: 0
+    amount: null
   };
+  isLoading: boolean = false;
 
   constructor(
     private budgetsService: BudgetsService,
@@ -26,17 +27,24 @@ export class AddIncomeComponent implements OnInit {
 
     const incomeRequest = {
       ...this.incomeData,
-      budgetId: this.budgetId
+      budgetId: this.budgetId,
+      amount: Number(this.incomeData.amount),
     };
 
+    this.isLoading = true;
     this.budgetsService.addIncome(incomeRequest).subscribe({
       next: () => {
         alert('Ingreso agregado con éxito');
+        this.isLoading = false;
         this.closeModal.emit();
       },
       error: (err) => {
         console.error('Error al agregar ingreso', err);
         alert('Ocurrió un error al agregar el ingreso');
+        this.isLoading = false;
+      },
+      complete: () => {
+        this.isLoading = false;
       }
     });
   }

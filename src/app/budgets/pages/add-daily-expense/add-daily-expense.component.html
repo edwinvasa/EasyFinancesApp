@@ -40,11 +40,13 @@
     <div class="mb-3">
       <label for="amount" class="form-label">Monto</label>
       <input
-        type="number"
+        type="text"
         id="amount"
         class="form-control"
         [(ngModel)]="dailyExpenseData.amount"
         name="amount"
+        currencyMask
+        placeholder="Ej: 50.000"
         required
       />
     </div>
@@ -85,8 +87,15 @@
     <button *ngIf="currentStep < totalSteps" type="button" class="btn btn-primary" (click)="goToStep(currentStep + 1)">
       Siguiente
     </button>
-    <button *ngIf="currentStep === totalSteps" type="button" class="btn btn-success" (click)="addDailyExpense()">
-      Guardar
+    <button
+      *ngIf="currentStep === totalSteps"
+      type="button"
+      class="btn btn-success"
+      (click)="addDailyExpense()"
+      [disabled]="isLoading"
+    >
+      <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+      <span *ngIf="!isLoading">Guardar</span>
     </button>
   </div>
 </div>
