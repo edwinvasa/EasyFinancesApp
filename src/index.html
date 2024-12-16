@@ -16,31 +16,12 @@
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const offcanvas = document.getElementById('offcanvasNavbar');
-      const toggleButton = document.querySelector('[data-bs-toggle="offcanvas"]');
-
-      document.addEventListener('click', (event) => {
-        const overlay = document.querySelector('.offcanvas-backdrop');
-
-        // Ignorar clics dentro del menú o en el botón de apertura
-        const clickedInsideMenu = offcanvas.contains(event.target);
-        const clickedToggleButton = toggleButton.contains(event.target);
-
-        if (overlay && !clickedInsideMenu && !clickedToggleButton) {
-          const bootstrapOffcanvas = bootstrap.Offcanvas.getInstance(offcanvas);
-          if (bootstrapOffcanvas) {
-            bootstrapOffcanvas.hide(); // Cierra el menú offcanvas
-          }
-        }
-      });
-
-      // Manejar cierre del menú para limpiar el overlay
       offcanvas.addEventListener('hidden.bs.offcanvas', () => {
-        const overlay = document.querySelector('.offcanvas-backdrop');
-        if (overlay) {
-          overlay.remove();
-        }
+        document.body.classList.remove('offcanvas-open', 'overflow-hidden');
+        document.body.style.overflow = 'auto';
       });
     });
   </script>
+
 </body>
 </html>
